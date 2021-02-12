@@ -1,0 +1,11 @@
+start-every-script: |-
+  def color(inp):
+    i = 0
+    arr = bytearray(inp, 'unicode_escape')
+    brr = bytearray('0123456789AaBbCcDdEeFfKkLlMmNnOoRr', 'unicode_escape')
+    while i < len(arr):
+      if arr[i] == 38 and arr[i + 1] in brr:
+        arr[i] = 0xA7
+        arr[i + 1] = arr[i + 1]
+      i += 1
+    return arr.decode('unicode_escape')

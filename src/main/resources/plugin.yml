@@ -1,0 +1,25 @@
+name: SPYgotUtils
+version: @version@
+main: uwu.smsgamer.spygotutils.Loader
+softdepend: [ ProtocolLib, PlaceholderAPI ]
+authors: [ Sms_Gamer_3808 ]
+description: A ton of utilities for server operators.
+commands:
+  spygotutils:
+    description: Main command for SPYgotUtils.
+    usage: /spygotutils
+    aliases:
+      - spygot_utils
+      - spyu
+  evaluate:
+    description: Evaluates a query based off of user input.
+    usage: /eval <eval string>
+    aliases:
+      - eval
+  send-message:
+    description: Sends a message to someone
+    usage: /send-message <player name> <message>
+    aliases:
+      - send-msg
+      - sendmessag
+      - sendmsg

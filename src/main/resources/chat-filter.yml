@@ -1,0 +1,69 @@
+# Built in variables for chat-filter:
+# msg - The message being sent to or received from the player
+# player - The player object. Use as you would in java but with python syntax.
+
+outgoing-chat:
+  example: # Average Hawk flag message is:   HAWK: Username failed check. VL: 0
+    pre-exec: '' # Encase you want to do anything before.
+    check: 'msg.startswith("HAWK:") and ("VL:" in msg) and not (player.getName() in msg)'
+    #We want that  not  to invert it because we want to cancel it if it is not their flag
+    cancel: true # Cancel it; not their flag.
+    # execute-commands: []
+
+  example2: # Average Hawk notif message is:   HAWK: Username failed check. VL: 0
+    pre-exec: ''
+    check: 'msg.startswith("HAWK:") and "VL:" in msg and player.getName() in msg'
+    #We want that  not  to invert it because we want to cancel it if its not their flag
+    cancel: false # Don't cancel; it is their flag.
+    replacement: '"&cOwO:&7 " + player.getName() + " failed: " + msg[msg.find(" failed ") + 8:msg.find(".")] + " with VL: "
+    + msg[msg.find("VL:") + 4:] + "&a %player_x% %player_y% %player_z%"'
+    is-json: false # The replacement is not json.
+    # execute-commands: []
+
+# Additional variables for incoming-chat and incoming-tab:
+# label - The label of the command (with the `/` included)
+#
+# It's also going through a preprocessor that does an arg placeholder replacement.
+# For ex: Let's say the chat is  /w Brandon Hello. How are you?
+#
+# %0% is replaced with     Brandon
+# %1% is replaced with     Hello.
+# %0-1% is replaced with   Brandon Hello.
+# %1+% is replaced with    Hello. How are you?
+# %6% is replaced with nothing since there's nothing at that arg
+# %3-7% is replaced with   are you?
+# %2+% is replaced with    How are you?
+#
+# These are replaced both in strings and as variables.
+# This is a preprocessor that happens before python code is executed. Don't ask me why I kept it.
+incoming-command:
+  example:
+    pre-exec: ''
+    check: '((label.lower() == "/pl") or (msg.lower() == "/ver ") or (msg.lower() == "/version ")) and
+    not player.hasPermission("spygotutils.filter.plugins")'
+    cancel: true
+    # No evaluator, but still going through PAPI and the preprocessor. (papi first tho)
+    send-msg: '%prefix% &cDon''t get our plugins; thx. Command: %msg% Label: %label%'
+    execute-commands:
+      - 'sendmsg %player_name% %prefix% &cPlease don''t get our plugins.'
+
+# Same rules as incoming-command apply here.
+incoming-chat:
+  example:
+    pre-exec: ''
+    check: 'not (label.startswith("/"))'
+    cancel: false
+    # PAPI and coloring are not done after the executor is finished.
+    replacement: 'msg.replace(player.getName(), color("&6&l" + player.getName() + "&r"))'
+    # execute-commands: []
+
+# For the arg
+incoming-tab:
+  example:
+    pre-exec: ''
+    check: '(label.lower() == "/") or (label.lower() == "/ver") or (label.lower() == "/version")'
+    cancel: false
+    # List of stuff. PAPI and colored
+    replacement:
+      - 'lol'
+      - 'no'
