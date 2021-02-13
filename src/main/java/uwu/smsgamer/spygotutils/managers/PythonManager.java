@@ -68,6 +68,7 @@ public class PythonManager {
     }
 
     public static void newScript(File file) {
+        if (!file.getName().endsWith(".py")) return; // not python script; don't do shit
         PyScript script = new PyScript(file).setFuns(defaultFuns).set("packet_listener", packetListener);
         try {
             script.execFile();
