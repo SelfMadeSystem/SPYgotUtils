@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import uwu.smsgamer.spygotutils.commands.CommandManager;
 import uwu.smsgamer.spygotutils.config.ConfigManager;
 import uwu.smsgamer.spygotutils.listener.*;
-import uwu.smsgamer.spygotutils.managers.ChatFilterManager;
+import uwu.smsgamer.spygotutils.managers.*;
 import uwu.smsgamer.spygotutils.utils.*;
 import uwu.smsgamer.spygotutils.utils.python.PyScript;
 
@@ -77,7 +77,7 @@ public final class SPYgotUtils {
         ChatFilterManager.getInstance();
         ChatUtils.init();
         EvalUtils.init();
-        PyScript.init();
+        PythonManager.init();
 
         CommandManager.setupCommands();
 
@@ -85,7 +85,7 @@ public final class SPYgotUtils {
 
         if (firstLoad) defaultFiles();
 
-        PyScript.loadScripts();
+        PythonManager.loadScripts();
     }
 
     public void onDisable() {
