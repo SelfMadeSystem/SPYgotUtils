@@ -62,7 +62,6 @@ public class ConfigManager {
 
     public static Set<ConfVal<?>> vals = new HashSet<>();
 
-    @SuppressWarnings("unchecked")
     public static <T> void reloadConfVal(ConfVal<T> val) {
         setConfVal(val, val.dVal);
     }

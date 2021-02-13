@@ -9,7 +9,6 @@ import uwu.smsgamer.spygotutils.utils.FileUtils;
 
 import java.io.*;
 import java.lang.reflect.Method;
-import java.nio.file.Files;
 import java.util.*;
 
 public class PyScript {
