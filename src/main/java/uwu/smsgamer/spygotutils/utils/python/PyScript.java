@@ -1,6 +1,6 @@
 package uwu.smsgamer.spygotutils.utils.python;
 
-import org.python.core.PyObject;
+import org.python.core.*;
 import org.python.util.PythonInterpreter;
 import uwu.smsgamer.spygotutils.utils.FileUtils;
 
@@ -21,6 +21,12 @@ public class PyScript {
 
     public PyScript set(String name, PyObject obj) {
         this.interpreter.set(name, obj);
+        return this;
+    }
+
+    public PyScript setFuns(PyFunction[] objs) {
+        for (PyFunction obj : objs)
+            set(obj.__name__, obj);
         return this;
     }
 }

@@ -99,7 +99,8 @@ public final class SPYgotUtils {
     }
 
     private void scriptFiles() {
-        FileUtils.saveResource(plugin, "test.py", new File(plugin.getDataFolder(), "scripts/test.py"), false);
+        FileUtils.saveResource(plugin, "event.py", new File(plugin.getDataFolder(), "scripts/event.py"), false);
+        FileUtils.saveResource(plugin, "command.py", new File(plugin.getDataFolder(), "scripts/command.py"), false);
     }
 
     private void configFiles() {
