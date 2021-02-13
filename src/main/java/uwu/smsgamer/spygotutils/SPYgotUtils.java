@@ -9,6 +9,7 @@ import uwu.smsgamer.spygotutils.config.ConfigManager;
 import uwu.smsgamer.spygotutils.listener.*;
 import uwu.smsgamer.spygotutils.managers.ChatFilterManager;
 import uwu.smsgamer.spygotutils.utils.*;
+import uwu.smsgamer.spygotutils.utils.python.PyScript;
 
 public final class SPYgotUtils {
     private static SPYgotUtils INSTANCE;
@@ -73,6 +74,7 @@ public final class SPYgotUtils {
         ChatFilterManager.getInstance();
         ChatUtils.init();
         EvalUtils.init();
+        PyScript.init();
 
         CommandManager.setupCommands();
 
