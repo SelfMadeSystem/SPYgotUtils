@@ -5,7 +5,7 @@ import uwu.smsgamer.senapi.utils.Evaluator;
 import uwu.smsgamer.spygotutils.config.ConfVal;
 
 public class EvalUtils {
-    public static final ConfVal<String> scriptStart = new ConfVal<>("start-every-script", "py-settings",
+    public static final ConfVal<String> startEvaluators = new ConfVal<>("start-evaluators", "py-settings",
       "def color(inp):\n" +
       "  i = 0\n" +
       "  arr = bytearray(inp, 'unicode_escape')\n" +
@@ -23,7 +23,7 @@ public class EvalUtils {
     public static Evaluator newEvaluator(OfflinePlayer player) {
         Evaluator eval = new Evaluator();
         eval.set("player", player);
-        eval.exec(scriptStart.getValue());
+        eval.exec(startEvaluators.getValue());
         return eval;
     }
 }

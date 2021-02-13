@@ -1,4 +1,4 @@
-start-every-script: |-
+start-evaluators: |-
   def color(inp):
     i = 0
     arr = bytearray(inp, 'unicode_escape')
