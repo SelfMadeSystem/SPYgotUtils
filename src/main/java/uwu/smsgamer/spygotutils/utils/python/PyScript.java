@@ -20,6 +20,7 @@ public class PyScript {
     public static PyListener highestListener;
     public static PyListener monitorListener;
     public static PyFunction registerEventFun;
+    private static File[] files;
 
     public File scriptFile;
     public PythonInterpreter interpreter;
@@ -38,12 +39,23 @@ public class PyScript {
           "    PyScript.registerEvent(event_type, priority, function)\n");
 
         registerEventFun = (PyFunction) interpreter.get("register_event");
+    }
 
+    public static void loadScripts() {
         File dir = new File(SPYgotUtils.getInstance().plugin.getDataFolder(), "scripts");
-        System.out.println("===========================================Python======");
-        for (File file : dir.listFiles()) {
-            System.out.println(file);
-            new PyScript(file);
+        if (dir.exists()) {
+            File[] arr = dir.listFiles();
+            if (files == null){
+                for (File file : arr) new PyScript(file);
+                files = arr;
+            } else {
+                // Who cares about efficiency. It's during load or reload.
+                // *Don't* want to reload a script; only load new ones.
+                for (File file : arr) if (!Arrays.asList(files).contains(file)) new PyScript(file);
+                HashSet<File> set = new HashSet<>(Arrays.asList(arr));
+                set.addAll(Arrays.asList(files));
+                files = set.toArray(new File[0]);
+            }
         }
     }
 

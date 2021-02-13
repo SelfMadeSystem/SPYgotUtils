@@ -1,8 +1,12 @@
 package uwu.smsgamer.spygotutils.utils;
 
+import org.bukkit.plugin.PluginLogger;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.util.logging.*;
 import java.util.stream.Stream;
 
 public class FileUtils {
@@ -17,5 +21,38 @@ public class FileUtils {
         }
 
         return contentBuilder.toString();
+    }
+
+    public static void saveResource(JavaPlugin plugin, String resourcePath, File outFile, boolean replace) {
+        if (resourcePath == null || resourcePath.equals("")) {
+            throw new IllegalArgumentException("ResourcePath cannot be null or empty");
+        }
+
+        resourcePath = resourcePath.replace('\\', '/');
+        InputStream in = plugin.getResource(resourcePath);
+        if (in == null) {
+            throw new IllegalArgumentException("The embedded resource '" + resourcePath + "' cannot be found in SPYgotUtils plugin file.");
+        }
+
+        File outDir = outFile.getParentFile();
+
+        if (!outDir.exists()) {
+            outDir.mkdirs();
+        }
+
+        try {
+            if (!outFile.exists() || replace) {
+                OutputStream out = new FileOutputStream(outFile);
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                out.close();
+                in.close();
+            }
+        } catch (IOException ex) {
+            PluginLogger.getAnonymousLogger().log(Level.SEVERE, "Could not save " + outFile.getName() + " to " + outFile, ex);
+        }
     }
 }

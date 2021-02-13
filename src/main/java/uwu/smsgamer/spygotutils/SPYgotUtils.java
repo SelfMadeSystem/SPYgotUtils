@@ -11,6 +11,8 @@ import uwu.smsgamer.spygotutils.managers.ChatFilterManager;
 import uwu.smsgamer.spygotutils.utils.*;
 import uwu.smsgamer.spygotutils.utils.python.PyScript;
 
+import java.io.File;
+
 public final class SPYgotUtils {
     private static SPYgotUtils INSTANCE;
     public static SPYgotUtils getInstance() {
@@ -54,6 +56,7 @@ public final class SPYgotUtils {
     }
 
     public void onEnable() {
+        boolean firstLoad = !plugin.getDataFolder().exists();
         ConfigManager.setup("messages", "chat-filter", "py-settings");
 
         //Initiate PacketEvents
@@ -80,12 +83,27 @@ public final class SPYgotUtils {
 
         Bukkit.getPluginManager().registerEvents(BukkitListener.getInstance(), plugin);
 
-        ConfigManager.saveConfig("messages");
-        ConfigManager.saveConfig("py-settings");
+        if (firstLoad) defaultFiles();
+
+        PyScript.loadScripts();
     }
 
     public void onDisable() {
         //Terminate PacketEvents
         PacketEvents.get().terminate();
+    }
+
+    public void defaultFiles() {
+        scriptFiles();
+        configFiles();
+    }
+
+    private void scriptFiles() {
+        FileUtils.saveResource(plugin, "test.py", new File(plugin.getDataFolder(), "scripts/test.py"), false);
+    }
+
+    private void configFiles() {
+        ConfigManager.saveConfig("messages");
+        ConfigManager.saveConfig("py-settings");
     }
 }

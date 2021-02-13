@@ -7,6 +7,7 @@ import uwu.smsgamer.spygotutils.commands.SmsCommand;
 import uwu.smsgamer.spygotutils.config.*;
 import uwu.smsgamer.spygotutils.managers.ChatFilterManager;
 import uwu.smsgamer.spygotutils.utils.ChatUtils;
+import uwu.smsgamer.spygotutils.utils.python.PyScript;
 
 import java.util.List;
 
@@ -54,6 +55,7 @@ public class SPYgotUtilsCommand extends SmsCommand {
                                 ConfigManager.reloadConfVal(val);
                             }
                             ChatFilterManager.getInstance().reload();
+                            PyScript.loadScripts();
                             long end = System.currentTimeMillis();
                             ChatUtils.sendMessage((success ? reloadSuccess : reloadFail).getValue()
                               .replace("%ms%", String.valueOf(end-begin)), sender);
