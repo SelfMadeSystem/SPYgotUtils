@@ -1,7 +1,7 @@
 package uwu.smsgamer.spygotutils.managers;
 
 import org.bukkit.event.*;
-import org.python.core.PyFunction;
+import org.python.core.*;
 import org.python.util.PythonInterpreter;
 import uwu.smsgamer.spygotutils.SPYgotUtils;
 import uwu.smsgamer.spygotutils.utils.python.*;
@@ -17,6 +17,7 @@ public class PythonManager {
     public static PyListener highestListener;
     public static PyListener monitorListener;
     public static PyFunction[] defaultFuns;
+    public static PyObject packetListener;
     private static File[] files;
 
     public static void init() {
@@ -44,6 +45,7 @@ public class PythonManager {
         defaultFuns = new PyFunction[]{(PyFunction) interpreter.get("register_event"),
           (PyFunction) interpreter.get("Command")};
 
+        packetListener = Py.java2py(PycketListener.getInstance());
     }
 
     public static void loadScripts() {
@@ -51,31 +53,26 @@ public class PythonManager {
         if (dir.exists()) {
             File[] arr = dir.listFiles();
             if (files == null) {
-                for (File file : arr) {
-                    PyScript script = new PyScript(file).setFuns(defaultFuns);
-                    try {
-                        script.execFile();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+                for (File file : arr) newScript(file);
                 files = arr;
             } else {
                 // Who cares about efficiency. It's during load or reload.
                 // *Don't* want to reload a script; only load new ones.
-                for (File file : arr)
-                    if (!Arrays.asList(files).contains(file)) {
-                        PyScript script = new PyScript(file).setFuns(defaultFuns);
-                        try {
-                            script.execFile();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
+                List<File> exclude = Arrays.asList(files);
+                for (File file : arr) if (!exclude.contains(file)) newScript(file);
                 HashSet<File> set = new HashSet<>(Arrays.asList(arr));
                 set.addAll(Arrays.asList(files));
                 files = set.toArray(new File[0]);
             }
+        }
+    }
+
+    public static void newScript(File file) {
+        PyScript script = new PyScript(file).setFuns(defaultFuns).set("packet_listener", packetListener);
+        try {
+            script.execFile();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

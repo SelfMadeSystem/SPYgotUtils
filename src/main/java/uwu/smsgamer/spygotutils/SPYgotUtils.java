@@ -9,7 +9,7 @@ import uwu.smsgamer.spygotutils.config.ConfigManager;
 import uwu.smsgamer.spygotutils.listener.*;
 import uwu.smsgamer.spygotutils.managers.*;
 import uwu.smsgamer.spygotutils.utils.*;
-import uwu.smsgamer.spygotutils.utils.python.PyScript;
+import uwu.smsgamer.spygotutils.utils.python.*;
 
 import java.io.File;
 
@@ -73,6 +73,9 @@ public final class SPYgotUtils {
         packetProcessor.addServerSidedPlayFilter(PacketType.Play.Server.CHAT);
 
         PacketEvents.get().registerListener(packetProcessor);
+
+        PycketListener pycketListener = PycketListener.getInstance();
+        PacketEvents.get().registerListener(pycketListener);
 
         ChatFilterManager.getInstance();
         ChatUtils.init();
