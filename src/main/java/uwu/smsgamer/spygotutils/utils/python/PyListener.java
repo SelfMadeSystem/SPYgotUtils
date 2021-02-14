@@ -3,11 +3,51 @@ package uwu.smsgamer.spygotutils.utils.python;
 import org.bukkit.event.*;
 import org.bukkit.plugin.*;
 import org.python.core.*;
+import uwu.smsgamer.spygotutils.SPYgotUtils;
 
 import java.lang.reflect.Method;
 import java.util.*;
 
 public class PyListener extends RegisteredListener {
+    public static PyListener lowestListener;
+    public static PyListener lowListener;
+    public static PyListener listener;
+    public static PyListener highListener;
+    public static PyListener highestListener;
+    public static PyListener monitorListener;
+
+    public static void init() {
+        lowestListener = new PyListener(EventPriority.LOWEST, SPYgotUtils.getInstance().plugin);
+        lowListener = new PyListener(EventPriority.LOW, SPYgotUtils.getInstance().plugin);
+        listener = new PyListener(EventPriority.NORMAL, SPYgotUtils.getInstance().plugin);
+        highListener = new PyListener(EventPriority.HIGH, SPYgotUtils.getInstance().plugin);
+        highestListener = new PyListener(EventPriority.HIGHEST, SPYgotUtils.getInstance().plugin);
+        monitorListener = new PyListener(EventPriority.MONITOR, SPYgotUtils.getInstance().plugin);
+    }
+
+    public static void registerEvent(Class<? extends Event> type, EventPriority priority, PyFunction function) {
+        switch (priority) {
+            case LOWEST:
+                lowestListener.registerFunction(type, function);
+                break;
+            case LOW:
+                lowListener.registerFunction(type, function);
+                break;
+            case NORMAL:
+                listener.registerFunction(type, function);
+                break;
+            case HIGH:
+                highListener.registerFunction(type, function);
+                break;
+            case HIGHEST:
+                highestListener.registerFunction(type, function);
+                break;
+            case MONITOR:
+                monitorListener.registerFunction(type, function);
+                break;
+        }
+    }
+
     private static HandlerList getEventListeners(Class<? extends Event> type) {
         try {
             Method method = getRegistrationClass(type).getDeclaredMethod("getHandlerList");

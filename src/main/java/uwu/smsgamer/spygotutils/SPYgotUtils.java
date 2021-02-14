@@ -21,6 +21,7 @@ public final class SPYgotUtils {
     }
 
     public final JavaPlugin plugin;
+    public boolean firstLoad;
 
     public SPYgotUtils() {
         INSTANCE = this;
@@ -53,11 +54,23 @@ public final class SPYgotUtils {
          * To be safe, just set them all before loading.
          */
         PacketEvents.get().load();
+
+        firstLoad = !plugin.getDataFolder().exists();
+
+        ConfigManager.setup("messages", "chat-filter", "py-settings");
+
+        ChatFilterManager.getInstance();
+        ChatUtils.init();
+        EvalUtils.init();
+        PythonManager.init();
+        PyListener.init();
+
+        if (firstLoad) scriptFiles();
+
+        PythonManager.loadScripts();
     }
 
     public void onEnable() {
-        boolean firstLoad = !plugin.getDataFolder().exists();
-        ConfigManager.setup("messages", "chat-filter", "py-settings");
 
         //Initiate PacketEvents
         PacketEvents.get().init(plugin);
@@ -77,28 +90,20 @@ public final class SPYgotUtils {
         PycketListener pycketListener = PycketListener.getInstance();
         PacketEvents.get().registerListener(pycketListener);
 
-        ChatFilterManager.getInstance();
-        ChatUtils.init();
-        EvalUtils.init();
-        PythonManager.init();
-
-        CommandManager.setupCommands();
+        PythonManager.onEnable();
 
         Bukkit.getPluginManager().registerEvents(BukkitListener.getInstance(), plugin);
 
-        if (firstLoad) defaultFiles();
+        CommandManager.setupCommands();
 
-        PythonManager.loadScripts();
+        if (firstLoad) configFiles();
     }
 
     public void onDisable() {
+        PythonManager.onDisable();
+
         //Terminate PacketEvents
         PacketEvents.get().terminate();
-    }
-
-    public void defaultFiles() {
-        scriptFiles();
-        configFiles();
     }
 
     private void scriptFiles() {

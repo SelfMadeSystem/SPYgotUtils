@@ -48,16 +48,18 @@ def onPacketEventExternal(event):
     print("onPacketEventExternal" + str(event))
 
 
-if False:
-    packet_listener.packetStatusReceiveFuns.add(onPacketStatusReceive)
-    packet_listener.packetStatusSendFuns.add(onPacketStatusSend)
-    packet_listener.packetLoginReceiveFuns.add(onPacketLoginReceive)
-    packet_listener.packetLoginSendFuns.add(onPacketLoginSend)
-    packet_listener.packetPlayReceiveFuns.add(onPacketPlayReceive)
-    packet_listener.packetPlaySendFuns.add(onPacketPlaySend)
-    packet_listener.postPacketPlayReceiveFuns.add(onPostPacketPlayReceive)
-    packet_listener.postPacketPlaySendFuns.add(onPostPacketPlaySend)
-    packet_listener.postPlayerInjectFuns.add(onPostPlayerInject)
-    packet_listener.playerInjectFuns.add(onPlayerInject)
-    packet_listener.playerEjectFuns.add(onPlayerEject)
-    packet_listener.packetEventExternalFuns.add(onPacketEventExternal)
+# PacketEvents gets loaded on enable, not load.
+def on_enable():
+    if False:
+        packet_listener.packetStatusReceiveFuns.add(onPacketStatusReceive)
+        packet_listener.packetStatusSendFuns.add(onPacketStatusSend)
+        packet_listener.packetLoginReceiveFuns.add(onPacketLoginReceive)
+        packet_listener.packetLoginSendFuns.add(onPacketLoginSend)
+        packet_listener.packetPlayReceiveFuns.add(onPacketPlayReceive)
+        packet_listener.packetPlaySendFuns.add(onPacketPlaySend)
+        packet_listener.postPacketPlayReceiveFuns.add(onPostPacketPlayReceive)
+        packet_listener.postPacketPlaySendFuns.add(onPostPacketPlaySend)
+        packet_listener.postPlayerInjectFuns.add(onPostPlayerInject)
+        packet_listener.playerInjectFuns.add(onPlayerInject)
+        packet_listener.playerEjectFuns.add(onPlayerEject)
+        packet_listener.packetEventExternalFuns.add(onPacketEventExternal)

@@ -9,7 +9,9 @@ def completer(sender, label, args):
     return result
 
 
-command = Command("pycmdtest", "Command test for python script!", "/pycmdtest UwU", ["pytest"])
+# Commands generally get registered on enable, not on load.
+def on_enable():
+    command = Command("pycmdtest", "Command test for python script!", "/pycmdtest UwU", ["pytest"])
 
-command.set_executor(executor)
-command.set_tab_completer(completer)
+    command.set_executor(executor)
+    command.set_tab_completer(completer)

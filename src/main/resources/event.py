@@ -12,7 +12,6 @@ def test(event):
         event.getPlayer().sendMessage("Hewwo fwom jythwon!")
 
 
-print("============================================== Hello! Jython script loaded!! "
-      "==============================================")
-
-register_event(AsyncPlayerChatEvent, EventPriority.MONITOR, test)
+# Events registered on enable, not load.
+def on_enable():
+    register_event(AsyncPlayerChatEvent, EventPriority.MONITOR, test)

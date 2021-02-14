@@ -1,6 +1,5 @@
 package uwu.smsgamer.spygotutils.managers;
 
-import org.bukkit.event.*;
 import org.python.core.*;
 import org.python.util.PythonInterpreter;
 import uwu.smsgamer.spygotutils.SPYgotUtils;
@@ -10,28 +9,16 @@ import java.io.File;
 import java.util.*;
 
 public class PythonManager {
-    public static PyListener lowestListener;
-    public static PyListener lowListener;
-    public static PyListener listener;
-    public static PyListener highListener;
-    public static PyListener highestListener;
-    public static PyListener monitorListener;
     public static PyFunction[] defaultFuns;
     public static PyObject packetListener;
     private static File[] files;
+    private static List<PyScript> scripts = new ArrayList<>();
 
     public static void init() {
-        lowestListener = new PyListener(EventPriority.LOWEST, SPYgotUtils.getInstance().plugin);
-        lowListener = new PyListener(EventPriority.LOW, SPYgotUtils.getInstance().plugin);
-        listener = new PyListener(EventPriority.NORMAL, SPYgotUtils.getInstance().plugin);
-        highListener = new PyListener(EventPriority.HIGH, SPYgotUtils.getInstance().plugin);
-        highestListener = new PyListener(EventPriority.HIGHEST, SPYgotUtils.getInstance().plugin);
-        monitorListener = new PyListener(EventPriority.MONITOR, SPYgotUtils.getInstance().plugin);
-
         PythonInterpreter interpreter = new PythonInterpreter();
         interpreter.exec("def register_event(event_type, priority, function):\n" +
-          "    from uwu.smsgamer.spygotutils.managers import PythonManager\n" +
-          "    PythonManager.registerEvent(event_type, priority, function)" +
+          "    from uwu.smsgamer.spygotutils.utils.python import PyListener\n" +
+          "    PyListener.registerEvent(event_type, priority, function)" +
           "\n" +
           "\n" +
           "def Command(name, description=\"\", usage_msg=None, aliases=None):\n" +
@@ -72,31 +59,22 @@ public class PythonManager {
         PyScript script = new PyScript(file).setFuns(defaultFuns).set("packet_listener", packetListener);
         try {
             script.execFile();
+            scripts.add(script);
+            script.getGoodFuns();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void registerEvent(Class<? extends Event> type, EventPriority priority, PyFunction function) {
-        switch (priority) {
-            case LOWEST:
-                lowestListener.registerFunction(type, function);
-                break;
-            case LOW:
-                lowListener.registerFunction(type, function);
-                break;
-            case NORMAL:
-                listener.registerFunction(type, function);
-                break;
-            case HIGH:
-                highListener.registerFunction(type, function);
-                break;
-            case HIGHEST:
-                highestListener.registerFunction(type, function);
-                break;
-            case MONITOR:
-                monitorListener.registerFunction(type, function);
-                break;
-        }
+    public static void onEnable() {
+        for (PyScript script : scripts) script.execAll(script.enableFuns);
+    }
+
+    public static void onReload() {
+        for (PyScript script : scripts) script.execAll(script.reloadFuns);
+    }
+
+    public static void onDisable() {
+        for (PyScript script : scripts) script.execAll(script.disableFuns);
     }
 }
