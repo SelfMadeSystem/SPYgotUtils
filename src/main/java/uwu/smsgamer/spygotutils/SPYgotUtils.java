@@ -110,6 +110,7 @@ public final class SPYgotUtils {
         FileUtils.saveResource(plugin, "event.py", new File(plugin.getDataFolder(), "scripts/event.py"), false);
         FileUtils.saveResource(plugin, "command.py", new File(plugin.getDataFolder(), "scripts/command.py"), false);
         FileUtils.saveResource(plugin, "packet.py", new File(plugin.getDataFolder(), "scripts/packet.py"), false);
+        FileUtils.saveResource(plugin, "test.py", new File(plugin.getDataFolder(), "scripts/test.py"), false);
     }
 
     private void configFiles() {
