@@ -10,7 +10,15 @@ commands:
     usage: /spygotutils
     aliases:
       - spygot_utils
+      - spyutils
       - spyu
+      - pygot_utils
+      - pygotutils
+      - pyutils
+      - pyu
+      - python-utils
+      - pythonutils
+      - pythonu
   evaluate:
     description: Evaluates a query based off of user input.
     usage: /eval <eval string>
