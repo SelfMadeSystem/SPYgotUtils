@@ -2,9 +2,8 @@ package uwu.smsgamer.spygotutils.utils.python;
 
 import org.python.core.*;
 import org.python.util.PythonInterpreter;
-import uwu.smsgamer.spygotutils.utils.FileUtils;
 
-import java.io.File;
+import java.io.*;
 import java.util.*;
 
 public class PyScript {
@@ -20,8 +19,8 @@ public class PyScript {
         this.interpreter = new PythonInterpreter();
     }
 
-    public void execFile() {
-        this.interpreter.exec(FileUtils.readLineByLine(scriptFile));
+    public void execFile() throws FileNotFoundException {
+        this.interpreter.execfile(new FileInputStream(this.scriptFile), this.scriptFile.getName());
     }
 
     public PyScript set(String name, PyObject obj) {

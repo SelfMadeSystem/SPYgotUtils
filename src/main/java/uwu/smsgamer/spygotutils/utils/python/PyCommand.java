@@ -54,10 +54,12 @@ public class PyCommand extends Command {
         this.tabCompleter = tabCompleter;
     }
 
+    @SuppressWarnings("unused")
     public void set_executor(PyFunction executor) {
         setExecutor(executor);
     }
 
+    @SuppressWarnings("unused")
     public void set_tab_completer(PyFunction tabCompleter) {
         setTabCompleter(tabCompleter);
     }

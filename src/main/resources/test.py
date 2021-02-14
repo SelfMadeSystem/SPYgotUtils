@@ -17,3 +17,7 @@ def on_disable():  # or  onDisable  or  disable
 
 
 print("onLoad")
+
+import itest
+
+itest.owo()

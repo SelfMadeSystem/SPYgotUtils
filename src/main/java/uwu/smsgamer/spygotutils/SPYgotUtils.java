@@ -104,13 +104,20 @@ public final class SPYgotUtils {
 
         //Terminate PacketEvents
         PacketEvents.get().terminate();
+
+        if (ConfigManager.getConfig("py-settings").getBoolean("remove-classes-on-disable")) {
+            for (File file : new File(SPYgotUtils.getInstance().plugin.getDataFolder(), "scripts")
+              .listFiles(pathname -> pathname.getName().endsWith("$py.class"))) file.delete();
+        }
     }
 
     private void scriptFiles() {
+        // Shitty ik but I'm lazy.
         FileUtils.saveResource(plugin, "event.py", new File(plugin.getDataFolder(), "scripts/event.py"), false);
         FileUtils.saveResource(plugin, "command.py", new File(plugin.getDataFolder(), "scripts/command.py"), false);
         FileUtils.saveResource(plugin, "packet.py", new File(plugin.getDataFolder(), "scripts/packet.py"), false);
         FileUtils.saveResource(plugin, "test.py", new File(plugin.getDataFolder(), "scripts/test.py"), false);
+        FileUtils.saveResource(plugin, "itest.py", new File(plugin.getDataFolder(), "scripts/itest.py"), false);
     }
 
     private void configFiles() {

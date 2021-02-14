@@ -9,3 +9,11 @@ start-evaluators: |-
         arr[i + 1] = arr[i + 1]
       i += 1
     return arr.decode('unicode_escape')
+
+load-scripts:
+  - command.py
+  - event.py
+  - packet.py
+  - test.py
+
+remove-classes-on-disable: true

@@ -25,6 +25,7 @@ public class PyListener extends RegisteredListener {
         monitorListener = new PyListener(EventPriority.MONITOR, SPYgotUtils.getInstance().plugin);
     }
 
+    @SuppressWarnings("unused")
     public static void registerEvent(Class<? extends Event> type, EventPriority priority, PyFunction function) {
         switch (priority) {
             case LOWEST:
