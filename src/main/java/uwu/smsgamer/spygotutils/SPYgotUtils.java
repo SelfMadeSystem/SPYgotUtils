@@ -72,7 +72,7 @@ public final class SPYgotUtils {
 
         ConfigManager.getInstance().setup("messages", "chat-filter", "py-settings");
 
-        ChatFilterManager.getInstance();
+        if (onSpigot) ChatFilterManager.getInstance();
         ChatUtils.init();
         EvalUtils.init();
         PythonManager.init();

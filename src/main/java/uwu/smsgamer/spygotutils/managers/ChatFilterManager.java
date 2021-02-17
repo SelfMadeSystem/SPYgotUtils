@@ -12,6 +12,7 @@ import org.bukkit.event.server.TabCompleteEvent;
 import org.python.core.*;
 import uwu.smsgamer.senapi.utils.*;
 import uwu.smsgamer.spygotutils.config.ConfigManager;
+import uwu.smsgamer.spygotutils.config.spigot.SConfigManager;
 import uwu.smsgamer.spygotutils.utils.*;
 
 import java.util.List;
@@ -27,11 +28,11 @@ public class ChatFilterManager {
 
     public ChatFilterManager() {
         instance = this;
-        conf = ConfigManager.getConfig("chat-filter");
+        reload();
     }
 
     public void reload() {
-        conf = ConfigManager.getConfig("chat-filter");
+        conf = ((SConfigManager) ConfigManager.getInstance()).getConfig("chat-filter");
     }
 
     public void packetSendEvent(PacketPlaySendEvent e) {
