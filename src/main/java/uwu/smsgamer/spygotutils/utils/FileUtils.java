@@ -2,6 +2,8 @@ package uwu.smsgamer.spygotutils.utils;
 
 import org.bukkit.plugin.PluginLogger;
 import org.bukkit.plugin.java.JavaPlugin;
+import uwu.smsgamer.spygotutils.Loader;
+import uwu.smsgamer.spygotutils.config.ConfigManager;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -23,13 +25,13 @@ public class FileUtils {
         return contentBuilder.toString();
     }
 
-    public static void saveResource(JavaPlugin plugin, String resourcePath, File outFile, boolean replace) {
+    public static void saveResource(Loader plugin, String resourcePath, File outFile, boolean replace) {
         if (resourcePath == null || resourcePath.equals("")) {
             throw new IllegalArgumentException("ResourcePath cannot be null or empty");
         }
 
         resourcePath = resourcePath.replace('\\', '/');
-        InputStream in = plugin.getResource(resourcePath);
+        InputStream in = ConfigManager.getResource(resourcePath);
         if (in == null) {
             throw new IllegalArgumentException("The embedded resource '" + resourcePath + "' cannot be found in SPYgotUtils plugin file.");
         }

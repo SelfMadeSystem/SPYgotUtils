@@ -34,13 +34,13 @@ public class PythonManager {
               (PyFunction) interpreter.get("Command")};
         }
         interpreter.exec("from sys import path\n" +
-          "path.append(\"" + SPYgotUtils.getInstance().spigotPlugin.getDataFolder() + File.separator + "scripts\")");
+          "path.append(\"" + SPYgotUtils.getLoader().getDataFolder() + File.separator + "scripts\")");
 
         packetListener = Py.java2py(PycketListener.getInstance());
     }
 
     public static void loadScripts() {
-        File dir = new File(SPYgotUtils.getInstance().spigotPlugin.getDataFolder(), "scripts");
+        File dir = new File(SPYgotUtils.getLoader().getDataFolder(), "scripts");
         if (!dir.exists()) return;
         List<File> exclude = new ArrayList<>(files == null ? Collections.emptyList() : Arrays.asList(files));
         for (String fileName : loadScripts.getValue()) {
@@ -67,7 +67,7 @@ public class PythonManager {
     public static ConfVal<List<String>> loadScripts = new ConfVal<>("py-settings", "load-scripts", Collections.emptyList());
 
     public static File getFile(String scriptName) {
-        return new File(SPYgotUtils.getInstance().spigotPlugin.getDataFolder(), "scripts" + File.separator + scriptName);
+        return new File(SPYgotUtils.getLoader().getDataFolder(), "scripts" + File.separator + scriptName);
     }
 
     public static void onEnable() {

@@ -2,7 +2,7 @@ package uwu.smsgamer.spygotutils.commands.commands.spigot;
 
 import org.bukkit.command.*;
 import org.bukkit.plugin.java.JavaPlugin;
-import uwu.smsgamer.spygotutils.SPYgotUtils;
+import uwu.smsgamer.spygotutils.*;
 import uwu.smsgamer.spygotutils.commands.SmsCommand;
 import uwu.smsgamer.spygotutils.config.*;
 import uwu.smsgamer.spygotutils.managers.*;
@@ -62,7 +62,7 @@ public class SPYgotUtilsCommand extends SmsCommand {
                         break;
                     case "version":
                         if (testPermission(sender, noPermissionVersion, "version")) {
-                            JavaPlugin plugin = SPYgotUtils.getInstance().spigotPlugin;
+                            JavaPlugin plugin = SpigotLoader.getInstance();
                             ChatUtils.sendMessage(version.getValue()
                               .replace("%plugin-ver%", plugin.getDescription().getVersion())
                               .replace("%server-ver%", plugin.getServer().getVersion())

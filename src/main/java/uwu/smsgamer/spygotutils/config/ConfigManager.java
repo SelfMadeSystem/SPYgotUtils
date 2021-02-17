@@ -24,7 +24,7 @@ public abstract class ConfigManager {
 
     public boolean needToSave = false;
 
-    protected Loader pl;
+    protected static Loader pl;
 
     public void setup(String... configs) {
         pl = SPYgotUtils.getLoader();
@@ -58,7 +58,7 @@ public abstract class ConfigManager {
     @SuppressWarnings("unchecked")
     public abstract <T> void setConfVal(ConfVal<T> val, T dVal);
 
-    protected void saveResource(String resourcePath, File dataFolder) {
+    public static void saveResource(String resourcePath, File dataFolder) {
         if (resourcePath == null || resourcePath.equals("")) {
             throw new IllegalArgumentException("ResourcePath cannot be null or empty");
         }
@@ -92,7 +92,7 @@ public abstract class ConfigManager {
         }
     }
 
-    protected InputStream getResource(String filename) {
+    public static InputStream getResource(String filename) {
         if (filename == null) {
             throw new IllegalArgumentException("Filename cannot be null");
         }

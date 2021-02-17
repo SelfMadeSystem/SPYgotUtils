@@ -14,19 +14,22 @@ public class BungeeLoader extends Plugin implements Loader {
       return instance;
     }
 
+    SPYgotUtils ins;
+
     @Override
     public void onLoad() {
         final Lilliputian lilliputian = new Lilliputian(this);
         lilliputian.getDependencyBuilder()
-          .addDependency(new Dependency(Repository.JITPACK,
-            "com.github.retrooper", "packetevents", "v1.8-pre-4"))
           .addDependency(new Dependency(Repository.MAVENCENTRAL,
             "org.python", "jython-standalone", "2.7.2"))
           .addDependency(new Dependency(Repository.MAVENCENTRAL,
             "org.xerial", "sqlite-jdbc", "3.8.11.2"))
           .loadDependencies();
 
-        new SPYgotUtils(null, this, false).onLoad();
+        SPYgotUtils.loader = this;
+
+//        new SPYgotUtils(false)
+//          .onLoad();
 
         EventBus bus = null;
         try {
@@ -42,11 +45,14 @@ public class BungeeLoader extends Plugin implements Loader {
 
     @Override
     public void onEnable() {
-        SPYgotUtils.getInstance().onEnable();
+        System.out.println("Enabling");
+        System.out.println(SPYgotUtils.class);
+        ins.onEnable();
     }
 
     @Override
     public void onDisable() {
+        System.out.println("Disabling");
         SPYgotUtils.getInstance().onDisable();
     }
 }

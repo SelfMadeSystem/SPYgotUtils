@@ -29,7 +29,7 @@ public class SpigotLoader extends JavaPlugin implements Loader {
             "org.xerial", "sqlite-jdbc", "3.8.11.2"))
           .loadDependencies();
 
-        new SPYgotUtils(this, null, true).onLoad();
+        new SPYgotUtils( true).onLoad();
     }
 
     @Override

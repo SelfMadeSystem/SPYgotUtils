@@ -15,27 +15,23 @@ import uwu.smsgamer.spygotutils.utils.python.spigot.*;
 import java.io.File;
 
 public final class SPYgotUtils {
-    private static SPYgotUtils INSTANCE;
+    public static SPYgotUtils INSTANCE;
 
     public static SPYgotUtils getInstance() {
         return INSTANCE;
     }
 
-    public final SpigotLoader spigotPlugin;
-    public final BungeeLoader bungeePlugin;
-    public final boolean onSpigot;
+    public static Loader loader;
+    public boolean onSpigot;
     public boolean firstLoad;
 
-    public SPYgotUtils(SpigotLoader spigot, BungeeLoader bungee, boolean onSpigot) {
+    public SPYgotUtils(boolean onSpigot) {
         INSTANCE = this;
-        spigotPlugin = spigot;
-        bungeePlugin = bungee;
         this.onSpigot = onSpigot;
     }
 
     public static Loader getLoader() {
-        SPYgotUtils instance = getInstance();
-        return instance.onSpigot ? instance.spigotPlugin : instance.bungeePlugin;
+        return loader;
     }
 
     public void onLoad() {
@@ -47,6 +43,7 @@ public final class SPYgotUtils {
              * Set the settings.
              */
             //When a player injection fails, what should happen?
+            SpigotLoader spigotPlugin = (SpigotLoader) getLoader();
             PacketEvents.create(spigotPlugin).getSettings().checkForUpdates(true) //We won't check for updates
               .injectionFailureReaction(player -> {
                   /*
@@ -85,6 +82,7 @@ public final class SPYgotUtils {
 
     public void onEnable() {
         if (onSpigot) {
+            SpigotLoader spigotPlugin = (SpigotLoader) getLoader();
             //Initiate PacketEvents
             PacketEvents.get().init(spigotPlugin);
 
@@ -106,6 +104,7 @@ public final class SPYgotUtils {
 
         PythonManager.onEnable();
         if (onSpigot) {
+            SpigotLoader spigotPlugin =(SpigotLoader) getLoader();
             Bukkit.getPluginManager().registerEvents(BukkitListener.getInstance(), spigotPlugin);
 
             CommandManager.spigotCommands();
@@ -125,7 +124,7 @@ public final class SPYgotUtils {
         }
 
         if (removePyClasses.getValue()) {
-            for (File file : new File(SPYgotUtils.getInstance().spigotPlugin.getDataFolder(), "scripts")
+            for (File file : new File(SPYgotUtils.getLoader().getDataFolder(), "scripts")
               .listFiles(pathname -> pathname.getName().endsWith("$py.class")))
                 file.delete();
         }
@@ -133,11 +132,11 @@ public final class SPYgotUtils {
 
     private void sScriptFiles() {
         // Shitty ik but I'm lazy.
-        FileUtils.saveResource(spigotPlugin, "spigot/event.py", new File(spigotPlugin.getDataFolder(), "scripts/event.py"), false);
-        FileUtils.saveResource(spigotPlugin, "spigot/command.py", new File(spigotPlugin.getDataFolder(), "scripts/command.py"), false);
-        FileUtils.saveResource(spigotPlugin, "spigot/packet.py", new File(spigotPlugin.getDataFolder(), "scripts/packet.py"), false);
-        FileUtils.saveResource(spigotPlugin, "spigot/test.py", new File(spigotPlugin.getDataFolder(), "scripts/test.py"), false);
-        FileUtils.saveResource(spigotPlugin, "spigot/itest.py", new File(spigotPlugin.getDataFolder(), "scripts/itest.py"), false);
+        FileUtils.saveResource(getLoader(), "spigot/event.py", new File(getLoader().getDataFolder(), "scripts/event.py"), false);
+        FileUtils.saveResource(getLoader(), "spigot/command.py", new File(getLoader().getDataFolder(), "scripts/command.py"), false);
+        FileUtils.saveResource(getLoader(), "spigot/packet.py", new File(getLoader().getDataFolder(), "scripts/packet.py"), false);
+        FileUtils.saveResource(getLoader(), "spigot/test.py", new File(getLoader().getDataFolder(), "scripts/test.py"), false);
+        FileUtils.saveResource(getLoader(), "spigot/itest.py", new File(getLoader().getDataFolder(), "scripts/itest.py"), false);
     }
 
     private void configFiles() {
@@ -146,6 +145,6 @@ public final class SPYgotUtils {
     }
 
     public File getDataFolder() {
-        return onSpigot ? spigotPlugin.getDataFolder() : bungeePlugin.getDataFolder();
+        return getLoader().getDataFolder();
     }
 }

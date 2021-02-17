@@ -3,7 +3,7 @@ package uwu.smsgamer.spygotutils.utils.python.spigot;
 import org.bukkit.event.*;
 import org.bukkit.plugin.*;
 import org.python.core.*;
-import uwu.smsgamer.spygotutils.SPYgotUtils;
+import uwu.smsgamer.spygotutils.*;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -17,12 +17,12 @@ public class PyListener extends RegisteredListener {
     public static PyListener monitorListener;
 
     public static void init() {
-        lowestListener = new PyListener(EventPriority.LOWEST, SPYgotUtils.getInstance().spigotPlugin);
-        lowListener = new PyListener(EventPriority.LOW, SPYgotUtils.getInstance().spigotPlugin);
-        listener = new PyListener(EventPriority.NORMAL, SPYgotUtils.getInstance().spigotPlugin);
-        highListener = new PyListener(EventPriority.HIGH, SPYgotUtils.getInstance().spigotPlugin);
-        highestListener = new PyListener(EventPriority.HIGHEST, SPYgotUtils.getInstance().spigotPlugin);
-        monitorListener = new PyListener(EventPriority.MONITOR, SPYgotUtils.getInstance().spigotPlugin);
+        lowestListener = new PyListener(EventPriority.LOWEST, SpigotLoader.getInstance());
+        lowListener = new PyListener(EventPriority.LOW, SpigotLoader.getInstance());
+        listener = new PyListener(EventPriority.NORMAL, SpigotLoader.getInstance());
+        highListener = new PyListener(EventPriority.HIGH, SpigotLoader.getInstance());
+        highestListener = new PyListener(EventPriority.HIGHEST, SpigotLoader.getInstance());
+        monitorListener = new PyListener(EventPriority.MONITOR, SpigotLoader.getInstance());
     }
 
     @SuppressWarnings("unused")
