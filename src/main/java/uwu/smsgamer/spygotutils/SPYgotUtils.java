@@ -4,7 +4,9 @@ import io.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.packettype.PacketType;
 import org.bukkit.Bukkit;
 import uwu.smsgamer.spygotutils.commands.CommandManager;
-import uwu.smsgamer.spygotutils.config.ConfigManager;
+import uwu.smsgamer.spygotutils.config.*;
+import uwu.smsgamer.spygotutils.config.bungee.BConfigManager;
+import uwu.smsgamer.spygotutils.config.spigot.SConfigManager;
 import uwu.smsgamer.spygotutils.listener.*;
 import uwu.smsgamer.spygotutils.managers.*;
 import uwu.smsgamer.spygotutils.utils.*;
@@ -63,11 +65,12 @@ public final class SPYgotUtils {
              * To be safe, just set them all before loading.
              */
             PacketEvents.get().load();
-        }
+            ConfigManager.setInstance(new SConfigManager());
+        } else ConfigManager.setInstance(new BConfigManager());
 
         firstLoad = !getDataFolder().exists();
 
-        ConfigManager.setup("messages", "chat-filter", "py-settings");
+        ConfigManager.getInstance().setup("messages", "chat-filter", "py-settings");
 
         ChatFilterManager.getInstance();
         ChatUtils.init();
@@ -75,65 +78,71 @@ public final class SPYgotUtils {
         PythonManager.init();
         PyListener.init();
 
-        if (firstLoad) scriptFiles();
+        if (firstLoad) sScriptFiles();
 
         PythonManager.loadScripts();
     }
 
     public void onEnable() {
+        if (onSpigot) {
+            //Initiate PacketEvents
+            PacketEvents.get().init(spigotPlugin);
 
-        //Initiate PacketEvents
-        PacketEvents.get().init(spigotPlugin);
+            //Register our listener (class extending PacketListenerDynamic)
+            //By default it is configured to listen to all packets with no filter at all.
+            PacketProcessor packetProcessor = new PacketProcessor();
+            //We will FILTER all packets. We don't want to listen to anything.
+            packetProcessor.filterAll();
+            //Now since the filter has been applied, we are no longer listening to all packets. We can now "whitelist" our wanted packets.
+            //Using this feature can improve performance.
 
-        //Register our listener (class extending PacketListenerDynamic)
-        //By default it is configured to listen to all packets with no filter at all.
-        PacketProcessor packetProcessor = new PacketProcessor();
-        //We will FILTER all packets. We don't want to listen to anything.
-        packetProcessor.filterAll();
-        //Now since the filter has been applied, we are no longer listening to all packets. We can now "whitelist" our wanted packets.
-        //Using this feature can improve performance.
+            packetProcessor.addServerSidedPlayFilter(PacketType.Play.Server.CHAT);
 
-        packetProcessor.addServerSidedPlayFilter(PacketType.Play.Server.CHAT);
+            PacketEvents.get().registerListener(packetProcessor);
 
-        PacketEvents.get().registerListener(packetProcessor);
-
-        PycketListener pycketListener = PycketListener.getInstance();
-        PacketEvents.get().registerListener(pycketListener);
+            PycketListener pycketListener = PycketListener.getInstance();
+            PacketEvents.get().registerListener(pycketListener);
+        }
 
         PythonManager.onEnable();
+        if (onSpigot) {
+            Bukkit.getPluginManager().registerEvents(BukkitListener.getInstance(), spigotPlugin);
 
-        Bukkit.getPluginManager().registerEvents(BukkitListener.getInstance(), spigotPlugin);
-
-        CommandManager.setupCommands();
+            CommandManager.spigotCommands();
+        }
 
         if (firstLoad) configFiles();
     }
 
+    public ConfVal<Boolean> removePyClasses = new ConfVal<>("py-settings", "remove-classes-on-disable", true);
+
     public void onDisable() {
         PythonManager.onDisable();
 
-        //Terminate PacketEvents
-        PacketEvents.get().terminate();
+        if (onSpigot) {
+            //Terminate PacketEvents
+            PacketEvents.get().terminate();
+        }
 
-        if (ConfigManager.getConfig("py-settings").getBoolean("remove-classes-on-disable")) {
+        if (removePyClasses.getValue()) {
             for (File file : new File(SPYgotUtils.getInstance().spigotPlugin.getDataFolder(), "scripts")
               .listFiles(pathname -> pathname.getName().endsWith("$py.class")))
                 file.delete();
         }
     }
 
-    private void scriptFiles() {
+    private void sScriptFiles() {
         // Shitty ik but I'm lazy.
-        FileUtils.saveResource(spigotPlugin, "event.py", new File(spigotPlugin.getDataFolder(), "scripts/event.py"), false);
-        FileUtils.saveResource(spigotPlugin, "command.py", new File(spigotPlugin.getDataFolder(), "scripts/command.py"), false);
-        FileUtils.saveResource(spigotPlugin, "packet.py", new File(spigotPlugin.getDataFolder(), "scripts/packet.py"), false);
-        FileUtils.saveResource(spigotPlugin, "test.py", new File(spigotPlugin.getDataFolder(), "scripts/test.py"), false);
-        FileUtils.saveResource(spigotPlugin, "itest.py", new File(spigotPlugin.getDataFolder(), "scripts/itest.py"), false);
+        FileUtils.saveResource(spigotPlugin, "spigot/event.py", new File(spigotPlugin.getDataFolder(), "scripts/event.py"), false);
+        FileUtils.saveResource(spigotPlugin, "spigot/command.py", new File(spigotPlugin.getDataFolder(), "scripts/command.py"), false);
+        FileUtils.saveResource(spigotPlugin, "spigot/packet.py", new File(spigotPlugin.getDataFolder(), "scripts/packet.py"), false);
+        FileUtils.saveResource(spigotPlugin, "spigot/test.py", new File(spigotPlugin.getDataFolder(), "scripts/test.py"), false);
+        FileUtils.saveResource(spigotPlugin, "spigot/itest.py", new File(spigotPlugin.getDataFolder(), "scripts/itest.py"), false);
     }
 
     private void configFiles() {
-        ConfigManager.saveConfig("messages");
-        ConfigManager.saveConfig("py-settings");
+        ConfigManager.getInstance().saveConfig("messages");
+        ConfigManager.getInstance().saveConfig("py-settings");
     }
 
     public File getDataFolder() {

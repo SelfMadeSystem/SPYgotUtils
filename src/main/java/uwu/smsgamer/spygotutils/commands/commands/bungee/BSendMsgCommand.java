@@ -1,21 +1,21 @@
-package uwu.smsgamer.spygotutils.commands.commands;
+package uwu.smsgamer.spygotutils.commands.commands.bungee;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import uwu.smsgamer.spygotutils.commands.SmsCommand;
 import uwu.smsgamer.spygotutils.config.ConfVal;
-import uwu.smsgamer.spygotutils.utils.*;
+import uwu.smsgamer.spygotutils.utils.ChatUtils;
 
 import java.util.*;
 
-public class SendMsgCommand extends SmsCommand {
+public class BSendMsgCommand extends SmsCommand {
     public ConfVal<String> noPlayer = new ConfVal<>("commands.send-msg.noPlayer", "messages",
       "%prefix% &cPlayer &a%arg%&c doesn't exist!");
     public ConfVal<String> success = new ConfVal<>("commands.send-msg.success", "messages",
       "%prefix% &rSent message to &a%arg%&r.");
 
-    public SendMsgCommand() {
+    public BSendMsgCommand() {
         super("send-message", true);
     }
 

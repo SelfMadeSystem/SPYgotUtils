@@ -3,7 +3,7 @@ package uwu.smsgamer.spygotutils.managers;
 import org.python.core.*;
 import org.python.util.PythonInterpreter;
 import uwu.smsgamer.spygotutils.SPYgotUtils;
-import uwu.smsgamer.spygotutils.config.ConfigManager;
+import uwu.smsgamer.spygotutils.config.*;
 import uwu.smsgamer.spygotutils.utils.python.*;
 import uwu.smsgamer.spygotutils.utils.python.spigot.PycketListener;
 
@@ -14,25 +14,27 @@ public class PythonManager {
     public static PyFunction[] defaultFuns;
     public static PyObject packetListener;
     private static File[] files;
-    private static List<PyScript> scripts = new ArrayList<>();
+    private static final List<PyScript> scripts = new ArrayList<>();
 
     public static void init() {
         PythonInterpreter interpreter = new PythonInterpreter();
-        interpreter.exec("def register_event(event_type, priority, function):\n" +
-          "    from uwu.smsgamer.spygotutils.utils.python import PyListener\n" +
-          "    PyListener.registerEvent(event_type, priority, function)\n" +
-          "def Command(name, description=\"\", usage_msg=None, aliases=None):\n" +
-          "    if usage_msg is None:\n" +
-          "        usage_msg = \"/\" + name\n" +
-          "    if aliases is None:\n" +
-          "        aliases = []\n" +
-          "    from uwu.smsgamer.spygotutils.utils.python import PyCommand\n" +
-          "    return PyCommand(name, description, usage_msg, aliases)\n");
+        if (SPYgotUtils.getInstance().onSpigot) {
+            interpreter.exec("def register_event(event_type, priority, function):\n" +
+              "    from uwu.smsgamer.spygotutils.utils.python.spigot import PyListener\n" +
+              "    PyListener.registerEvent(event_type, priority, function)\n" +
+              "def Command(name, description=\"\", usage_msg=None, aliases=None):\n" +
+              "    if usage_msg is None:\n" +
+              "        usage_msg = \"/\" + name\n" +
+              "    if aliases is None:\n" +
+              "        aliases = []\n" +
+              "    from uwu.smsgamer.spygotutils.utils.python.spigot import PyCommand\n" +
+              "    return PyCommand(name, description, usage_msg, aliases)\n");
+
+            defaultFuns = new PyFunction[]{(PyFunction) interpreter.get("register_event"),
+              (PyFunction) interpreter.get("Command")};
+        }
         interpreter.exec("from sys import path\n" +
           "path.append(\"" + SPYgotUtils.getInstance().spigotPlugin.getDataFolder() + File.separator + "scripts\")");
-
-        defaultFuns = new PyFunction[]{(PyFunction) interpreter.get("register_event"),
-          (PyFunction) interpreter.get("Command")};
 
         packetListener = Py.java2py(PycketListener.getInstance());
     }
@@ -41,7 +43,7 @@ public class PythonManager {
         File dir = new File(SPYgotUtils.getInstance().spigotPlugin.getDataFolder(), "scripts");
         if (!dir.exists()) return;
         List<File> exclude = new ArrayList<>(files == null ? Collections.emptyList() : Arrays.asList(files));
-        for (String fileName : getLoadScripts()) {
+        for (String fileName : loadScripts.getValue()) {
             File file = getFile(fileName);
             if (!file.exists() || exclude.contains(file)) continue;
             newScript(file);
@@ -62,9 +64,7 @@ public class PythonManager {
         }
     }
 
-    public static List<String> getLoadScripts() {
-        return ConfigManager.getConfig("py-settings").getStringList("load-scripts");
-    }
+    public static ConfVal<List<String>> loadScripts = new ConfVal<>("py-settings", "load-scripts", Collections.emptyList());
 
     public static File getFile(String scriptName) {
         return new File(SPYgotUtils.getInstance().spigotPlugin.getDataFolder(), "scripts" + File.separator + scriptName);

@@ -1,4 +1,4 @@
-package uwu.smsgamer.spygotutils.commands.commands;
+package uwu.smsgamer.spygotutils.commands.commands.spigot;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.*;

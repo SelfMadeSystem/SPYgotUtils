@@ -12,10 +12,10 @@ import lombok.Getter;
  */
 @Getter
 public class ConfVal<T> {
-    T value;
-    T dVal;
-    final String name;
-    final String config;
+    public T value;
+    public T dVal;
+    public final String name;
+    public final String config;
 
     public ConfVal(String name, T defaultVal) {
         this(name, "config", defaultVal);
@@ -25,14 +25,14 @@ public class ConfVal<T> {
         this.name = name;
         this.config = config;
         this.dVal = defaultVal;
-        ConfigManager.setConfVal(this, defaultVal);
+        ConfigManager.getInstance().setConfVal(this, defaultVal);
     }
 
-    public void setValue(T val) {
+    /*public void setValue(T val) {
         value = val;
         ConfigManager.getConfig(config).set(name, value);
         ConfigManager.needToSave = true;
-    }
+    }*/
 
     public T getValue() {
         if (value == null) return dVal;

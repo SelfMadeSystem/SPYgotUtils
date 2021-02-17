@@ -1,4 +1,4 @@
-package uwu.smsgamer.spygotutils.commands.commands;
+package uwu.smsgamer.spygotutils.commands.commands.bungee;
 
 import org.bukkit.command.*;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -10,7 +10,7 @@ import uwu.smsgamer.spygotutils.utils.ChatUtils;
 
 import java.util.List;
 
-public class SPYgotUtilsCommand extends SmsCommand {
+public class BSPYgotUtilsCommand extends SmsCommand {
     public ConfVal<String> noPermissionReload = new ConfVal<>("commands.spygotutils.no-permission-reload", "messages",
       "%prefix% &cYou do not have permission to execute this command!");
     public ConfVal<String> noPermissionVersion = new ConfVal<>("commands.spygotutils.no-permission-version", "messages",
@@ -26,7 +26,7 @@ public class SPYgotUtilsCommand extends SmsCommand {
     public ConfVal<String> version = new ConfVal<>("commands.spygotutils.version", "messages",
       "%prefix% &rPlugin version is %plugin-ver%. Server version is %server-ver%. Bukkit version is %bukkit-ver%.");
 
-    public SPYgotUtilsCommand() {
+    public BSPYgotUtilsCommand() {
         super("spygotutils", true);
     }
 
@@ -42,17 +42,16 @@ public class SPYgotUtilsCommand extends SmsCommand {
                             ChatUtils.sendMessage(reloading, sender);
                             long begin = System.currentTimeMillis();
                             boolean success = true;
-                            for (String s : ConfigManager.configs.keySet().toArray(new String[0])) {
+                            for (String s : ConfigManager.getInstance().getConfigs()) {
                                 try {
-                                    ConfigManager.loadConfig(s);
+                                    ConfigManager.getInstance().loadConfig(s);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     success = false;
                                 }
                             }
-                            for (ConfVal<?> val : ConfigManager.vals.toArray(new ConfVal<?>[0])) {
-                                ConfigManager.reloadConfVal(val);
-                            }
+                            for (ConfVal<?> val : ConfigManager.getInstance().vals)
+                                ConfigManager.getInstance().reloadConfVal(val);
                             ChatFilterManager.getInstance().reload();
                             PythonManager.onReload();
                             PythonManager.loadScripts();

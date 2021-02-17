@@ -1,6 +1,5 @@
 package uwu.smsgamer.spygotutils.config;
 
-import org.bukkit.configuration.file.YamlConfiguration;
 import uwu.smsgamer.spygotutils.*;
 
 import java.io.*;
@@ -9,17 +8,25 @@ import java.util.*;
 import java.util.logging.Level;
 
 /**
- * Static class to store configuration files.
+ * Abstract class to store configuration files.
  *
  * @author Sms_Gamer_3808 (Shoghi Simon)
  */
-public class ConfigManager {
-    public static boolean needToSave = false;
+public abstract class ConfigManager {
+    private static ConfigManager instance;
+    public static ConfigManager getInstance() {
+      return instance;
+    }
 
-    public static HashMap<String, YamlConfiguration> configs = new HashMap<>();
-    private static Loader pl;
+    public static void setInstance(ConfigManager instance) {
+        ConfigManager.instance = instance;
+    }
 
-    public static void setup(String... configs) {
+    public boolean needToSave = false;
+
+    protected Loader pl;
+
+    public void setup(String... configs) {
         pl = SPYgotUtils.getLoader();
         for (String config : configs) {
             pl.getLogger().info("Loading config: " + config);
@@ -33,63 +40,25 @@ public class ConfigManager {
         }
     }
 
-    public static YamlConfiguration getConfig(String name) {
-        return configs.get(name);
-    }
-
-    public static File configFile(String name) {
+    public File configFile(String name) {
         return new File(pl.getDataFolder(), name + ".yml");
     }
 
-    public static YamlConfiguration loadConfig(String name) {
-        configs.remove(name);
-        File configFile = configFile(name);
-        if (!configFile.exists())
-            saveResource(name + ".yml", pl.getDataFolder());
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
-        configs.put(name, config);
-        return config;
-    }
+    public abstract void loadConfig(String name);
 
-    public static void saveConfig(String name) {
-        pl.getLogger().info("Saving config: " + name);
-        try {
-            configs.get(name).save(pl.getDataFolder().getAbsolutePath() + File.separator + name + ".yml");
-        } catch (IOException e) {
-            e.printStackTrace();
-            pl.getLogger().severe("Error while saving config: " + name);
-        }
-    }
+    public abstract void saveConfig(String name);
+    public abstract Set<String> getConfigs();
 
-    public static Set<ConfVal<?>> vals = new HashSet<>();
+    public Set<ConfVal<?>> vals = new HashSet<>();
 
-    public static <T> void reloadConfVal(ConfVal<T> val) {
+    public <T> void reloadConfVal(ConfVal<T> val) {
         setConfVal(val, val.dVal);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> void setConfVal(ConfVal<T> val, T dVal) {
-        if (dVal instanceof Map) {
-            vals.add(val);
-            YamlConfiguration config = getConfig(val.config);
-            if (!config.contains(val.name)) {
-                config.set(val.name, dVal);
-                val.value = dVal;
-            } else {
-                HashMap<String, Object> map = new HashMap<>();
-                for (String key : config.getConfigurationSection(val.name).getKeys(false))
-                    map.put(key, config.get(val.name + "." + key));
-                val.value = (T) map;
-            }
-        } else {
-            vals.add(val);
-            YamlConfiguration config = getConfig(val.config);
-            val.value = (T) config.get(val.name, dVal);
-            if (!config.contains(val.name)) config.set(val.name, dVal);
-        }
-    }
+    public abstract <T> void setConfVal(ConfVal<T> val, T dVal);
 
-    private static void saveResource(String resourcePath, File dataFolder) {
+    protected void saveResource(String resourcePath, File dataFolder) {
         if (resourcePath == null || resourcePath.equals("")) {
             throw new IllegalArgumentException("ResourcePath cannot be null or empty");
         }
@@ -123,7 +92,7 @@ public class ConfigManager {
         }
     }
 
-    private static InputStream getResource(String filename) {
+    protected InputStream getResource(String filename) {
         if (filename == null) {
             throw new IllegalArgumentException("Filename cannot be null");
         }
