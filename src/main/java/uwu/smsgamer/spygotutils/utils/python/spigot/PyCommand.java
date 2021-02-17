@@ -1,4 +1,4 @@
-package uwu.smsgamer.spygotutils.utils.python;
+package uwu.smsgamer.spygotutils.utils.python.spigot;
 
 import org.bukkit.*;
 import org.bukkit.command.*;

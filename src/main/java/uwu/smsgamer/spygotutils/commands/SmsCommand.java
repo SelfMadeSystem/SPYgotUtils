@@ -17,7 +17,7 @@ public abstract class SmsCommand implements TabExecutor {
     }
 
     public SmsCommand(String cmdName, boolean consoleAllowed) {
-        this.command = SPYgotUtils.getInstance().plugin.getServer().getPluginCommand(cmdName);
+        this.command = SPYgotUtils.getInstance().spigotPlugin.getServer().getPluginCommand(cmdName);
         this.command.setExecutor(this);
         this.noPermission = new ConfVal<>("commands." + cmdName + ".no-permission", "messages", "%prefix% &cYou do not have permission to execute this command!");
         this.consoleAllowed = consoleAllowed;

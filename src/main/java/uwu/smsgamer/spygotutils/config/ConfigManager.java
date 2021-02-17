@@ -1,11 +1,12 @@
 package uwu.smsgamer.spygotutils.config;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
-import uwu.smsgamer.spygotutils.SPYgotUtils;
+import uwu.smsgamer.spygotutils.*;
 
 import java.io.*;
+import java.net.*;
 import java.util.*;
+import java.util.logging.Level;
 
 /**
  * Static class to store configuration files.
@@ -16,10 +17,10 @@ public class ConfigManager {
     public static boolean needToSave = false;
 
     public static HashMap<String, YamlConfiguration> configs = new HashMap<>();
-    private static JavaPlugin pl;
+    private static Loader pl;
 
     public static void setup(String... configs) {
-        pl = SPYgotUtils.getInstance().plugin;
+        pl = SPYgotUtils.getLoader();
         for (String config : configs) {
             pl.getLogger().info("Loading config: " + config);
             try {
@@ -44,7 +45,7 @@ public class ConfigManager {
         configs.remove(name);
         File configFile = configFile(name);
         if (!configFile.exists())
-            pl.saveResource(name + ".yml", false);
+            saveResource(name + ".yml", pl.getDataFolder());
         YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
         configs.put(name, config);
         return config;
@@ -85,6 +86,60 @@ public class ConfigManager {
             YamlConfiguration config = getConfig(val.config);
             val.value = (T) config.get(val.name, dVal);
             if (!config.contains(val.name)) config.set(val.name, dVal);
+        }
+    }
+
+    private static void saveResource(String resourcePath, File dataFolder) {
+        if (resourcePath == null || resourcePath.equals("")) {
+            throw new IllegalArgumentException("ResourcePath cannot be null or empty");
+        }
+
+        resourcePath = resourcePath.replace('\\', '/');
+        InputStream in = getResource(resourcePath);
+        if (in == null)
+            throw new IllegalArgumentException("The embedded resource '" + resourcePath + "' cannot be found in " + pl.getFile());
+
+        File outFile = new File(dataFolder, resourcePath);
+        int lastIndex = resourcePath.lastIndexOf('/');
+        File outDir = new File(dataFolder, resourcePath.substring(0, Math.max(lastIndex, 0)));
+
+        if (!outDir.exists()) outDir.mkdirs();
+
+        try {
+            if (!outFile.exists()) {
+                OutputStream out = new FileOutputStream(outFile);
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+                out.close();
+                in.close();
+            } else {
+                pl.getLogger().log(Level.WARNING, "Could not save " + outFile.getName() + " to " + outFile + " because " + outFile.getName() + " already exists.");
+            }
+        } catch (IOException ex) {
+            pl.getLogger().log(Level.SEVERE, "Could not save " + outFile.getName() + " to " + outFile, ex);
+        }
+    }
+
+    private static InputStream getResource(String filename) {
+        if (filename == null) {
+            throw new IllegalArgumentException("Filename cannot be null");
+        }
+
+        try {
+            URL url = pl.getClass().getClassLoader().getResource(filename);
+
+            if (url == null) {
+                return null;
+            }
+
+            URLConnection connection = url.openConnection();
+            connection.setUseCaches(false);
+            return connection.getInputStream();
+        } catch (IOException ex) {
+            return null;
         }
     }
 }

@@ -27,13 +27,14 @@ package me.godead.lilliputian;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import uwu.smsgamer.spygotutils.Loader;
 
 public class Lilliputian {
 
     private final DependencyBuilder builder = new DependencyBuilder();
 
     @Nullable
-    private static Plugin plugin = null;
+    private static Loader plugin = null;
 
     @Nullable
     private static String path = null;
@@ -41,7 +42,7 @@ public class Lilliputian {
     /**
      * @param plugin Your plugin instance
      */
-    public Lilliputian(@NotNull Plugin plugin) {
+    public Lilliputian(@NotNull Loader plugin) {
         Lilliputian.plugin = plugin;
         path = plugin.getDataFolder().getParent() + "/" + "LilliputianLibraries";
     }
@@ -51,13 +52,13 @@ public class Lilliputian {
      * @param path   (Optional) The path to download the Dependencies to.
      *               (Example: "/MyPlugin" Will download them to a Folder called MyPlugin inside the server's plugins folder)
      */
-    public Lilliputian(@NotNull Plugin plugin, String path) {
+    public Lilliputian(@NotNull Loader plugin, String path) {
         Lilliputian.plugin = plugin;
         Lilliputian.path = plugin.getDataFolder().getParent() + path;
     }
 
     @NotNull
-    public static Plugin getPlugin() {
+    public static Loader getPlugin() {
         assert plugin != null : "Error. Plugin seems to be null";
         return plugin;
     }

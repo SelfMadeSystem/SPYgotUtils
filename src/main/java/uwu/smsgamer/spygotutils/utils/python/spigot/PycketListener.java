@@ -1,4 +1,4 @@
-package uwu.smsgamer.spygotutils.utils.python;
+package uwu.smsgamer.spygotutils.utils.python.spigot;
 
 import io.github.retrooper.packetevents.event.*;
 import io.github.retrooper.packetevents.event.impl.*;

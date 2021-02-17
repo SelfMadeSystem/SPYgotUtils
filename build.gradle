@@ -36,6 +36,7 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
 
     compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+    compileOnly 'net.md-5:bungeecord-api:1.16-R0.5-SNAPSHOT'
 
     compileOnly 'me.clip:placeholderapi:2.10.9'
 

@@ -5,6 +5,7 @@ import org.python.util.PythonInterpreter;
 import uwu.smsgamer.spygotutils.SPYgotUtils;
 import uwu.smsgamer.spygotutils.config.ConfigManager;
 import uwu.smsgamer.spygotutils.utils.python.*;
+import uwu.smsgamer.spygotutils.utils.python.spigot.PycketListener;
 
 import java.io.File;
 import java.util.*;
@@ -28,7 +29,7 @@ public class PythonManager {
           "    from uwu.smsgamer.spygotutils.utils.python import PyCommand\n" +
           "    return PyCommand(name, description, usage_msg, aliases)\n");
         interpreter.exec("from sys import path\n" +
-          "path.append(\"" + SPYgotUtils.getInstance().plugin.getDataFolder() + File.separator + "scripts\")");
+          "path.append(\"" + SPYgotUtils.getInstance().spigotPlugin.getDataFolder() + File.separator + "scripts\")");
 
         defaultFuns = new PyFunction[]{(PyFunction) interpreter.get("register_event"),
           (PyFunction) interpreter.get("Command")};
@@ -37,7 +38,7 @@ public class PythonManager {
     }
 
     public static void loadScripts() {
-        File dir = new File(SPYgotUtils.getInstance().plugin.getDataFolder(), "scripts");
+        File dir = new File(SPYgotUtils.getInstance().spigotPlugin.getDataFolder(), "scripts");
         if (!dir.exists()) return;
         List<File> exclude = new ArrayList<>(files == null ? Collections.emptyList() : Arrays.asList(files));
         for (String fileName : getLoadScripts()) {
@@ -66,7 +67,7 @@ public class PythonManager {
     }
 
     public static File getFile(String scriptName) {
-        return new File(SPYgotUtils.getInstance().plugin.getDataFolder(), "scripts" + File.separator + scriptName);
+        return new File(SPYgotUtils.getInstance().spigotPlugin.getDataFolder(), "scripts" + File.separator + scriptName);
     }
 
     public static void onEnable() {

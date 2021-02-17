@@ -7,7 +7,6 @@ import uwu.smsgamer.spygotutils.commands.SmsCommand;
 import uwu.smsgamer.spygotutils.config.*;
 import uwu.smsgamer.spygotutils.managers.*;
 import uwu.smsgamer.spygotutils.utils.ChatUtils;
-import uwu.smsgamer.spygotutils.utils.python.PyScript;
 
 import java.util.List;
 
@@ -64,7 +63,7 @@ public class SPYgotUtilsCommand extends SmsCommand {
                         break;
                     case "version":
                         if (testPermission(sender, noPermissionVersion, "version")) {
-                            JavaPlugin plugin = SPYgotUtils.getInstance().plugin;
+                            JavaPlugin plugin = SPYgotUtils.getInstance().spigotPlugin;
                             ChatUtils.sendMessage(version.getValue()
                               .replace("%plugin-ver%", plugin.getDescription().getVersion())
                               .replace("%server-ver%", plugin.getServer().getVersion())

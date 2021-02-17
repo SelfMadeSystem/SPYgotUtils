@@ -1,0 +1,5 @@
+name: SPYgotUtils
+version: @version@
+main: uwu.smsgamer.spygotutils.BungeeLoader
+author: Sms_Gamer_3808
+description: A ton of utilities for server operators.

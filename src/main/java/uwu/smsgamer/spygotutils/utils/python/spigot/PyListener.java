@@ -1,4 +1,4 @@
-package uwu.smsgamer.spygotutils.utils.python;
+package uwu.smsgamer.spygotutils.utils.python.spigot;
 
 import org.bukkit.event.*;
 import org.bukkit.plugin.*;
@@ -17,12 +17,12 @@ public class PyListener extends RegisteredListener {
     public static PyListener monitorListener;
 
     public static void init() {
-        lowestListener = new PyListener(EventPriority.LOWEST, SPYgotUtils.getInstance().plugin);
-        lowListener = new PyListener(EventPriority.LOW, SPYgotUtils.getInstance().plugin);
-        listener = new PyListener(EventPriority.NORMAL, SPYgotUtils.getInstance().plugin);
-        highListener = new PyListener(EventPriority.HIGH, SPYgotUtils.getInstance().plugin);
-        highestListener = new PyListener(EventPriority.HIGHEST, SPYgotUtils.getInstance().plugin);
-        monitorListener = new PyListener(EventPriority.MONITOR, SPYgotUtils.getInstance().plugin);
+        lowestListener = new PyListener(EventPriority.LOWEST, SPYgotUtils.getInstance().spigotPlugin);
+        lowListener = new PyListener(EventPriority.LOW, SPYgotUtils.getInstance().spigotPlugin);
+        listener = new PyListener(EventPriority.NORMAL, SPYgotUtils.getInstance().spigotPlugin);
+        highListener = new PyListener(EventPriority.HIGH, SPYgotUtils.getInstance().spigotPlugin);
+        highestListener = new PyListener(EventPriority.HIGHEST, SPYgotUtils.getInstance().spigotPlugin);
+        monitorListener = new PyListener(EventPriority.MONITOR, SPYgotUtils.getInstance().spigotPlugin);
     }
 
     @SuppressWarnings("unused")
