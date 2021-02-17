@@ -3,6 +3,8 @@ package uwu.smsgamer.spygotutils;
 import me.godead.lilliputian.*;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.event.EventBus;
+import uwu.smsgamer.spygotutils.config.ConfigManager;
+import uwu.smsgamer.spygotutils.config.bungee.BConfigManager;
 import uwu.smsgamer.spygotutils.utils.python.bungee.BPyListener;
 
 import java.lang.reflect.Field;
@@ -14,10 +16,10 @@ public class BungeeLoader extends Plugin implements Loader {
       return instance;
     }
 
-    SPYgotUtils ins;
-
     @Override
     public void onLoad() {
+        SPYgotUtils.loader = this;
+
         final Lilliputian lilliputian = new Lilliputian(this);
         lilliputian.getDependencyBuilder()
           .addDependency(new Dependency(Repository.MAVENCENTRAL,
@@ -26,10 +28,9 @@ public class BungeeLoader extends Plugin implements Loader {
             "org.xerial", "sqlite-jdbc", "3.8.11.2"))
           .loadDependencies();
 
-        SPYgotUtils.loader = this;
+        ConfigManager.setInstance(new BConfigManager());
 
-//        new SPYgotUtils(false)
-//          .onLoad();
+        new SPYgotUtils(false).onLoad();
 
         EventBus bus = null;
         try {
@@ -46,8 +47,7 @@ public class BungeeLoader extends Plugin implements Loader {
     @Override
     public void onEnable() {
         System.out.println("Enabling");
-        System.out.println(SPYgotUtils.class);
-        ins.onEnable();
+        SPYgotUtils.getInstance().onEnable();
     }
 
     @Override

@@ -22,12 +22,11 @@ public abstract class ConfigManager {
         ConfigManager.instance = instance;
     }
 
-    public boolean needToSave = false;
+    public boolean needToSave = false; // honestly don't even care at this point
 
-    protected static Loader pl;
+    protected static Loader pl = SPYgotUtils.getLoader();
 
     public void setup(String... configs) {
-        pl = SPYgotUtils.getLoader();
         for (String config : configs) {
             pl.getLogger().info("Loading config: " + config);
             try {
@@ -98,7 +97,10 @@ public abstract class ConfigManager {
         }
 
         try {
-            URL url = pl.getClass().getClassLoader().getResource(filename);
+            URL url = pl.
+              getClass().
+              getClassLoader().
+              getResource(filename);
 
             if (url == null) {
                 return null;

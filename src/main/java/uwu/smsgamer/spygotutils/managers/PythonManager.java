@@ -32,11 +32,11 @@ public class PythonManager {
 
             defaultFuns = new PyFunction[]{(PyFunction) interpreter.get("register_event"),
               (PyFunction) interpreter.get("Command")};
+
+            packetListener = Py.java2py(PycketListener.getInstance());
         }
         interpreter.exec("from sys import path\n" +
           "path.append(\"" + SPYgotUtils.getLoader().getDataFolder() + File.separator + "scripts\")");
-
-        packetListener = Py.java2py(PycketListener.getInstance());
     }
 
     public static void loadScripts() {
