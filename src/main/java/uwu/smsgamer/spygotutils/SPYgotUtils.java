@@ -1,16 +1,8 @@
 package uwu.smsgamer.spygotutils;
 
-import io.github.retrooper.packetevents.PacketEvents;
-import io.github.retrooper.packetevents.packettype.PacketType;
-import org.bukkit.Bukkit;
-import uwu.smsgamer.spygotutils.commands.CommandManager;
 import uwu.smsgamer.spygotutils.config.*;
-import uwu.smsgamer.spygotutils.config.bungee.BConfigManager;
-import uwu.smsgamer.spygotutils.config.spigot.SConfigManager;
-import uwu.smsgamer.spygotutils.listener.*;
-import uwu.smsgamer.spygotutils.managers.*;
+import uwu.smsgamer.spygotutils.managers.PythonManager;
 import uwu.smsgamer.spygotutils.utils.*;
-import uwu.smsgamer.spygotutils.utils.python.spigot.*;
 
 import java.io.File;
 
@@ -56,9 +48,10 @@ public final class SPYgotUtils {
         PythonManager.onDisable();
 
         if (new ConfVal<>("remove-classes-on-disable", "py-settings", true).getValue()) {
-            for (File file : new File(SPYgotUtils.getLoader().getDataFolder(), "scripts")
-              .listFiles(pathname -> pathname.getName().endsWith("$py.class")))
-                file.delete();
+            File[] listFiles = new File(getDataFolder(), "scripts")
+              .listFiles(pathname -> pathname.getName().endsWith("$py.class"));
+            if (listFiles != null)
+                for (File file : listFiles) file.delete();
         }
     }
 
