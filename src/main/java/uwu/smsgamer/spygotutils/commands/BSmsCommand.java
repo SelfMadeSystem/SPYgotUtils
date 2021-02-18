@@ -1,38 +1,37 @@
 package uwu.smsgamer.spygotutils.commands;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.*;
+import net.md_5.bungee.api.*;
+import net.md_5.bungee.api.plugin.Command;
 import uwu.smsgamer.spygotutils.*;
 import uwu.smsgamer.spygotutils.config.ConfVal;
-import uwu.smsgamer.spygotutils.utils.ChatUtils;
+import uwu.smsgamer.spygotutils.utils.BChatUtils;
 
-public abstract class SmsCommand implements TabExecutor {
-    public PluginCommand command;
+public abstract class BSmsCommand extends Command {
     public ConfVal<String> noPermission;
     public boolean consoleAllowed;
     public String permissionBase;
 
-    public SmsCommand(String cmdName) {
-        this(cmdName, false);
+    public BSmsCommand(String cmdName, String... aliases) {
+        this(cmdName, false, aliases);
     }
 
-    public SmsCommand(String cmdName, boolean consoleAllowed) {
-        this.command = SpigotLoader.getInstance().getServer().getPluginCommand(cmdName);
-        this.command.setExecutor(this);
+    public BSmsCommand(String cmdName, boolean consoleAllowed, String... aliases) {
+        super(cmdName, null, aliases);
+        ProxyServer.getInstance().getPluginManager().registerCommand(BungeeLoader.getInstance(), this);
         this.noPermission = new ConfVal<>("commands." + cmdName + ".no-permission", "messages", "%prefix% &cYou do not have permission to execute this command!");
         this.consoleAllowed = consoleAllowed;
         this.permissionBase = "spygotutils.command." + cmdName;
     }
 
     public boolean testPermission(CommandSender sender) {
-        if (!consoleAllowed && sender instanceof ConsoleCommandSender) {
+        if (!consoleAllowed){// && sender instanceof ConsoleCommandSender) {
             sender.sendMessage(ChatColor.RED + "No console command sender allowed for this command!");
             return false;
         }
         String perm = this.permissionBase;
         if (sender.hasPermission(perm))
             return true;
-        ChatUtils.sendMessage(this.noPermission.getValue().replace("%perm%", perm), sender);
+        BChatUtils.sendMessage(this.noPermission.getValue().replace("%perm%", perm), sender);
         return false;
     }
 
@@ -40,7 +39,7 @@ public abstract class SmsCommand implements TabExecutor {
         String perm = getPermission(appendages);
         if (sender.hasPermission(perm))
             return true;
-        ChatUtils.sendMessage(noPerm.getValue().replace("%perm%", perm), sender);
+        BChatUtils.sendMessage(noPerm.getValue().replace("%perm%", perm), sender);
         return false;
     }
 

@@ -40,7 +40,10 @@ public final class SPYgotUtils {
         EvalUtils.init();
         PythonManager.init();
 
-        if (firstLoad) sScriptFiles();
+        if (firstLoad) {
+            if (onSpigot) sScriptFiles();
+            else bScriptFiles();
+        }
 
         PythonManager.loadScripts();
     }
@@ -49,12 +52,10 @@ public final class SPYgotUtils {
         PythonManager.onEnable();
     }
 
-    public ConfVal<Boolean> removePyClasses = new ConfVal<>("py-settings", "remove-classes-on-disable", true);
-
     public void onDisable() {
         PythonManager.onDisable();
 
-        if (removePyClasses.getValue()) {
+        if (new ConfVal<>("remove-classes-on-disable", "py-settings", true).getValue()) {
             for (File file : new File(SPYgotUtils.getLoader().getDataFolder(), "scripts")
               .listFiles(pathname -> pathname.getName().endsWith("$py.class")))
                 file.delete();
@@ -68,6 +69,12 @@ public final class SPYgotUtils {
         FileUtils.saveResource(getLoader(), "spigot/packet.py", new File(getLoader().getDataFolder(), "scripts/packet.py"), false);
         FileUtils.saveResource(getLoader(), "spigot/test.py", new File(getLoader().getDataFolder(), "scripts/test.py"), false);
         FileUtils.saveResource(getLoader(), "spigot/itest.py", new File(getLoader().getDataFolder(), "scripts/itest.py"), false);
+    }
+
+    private void bScriptFiles() {
+        // Shitty ik but I'm lazy.
+        FileUtils.saveResource(getLoader(), "bungee/test.py", new File(getLoader().getDataFolder(), "scripts/test.py"), false);
+        FileUtils.saveResource(getLoader(), "bungee/itest.py", new File(getLoader().getDataFolder(), "scripts/itest.py"), false);
     }
 
     void configFiles() {

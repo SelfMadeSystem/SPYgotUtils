@@ -1,10 +1,13 @@
 package uwu.smsgamer.spygotutils;
 
 import me.godead.lilliputian.*;
-import net.md_5.bungee.api.plugin.Plugin;
+import net.md_5.bungee.api.ProxyServer;
+import net.md_5.bungee.api.plugin.*;
 import net.md_5.bungee.event.EventBus;
+import uwu.smsgamer.spygotutils.commands.CommandManager;
 import uwu.smsgamer.spygotutils.config.ConfigManager;
 import uwu.smsgamer.spygotutils.config.bungee.BConfigManager;
+import uwu.smsgamer.spygotutils.utils.BChatUtils;
 import uwu.smsgamer.spygotutils.utils.python.bungee.BPyListener;
 
 import java.lang.reflect.Field;
@@ -12,8 +15,16 @@ import java.lang.reflect.Field;
 public class BungeeLoader extends Plugin implements Loader {
     private static BungeeLoader instance;
     public static BungeeLoader getInstance() {
-      if (instance == null) instance = new BungeeLoader();
       return instance;
+    }
+
+    public BungeeLoader() {
+        instance = this;
+    }
+
+    public BungeeLoader(ProxyServer proxy, PluginDescription description) {
+        super(proxy, description);
+        instance = this;
     }
 
     @Override
@@ -30,7 +41,10 @@ public class BungeeLoader extends Plugin implements Loader {
 
         ConfigManager.setInstance(new BConfigManager());
 
+        ConfigManager.getInstance().setup("messages", "chat-filter", "py-settings");
+
         new SPYgotUtils(false).onLoad();
+        BChatUtils.init();
 
         EventBus bus = null;
         try {
@@ -46,13 +60,12 @@ public class BungeeLoader extends Plugin implements Loader {
 
     @Override
     public void onEnable() {
-        System.out.println("Enabling");
         SPYgotUtils.getInstance().onEnable();
+        CommandManager.bungeeCommands();
     }
 
     @Override
     public void onDisable() {
-        System.out.println("Disabling");
         SPYgotUtils.getInstance().onDisable();
     }
 }

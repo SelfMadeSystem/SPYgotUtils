@@ -29,8 +29,7 @@ public class PyScript {
     }
 
     public PyScript setFuns(PyFunction[] objs) {
-        for (PyFunction obj : objs)
-            set(obj.__name__, obj);
+        if (objs != null) for (PyFunction obj : objs) set(obj.__name__, obj);
         return this;
     }
 

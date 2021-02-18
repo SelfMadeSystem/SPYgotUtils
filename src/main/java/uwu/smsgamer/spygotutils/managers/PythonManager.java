@@ -64,7 +64,7 @@ public class PythonManager {
         }
     }
 
-    public static ConfVal<List<String>> loadScripts = new ConfVal<>("py-settings", "load-scripts", Collections.emptyList());
+    public static ConfVal<List<String>> loadScripts = new ConfVal<>("load-scripts", "py-settings", Collections.emptyList());
 
     public static File getFile(String scriptName) {
         return new File(SPYgotUtils.getLoader().getDataFolder(), "scripts" + File.separator + scriptName);

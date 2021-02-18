@@ -1,6 +1,5 @@
 package uwu.smsgamer.spygotutils.utils;
 
-import org.bukkit.OfflinePlayer;
 import uwu.smsgamer.senapi.utils.Evaluator;
 import uwu.smsgamer.spygotutils.config.ConfVal;
 
@@ -20,7 +19,7 @@ public class EvalUtils {
     public static void init() {
     }
 
-    public static Evaluator newEvaluator(OfflinePlayer player) {
+    public static Evaluator newEvaluator(Object player) {
         Evaluator eval = new Evaluator();
         eval.set("player", player);
         eval.exec(startEvaluators.getValue());

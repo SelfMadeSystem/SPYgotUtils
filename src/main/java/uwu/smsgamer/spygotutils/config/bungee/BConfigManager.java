@@ -60,7 +60,7 @@ public class BConfigManager extends ConfigManager {
         } else {
             vals.add(val);
             Configuration config = configs.get(val.config);
-            val.value = (T) config.get(val.name, dVal);
+            val.value = config.get(val.name, dVal);
             if (!config.contains(val.name)) config.set(val.name, dVal);
         }
     }
