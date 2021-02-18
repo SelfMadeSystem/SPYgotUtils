@@ -33,6 +33,7 @@ public final class SPYgotUtils {
         if (firstLoad) {
             if (onSpigot) sScriptFiles();
             else bScriptFiles();
+            aScriptFiles();
         }
 
         PythonManager.loadScripts();
@@ -58,16 +59,17 @@ public final class SPYgotUtils {
         FileUtils.saveResource(getLoader(), "spigot/event.py", new File(getLoader().getDataFolder(), "scripts/event.py"), false);
         FileUtils.saveResource(getLoader(), "spigot/command.py", new File(getLoader().getDataFolder(), "scripts/command.py"), false);
         FileUtils.saveResource(getLoader(), "spigot/packet.py", new File(getLoader().getDataFolder(), "scripts/packet.py"), false);
-        FileUtils.saveResource(getLoader(), "spigot/test.py", new File(getLoader().getDataFolder(), "scripts/test.py"), false);
-        FileUtils.saveResource(getLoader(), "spigot/itest.py", new File(getLoader().getDataFolder(), "scripts/itest.py"), false);
     }
 
     private void bScriptFiles() {
         // Shitty ik but I'm lazy.
         FileUtils.saveResource(getLoader(), "bungee/event.py", new File(getLoader().getDataFolder(), "scripts/event.py"), false);
         FileUtils.saveResource(getLoader(), "bungee/command.py", new File(getLoader().getDataFolder(), "scripts/command.py"), false);
-        FileUtils.saveResource(getLoader(), "bungee/test.py", new File(getLoader().getDataFolder(), "scripts/test.py"), false);
-        FileUtils.saveResource(getLoader(), "bungee/itest.py", new File(getLoader().getDataFolder(), "scripts/itest.py"), false);
+    }
+
+    private void aScriptFiles() {
+        FileUtils.saveResource(getLoader(), "all/test.py", new File(getLoader().getDataFolder(), "scripts/test.py"), false);
+        FileUtils.saveResource(getLoader(), "all/itest.py", new File(getLoader().getDataFolder(), "scripts/itest.py"), false);
     }
 
     void configFiles() {
