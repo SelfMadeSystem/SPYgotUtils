@@ -44,7 +44,7 @@ public class PythonManager {
         }
         interpreter.exec("def get_data_folder():\n" +
           "    from uwu.smsgamer.spygotutils import SPYgotUtils\n" +
-          "    return SPYgotUtils.getDataFolder()\n"+
+          "    return SPYgotUtils.getInstance().getDataFolder()\n"+
           "def on_spigot():\n" +
           "    from uwu.smsgamer.spygotutils import SPYgotUtils\n" +
           "    return SPYgotUtils.getInstance().onSpigot\n");
