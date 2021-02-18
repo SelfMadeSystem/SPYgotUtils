@@ -45,6 +45,23 @@ public class BConfigManager extends ConfigManager {
 
     @Override
     public <T> void setConfVal(ConfVal<T> val, T dVal) {
-
+        if (dVal instanceof Map) {
+            vals.add(val);
+            Configuration config = configs.get(val.config);
+            if (!config.contains(val.name)) {
+                config.set(val.name, dVal);
+                val.value = dVal;
+            } else {
+                HashMap<String, Object> map = new HashMap<>();
+                for (String key : config.getSection(val.name).getKeys())
+                    map.put(key, config.get(val.name + "." + key));
+                val.value = (T) map;
+            }
+        } else {
+            vals.add(val);
+            Configuration config = configs.get(val.config);
+            val.value = (T) config.get(val.name, dVal);
+            if (!config.contains(val.name)) config.set(val.name, dVal);
+        }
     }
 }
