@@ -50,16 +50,7 @@ public class BungeeLoader extends Plugin implements Loader {
 
         BChatUtils.init();
 
-        EventBus bus = null;
-        try {
-            Field busField = getProxy().getPluginManager().getClass().getDeclaredField("eventBus");
-            busField.setAccessible(true);
-            bus = (EventBus) busField.get(getProxy().getPluginManager());
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        assert bus != null;
-        bus.register(BPyListener.getInstance());
+        BPyListener.getInstance();
     }
 
     @Override

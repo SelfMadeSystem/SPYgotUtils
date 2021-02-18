@@ -2,6 +2,7 @@ name: SPYgotUtils
 version: @version@
 main: uwu.smsgamer.spygotutils.SpigotLoader
 softdepend: [ PlaceholderAPI ]
+depend: [ packetevents ]
 authors: [ Sms_Gamer_3808 ]
 description: A ton of utilities for server operators.
 commands:
