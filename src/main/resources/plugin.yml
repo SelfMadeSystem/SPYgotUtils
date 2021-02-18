@@ -30,5 +30,5 @@ commands:
     usage: /send-message <player name> <message>
     aliases:
       - send-msg
-      - sendmessag
+      - sendmessage
       - sendmsg
