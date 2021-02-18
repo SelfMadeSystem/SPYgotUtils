@@ -4,7 +4,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.event.ClientConnectEvent;
 import net.md_5.bungee.api.plugin.*;
 import net.md_5.bungee.event.*;
-import org.python.core.PyFunction;
+import org.python.core.*;
 import uwu.smsgamer.spygotutils.BungeeLoader;
 
 import java.lang.reflect.*;
@@ -51,15 +51,14 @@ public class BPyListener implements Listener {
         } catch (NoSuchFieldException | IllegalAccessException | NoSuchMethodException e) {
             e.printStackTrace();
         }
-
-        registerListener(ClientConnectEvent.class, null);
     }
 
     public Map<Class<? extends Event>, Set<PyFunction>> funcs = new HashMap<>();
 
     @EventHandler
     public void onEvent(Event event) {
-        System.out.println(event);
+        Set<PyFunction> functions = funcs.get(event.getClass());
+        if(functions != null) for (PyFunction function : functions) function.__call__(Py.java2py(event));
     }
 
     public void registerListener(Class<? extends Event> event, PyFunction fun) {
@@ -78,5 +77,9 @@ public class BPyListener implements Listener {
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void registerEvent(Class<? extends Event> event, byte priority, PyFunction fun) {
+        getInstance().registerListener(event, fun);
     }
 }

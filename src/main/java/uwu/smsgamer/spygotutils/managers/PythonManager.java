@@ -34,6 +34,12 @@ public class PythonManager {
               (PyFunction) interpreter.get("Command")};
 
             packetListener = Py.java2py(PycketListener.getInstance());
+        } else {
+            interpreter.exec("def register_event(event_type, priority, function):\n" +
+              "    from uwu.smsgamer.spygotutils.utils.python.bungee import BPyListener\n" +
+              "    BPyListener.registerEvent(event_type, priority, function)\n");
+
+            defaultFuns = new PyFunction[]{(PyFunction) interpreter.get("register_event")};
         }
         interpreter.exec("from sys import path\n" +
           "path.append(\"" + SPYgotUtils.getLoader().getDataFolder() + File.separator + "scripts\")");
