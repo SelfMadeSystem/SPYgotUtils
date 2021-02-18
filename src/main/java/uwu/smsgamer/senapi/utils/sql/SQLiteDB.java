@@ -134,7 +134,7 @@ public class SQLiteDB implements SenDB {
         }
 
         @Override
-        public void add(String columns, String values, Objects... objects) {
+        public void add(String columns, String values, Object... objects) {
             try {
                 db.update("INSERT INTO " + getName() + " (" + columns + ") VALUES (" + values + ");", objects);
             } catch (SQLException e) {
