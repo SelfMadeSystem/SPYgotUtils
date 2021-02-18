@@ -60,7 +60,8 @@ public class PythonManager {
 
     public static void newScript(File file) {
         if (!file.exists()) return;
-        PyScript script = new PyScript(file).setFuns(defaultFuns).set("packet_listener", packetListener);
+        PyScript script = new PyScript(file).setFuns(defaultFuns);
+        if (packetListener != null) script.set("packet_listener", packetListener);
         try {
             script.execFile();
             scripts.add(script);
