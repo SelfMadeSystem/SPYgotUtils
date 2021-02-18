@@ -13,7 +13,7 @@ public class BEvaluateCommand extends BSmsCommand {
     public ConfVal<String> error = new ConfVal<>("commands.evaluate.error", "messages", "%prefix% &rEvaluation error: %msg%");
 
     public BEvaluateCommand() {
-        super("evaluate", true, "eval");
+        super("bevaluate", true, "beval");
     }
 
     @Override
