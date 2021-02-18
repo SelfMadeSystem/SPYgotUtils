@@ -1,6 +1,7 @@
 package uwu.smsgamer.spygotutils.commands;
 
 import net.md_5.bungee.api.*;
+import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import uwu.smsgamer.spygotutils.*;
 import uwu.smsgamer.spygotutils.config.ConfVal;
@@ -24,7 +25,7 @@ public abstract class BSmsCommand extends Command {
     }
 
     public boolean testPermission(CommandSender sender) {
-        if (!consoleAllowed){// && sender instanceof ConsoleCommandSender) {
+        if (!consoleAllowed && !(sender instanceof ProxiedPlayer)) {
             sender.sendMessage(ChatColor.RED + "No console command sender allowed for this command!");
             return false;
         }
