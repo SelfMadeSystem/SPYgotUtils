@@ -33,8 +33,6 @@ public class SpigotLoader extends JavaPlugin implements Loader {
 
         final Lilliputian lilliputian = new Lilliputian(this);
         lilliputian.getDependencyBuilder()
-          .addDependency(new Dependency(Repository.JITPACK,
-            "com.github.retrooper", "packetevents", "v1.8-pre-4"))
           .addDependency(new Dependency(Repository.MAVENCENTRAL,
             "org.python", "jython-standalone", "2.7.2"))
           .addDependency(new Dependency(Repository.MAVENCENTRAL,
