@@ -64,9 +64,10 @@ public final class SPYgotUtils {
 
     private void bScriptFiles() {
         // Shitty ik but I'm lazy.
+        FileUtils.saveResource(getLoader(), "bungee/event.py", new File(getLoader().getDataFolder(), "scripts/event.py"), false);
+        FileUtils.saveResource(getLoader(), "bungee/command.py", new File(getLoader().getDataFolder(), "scripts/command.py"), false);
         FileUtils.saveResource(getLoader(), "bungee/test.py", new File(getLoader().getDataFolder(), "scripts/test.py"), false);
         FileUtils.saveResource(getLoader(), "bungee/itest.py", new File(getLoader().getDataFolder(), "scripts/itest.py"), false);
-        FileUtils.saveResource(getLoader(), "bungee/event.py", new File(getLoader().getDataFolder(), "scripts/event.py"), false);
     }
 
     void configFiles() {

@@ -37,9 +37,15 @@ public class PythonManager {
         } else {
             interpreter.exec("def register_event(event_type, priority, function):\n" +
               "    from uwu.smsgamer.spygotutils.utils.python.bungee import BPyListener\n" +
-              "    BPyListener.registerEvent(event_type, priority, function)\n");
+              "    BPyListener.registerEvent(event_type, priority, function)\n" +
+              "def Command(name, aliases=None):\n" +
+              "    if aliases is None:\n" +
+              "        aliases = []\n" +
+              "    from uwu.smsgamer.spygotutils.utils.python.bungee import BPyCommand\n" +
+              "    return BPyCommand(name, aliases)\n");
 
-            defaultFuns = new PyFunction[]{(PyFunction) interpreter.get("register_event")};
+            defaultFuns = new PyFunction[]{(PyFunction) interpreter.get("register_event"),
+              (PyFunction) interpreter.get("Command")};
         }
         interpreter.exec("from sys import path\n" +
           "path.append(\"" + SPYgotUtils.getLoader().getDataFolder() + File.separator + "scripts\")");
