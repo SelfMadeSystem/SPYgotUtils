@@ -88,8 +88,9 @@ public interface SenDB {
      * @param update The command to do.
      * @throws SQLException if an SQL error occurred.
      */
-    default void update(String update) throws SQLException {
+    default void update(String update, Object... objects) throws SQLException {
         PreparedStatement ps = getConnection().prepareStatement(update);
+        for (int i = 0; i < objects.length; i++) ps.setObject(i + 1, objects[i]);
         ps.executeUpdate();
     }
 
@@ -100,8 +101,9 @@ public interface SenDB {
      * @return The result of the query.
      * @throws SQLException if an SQL error occurred.
      */
-    default ResultSet query(String query) throws SQLException {
+    default ResultSet query(String query, Object... objects) throws SQLException {
         PreparedStatement ps = getConnection().prepareStatement(query);
+        for (int i = 0; i < objects.length; i++) ps.setObject(i + 1, objects[i]);
         return ps.executeQuery();
     }
 
@@ -159,7 +161,7 @@ public interface SenDB {
          * @param columns The columns of the table.
          * @param values The values of the row to add.
          */
-        void add(String columns, String values);
+        void add(String columns, String values, Objects... objects);
 
         /**
          * Removes a row from the table.

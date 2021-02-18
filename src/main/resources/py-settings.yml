@@ -15,5 +15,6 @@ load-scripts:
   - event.py
   - packet.py
   - test.py
+  - sql.py
 
 remove-classes-on-disable: true

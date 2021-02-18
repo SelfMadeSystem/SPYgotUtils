@@ -144,9 +144,9 @@ public class MySQLDB implements SenDB {
         }
 
         @Override
-        public void add(String columns, String values) {
+        public void add(String columns, String values, Objects... objects) {
             try {
-                db.update("INSERT INTO " + getName() + " (" + columns + ") VALUES (" + values + ");");
+                db.update("INSERT INTO " + getName() + " (" + columns + ") VALUES (" + values + ");", objects);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
