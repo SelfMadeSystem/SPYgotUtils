@@ -38,12 +38,16 @@ public class BungeeLoader extends Plugin implements Loader {
           .addDependency(new Dependency(Repository.MAVENCENTRAL,
             "org.xerial", "sqlite-jdbc", "3.8.11.2"))
           .loadDependencies();
+        SPYgotUtils ins = new SPYgotUtils(false);
+
+        ins.firstLoad = !getDataFolder().exists();
 
         ConfigManager.setInstance(new BConfigManager());
 
         ConfigManager.getInstance().setup("messages", "chat-filter", "py-settings");
 
-        new SPYgotUtils(false).onLoad();
+        ins.onLoad();
+
         BChatUtils.init();
 
         EventBus bus = null;

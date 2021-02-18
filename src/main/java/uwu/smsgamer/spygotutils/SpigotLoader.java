@@ -68,13 +68,17 @@ public class SpigotLoader extends JavaPlugin implements Loader {
         PacketEvents.get().load();
         ConfigManager.setInstance(new SConfigManager());
 
+        SPYgotUtils ins = new SPYgotUtils(true);
+
+        ins.firstLoad = !getDataFolder().exists();
+
         ConfigManager.getInstance().setup("messages", "chat-filter", "py-settings");
 
         ChatFilterManager.getInstance();
 
         ChatUtils.init();
         PyListener.init();
-        new SPYgotUtils( true).onLoad();
+        ins.onLoad();
     }
 
     @Override

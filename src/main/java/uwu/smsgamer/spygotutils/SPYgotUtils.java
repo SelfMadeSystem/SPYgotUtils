@@ -27,8 +27,6 @@ public final class SPYgotUtils {
     }
 
     public void onLoad() {
-        firstLoad = !getDataFolder().exists();
-
         EvalUtils.init();
         PythonManager.init();
 
