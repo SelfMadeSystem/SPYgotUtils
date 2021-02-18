@@ -18,9 +18,9 @@ public abstract class BSmsCommand extends Command {
     public BSmsCommand(String cmdName, boolean consoleAllowed, String... aliases) {
         super(cmdName, null, aliases);
         ProxyServer.getInstance().getPluginManager().registerCommand(BungeeLoader.getInstance(), this);
-        this.noPermission = new ConfVal<>("commands." + cmdName + ".no-permission", "messages", "%prefix% &cYou do not have permission to execute this command!");
+        this.noPermission = new ConfVal<>("commands." + cmdName.substring(1) + ".no-permission", "messages", "%prefix% &cYou do not have permission to execute this command!");
         this.consoleAllowed = consoleAllowed;
-        this.permissionBase = "spygotutils.command." + cmdName;
+        this.permissionBase = "spygotutils.command." + cmdName.substring(1);
     }
 
     public boolean testPermission(CommandSender sender) {

@@ -57,6 +57,7 @@ public class BungeeLoader extends Plugin implements Loader {
     public void onEnable() {
         SPYgotUtils.getInstance().onEnable();
         CommandManager.bungeeCommands();
+        if (SPYgotUtils.getInstance().firstLoad) SPYgotUtils.getInstance().configFiles();
     }
 
     @Override
