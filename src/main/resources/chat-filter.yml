@@ -6,6 +6,7 @@ outgoing-chat:
   example: # Average Hawk flag message is:   HAWK: Username failed check. VL: 0
     pre-exec: '' # Encase you want to do anything before.
     check: 'msg.startswith("HAWK:") and ("VL:" in msg) and not (player.getName() in msg)'
+    post-exec: '' # Encase you want to do anything after. Variable "check" is whether or not the check got triggered.
     #We want that  not  to invert it because we want to cancel it if it is not their flag
     cancel: true # Cancel it; not their flag.
     # execute-commands: []

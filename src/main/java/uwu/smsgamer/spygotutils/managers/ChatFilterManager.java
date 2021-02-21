@@ -17,7 +17,7 @@ import uwu.smsgamer.spygotutils.utils.*;
 
 import java.util.List;
 
-public class ChatFilterManager {
+public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much stuff can be reused as funcs)
     private static ChatFilterManager instance;
     private YamlConfiguration conf;
 
@@ -46,12 +46,14 @@ public class ChatFilterManager {
         for (String key : conf.getConfigurationSection("outgoing-chat").getKeys(false)) {
             ConfigurationSection section = conf.getConfigurationSection("outgoing-chat." + key);
             try {
-                String exec = section.getString("exec");
-                if (exec != null && !exec.isEmpty())
-                    evaluator.exec(exec);
+                String preExec = section.getString("pre-exec");
+                if (preExec != null && !preExec.isEmpty())
+                    evaluator.exec(preExec);
                 PyObject result = evaluator.eval(section.getString("check"));
+                boolean checkResult = false;
                 if (result.getClass().equals(PyBoolean.class)) {
-                    if (((PyBoolean) result).getBooleanValue()) {
+                    checkResult = ((PyBoolean) result).getBooleanValue();
+                    if (checkResult) {
                         if (section.getBoolean("cancel")) e.setCancelled(true);
                         else {
                             String s = evaluator.eval(section.getString("replacement")).toString();
@@ -66,6 +68,10 @@ public class ChatFilterManager {
                 } else {
                     System.out.println(key + ":" + result.getClass());
                 }
+                String postExec = section.getString("post-exec");
+                if (postExec != null && !postExec.isEmpty())
+                    evaluator.set("check", checkResult);
+                    evaluator.exec(postExec);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -86,14 +92,16 @@ public class ChatFilterManager {
         for (String key : conf.getConfigurationSection("incoming-command").getKeys(false)) {
             ConfigurationSection section = conf.getConfigurationSection("incoming-command." + key);
             try {
-                String exec = section.getString("exec");
-                if (exec != null && !exec.isEmpty())
-                    evaluator.exec(exec);
+                String preExec = section.getString("pre-exec");
+                if (preExec != null && !preExec.isEmpty())
+                    evaluator.exec(preExec);
                 String check = section.getString("check");
                 check = StringUtils.replaceArgsPlaceholders(check, args);
                 PyObject result = evaluator.eval(check);
+                boolean checkResult = false;
                 if (result.getClass().equals(PyBoolean.class)) {
-                    if (((PyBoolean) result).getBooleanValue()) {
+                    checkResult = ((PyBoolean) result).getBooleanValue();
+                    if (checkResult) {
                         if (section.getBoolean("cancel")) e.setCancelled(true);
                         else {
                             String s = evaluator.eval(section.getString("replacement")).toString();
@@ -104,6 +112,10 @@ public class ChatFilterManager {
                 } else {
                     System.out.println(key + ":" + result.getClass());
                 }
+                String postExec = section.getString("post-exec");
+                if (postExec != null && !postExec.isEmpty())
+                    evaluator.set("check", checkResult);
+                evaluator.exec(postExec);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -124,14 +136,16 @@ public class ChatFilterManager {
         for (String key : conf.getConfigurationSection("incoming-chat").getKeys(false)) {
             ConfigurationSection section = conf.getConfigurationSection("incoming-chat." + key);
             try {
-                String exec = section.getString("exec");
-                if (exec != null && !exec.isEmpty())
-                    evaluator.exec(exec);
+                String preExec = section.getString("pre-exec");
+                if (preExec != null && !preExec.isEmpty())
+                    evaluator.exec(preExec);
                 String check = section.getString("check");
                 check = StringUtils.replaceArgsPlaceholders(check, args);
                 PyObject result = evaluator.eval(check);
+                boolean checkResult = false;
                 if (result.getClass().equals(PyBoolean.class)) {
-                    if (((PyBoolean) result).getBooleanValue()) {
+                    checkResult = ((PyBoolean) result).getBooleanValue();
+                    if (checkResult) {
                         if (section.getBoolean("cancel")) e.setCancelled(true);
                         else {
                             String s = evaluator.eval(section.getString("replacement")).toString();
@@ -142,6 +156,10 @@ public class ChatFilterManager {
                 } else {
                     System.out.println(key + ":" + result.getClass());
                 }
+                String postExec = section.getString("post-exec");
+                if (postExec != null && !postExec.isEmpty())
+                    evaluator.set("check", checkResult);
+                evaluator.exec(postExec);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -163,14 +181,16 @@ public class ChatFilterManager {
         for (String key : conf.getConfigurationSection("incoming-tab").getKeys(false)) {
             ConfigurationSection section = conf.getConfigurationSection("incoming-tab." + key);
             try {
-                String exec = section.getString("exec");
+                String exec = section.getString("pre-exec");
                 if (exec != null && !exec.isEmpty())
                     evaluator.exec(exec);
                 String check = section.getString("check");
                 check = StringUtils.replaceArgsPlaceholders(check, args);
                 PyObject result = evaluator.eval(check);
+                boolean checkResult = false;
                 if (result.getClass().equals(PyBoolean.class)) {
-                    if (((PyBoolean) result).getBooleanValue()) {
+                    checkResult = ((PyBoolean) result).getBooleanValue();
+                    if (checkResult) {
                         if (section.getBoolean("cancel")) e.setCancelled(true);
                         else {
                             if (section.contains("replacement"))
@@ -181,6 +201,10 @@ public class ChatFilterManager {
                 } else {
                     System.out.println(key + ":" + result.getClass());
                 }
+                String postExec = section.getString("post-exec");
+                if (postExec != null && !postExec.isEmpty())
+                    evaluator.set("check", checkResult);
+                evaluator.exec(postExec);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
