@@ -65,6 +65,4 @@ incoming-tab:
     check: '(label.lower() == "/") or (label.lower() == "/ver") or (label.lower() == "/version")'
     cancel: false
     # List of stuff. PAPI and colored
-    replacement:
-      - 'lol'
-      - 'no'
+    replacement: "['lol', 'no'] if ' ' in msg else ['/lol', '/no']"

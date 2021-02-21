@@ -15,7 +15,8 @@ import uwu.smsgamer.spygotutils.config.ConfigManager;
 import uwu.smsgamer.spygotutils.config.spigot.SConfigManager;
 import uwu.smsgamer.spygotutils.utils.*;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.*;
 
 public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much stuff can be reused as funcs)
     private static ChatFilterManager instance;
@@ -69,9 +70,10 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
                     System.out.println(key + ":" + result.getClass());
                 }
                 String postExec = section.getString("post-exec");
-                if (postExec != null && !postExec.isEmpty())
+                if (postExec != null && !postExec.isEmpty()) {
                     evaluator.set("check", checkResult);
                     evaluator.exec(postExec);
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -113,9 +115,10 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
                     System.out.println(key + ":" + result.getClass());
                 }
                 String postExec = section.getString("post-exec");
-                if (postExec != null && !postExec.isEmpty())
+                if (postExec != null && !postExec.isEmpty()) {
                     evaluator.set("check", checkResult);
-                evaluator.exec(postExec);
+                    evaluator.exec(postExec);
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -157,9 +160,10 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
                     System.out.println(key + ":" + result.getClass());
                 }
                 String postExec = section.getString("post-exec");
-                if (postExec != null && !postExec.isEmpty())
+                if (postExec != null && !postExec.isEmpty()) {
                     evaluator.set("check", checkResult);
-                evaluator.exec(postExec);
+                    evaluator.exec(postExec);
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -178,6 +182,7 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
         evaluator.set("label", message.substring(0, indOf < 0 ? message.length() : indOf));
         evaluator.set("name", p.getName());
         evaluator.set("args", args);
+        evaluator.set("completions", e.getCompletions());
         for (String key : conf.getConfigurationSection("incoming-tab").getKeys(false)) {
             ConfigurationSection section = conf.getConfigurationSection("incoming-tab." + key);
             try {
@@ -193,8 +198,18 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
                     if (checkResult) {
                         if (section.getBoolean("cancel")) e.setCancelled(true);
                         else {
-                            if (section.contains("replacement"))
-                                e.setCompletions(section.getStringList("replacement"));
+                            Object replacement = section.get("replacement");
+                            List<String> replacements = new ArrayList<>();
+                            if (replacement instanceof List)
+                                replacements = ((List<?>) replacement).stream().map(Object::toString).collect(Collectors.toList());
+                            else if (replacement instanceof String) {
+                                PyObject rResult = evaluator.eval((String) replacement);
+                                if (rResult.isSequenceType()) {
+                                    replacements = StreamSupport.stream(rResult.asIterable().spliterator(), false)
+                                      .map(Object::toString).collect(Collectors.toList());
+                                }
+                            }
+                            e.setCompletions(replacements);
                         }
                     }
                     execCmd(section.getStringList("execute-commands"), args, p);
@@ -202,9 +217,10 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
                     System.out.println(key + ":" + result.getClass());
                 }
                 String postExec = section.getString("post-exec");
-                if (postExec != null && !postExec.isEmpty())
+                if (postExec != null && !postExec.isEmpty()) {
                     evaluator.set("check", checkResult);
-                evaluator.exec(postExec);
+                    evaluator.exec(postExec);
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
