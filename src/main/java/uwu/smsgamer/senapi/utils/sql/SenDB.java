@@ -137,23 +137,13 @@ public interface SenDB {
         int countRows();
 
         /**
-         * Checks if a value in a column exists.
-         *
-         * @param column The name of the column.
-         * @param checkValue The value to check for.
-         * @return If a value in a column exists.
-         */
-        default boolean exists(String column, String checkValue) {
-            return exists(column + "=" + checkValue);
-        }
-
-        /**
          * Checks if a row with said params exists.
          *
-         * @param params Parameters
+         * @param condition The condition of the objects.
+         * @param params The parameters (replaces questions marks `?`)
          * @return If a value in a column exists.
          */
-        boolean exists(String... params);
+        boolean exists(String condition, Object... params);
 
         /**
          * Adds a row to the table.
@@ -166,96 +156,50 @@ public interface SenDB {
         /**
          * Removes a row from the table.
          *
-         * @param column The column to check for.
-         * @param operand The operand to use when checking.
-         * @param checkData The data to check for.
+         * @param condition The condition of the objects.
+         * @param params The parameters (replaces questions marks `?`)
          */
-        default void removeFromTable(String column, String operand, String checkData) {
-            removeFromTable(column + operand + checkData);
-        }
+        void removeFromTable(String condition, Object... params);
 
-        /**
-         * Removes a row from the table.
-         *
-         * @param where The "where" arguments.
-         */
-        void removeFromTable(String... where);
-
-        /**
-         * TODO: Doc this lol. I still don't understand what this does but I feel it's important.
-         *
-         * @param selected a
-         * @param object a
-         * @param column a
-         * @param checkData a
-         */
-        void upsert(String selected, Object object, String column, String checkData);
+//        /**
+//         * Don't use Upsert.
+//         *
+//         * @param selected a
+//         * @param object a
+//         * @param condition The condition of the objects.
+//         * @param params The parameters (replaces questions marks `?`)
+//         */
+//        void upsert(String selected, Object object, String condition, Object... params);
 
         /**
          * Sets a value in the table.
          *
          * @param selected The select column to set.
          * @param object The object to set it to.
-         * @param column The column to check for.
-         * @param operand The operand to use when checking.
-         * @param checkData The data to check for.
+         * @param condition The condition of the objects.
+         * @param params The parameters (replaces questions marks `?`)
          */
-        default void set(String selected, Object object, String column, String operand, String checkData) {
-            set(selected, object, column + operand + checkData);
-        }
-
-        /**
-         * Sets a value in the table.
-         *
-         * @param selected The select column to set.
-         * @param object The object to set it to.
-         * @param where The condition to set it to.
-         */
-        void set(String selected, Object object, String... where);
+        void set(String selected, Object object, String condition, Object... params);
 
         /**
          * Gets a value from the table.
          *
          * @param selected The selected column.
-         * @param column The column to check for.
-         * @param operand The operand to use when checking.
-         * @param checkData The data to check for.
+         * @param condition The condition of the objects.
+         * @param params The parameters (replaces questions marks `?`)
          * @return A value from the table.
          */
-        default Object get(String selected, String column, String operand, String checkData) {
-            return get(selected, column + operand + checkData);
-        }
-
-        /**
-         * Gets a value from the table.
-         *
-         * @param selected The selected column.
-         * @param where The conditions to get the value.
-         * @return A value from the table.
-         */
-        Object get(String selected, String... where);
+        Object get(String selected, String condition, Object... params);
 
         /**
          * Gets all the values from the table that satisfies a condition.
          *
          * @param selected The selected column.
-         * @param column The column to check for.
-         * @param operand The operand to use when checking.
-         * @param checkData The data to check for.
+         * @param condition The condition of the objects.
+         * @param params The parameters (replaces questions marks `?`)
          * @return All the values from the table that satisfies a condition.
          */
-        default List<?> getList(String selected, String column, String operand, String checkData) {
-            return getList(selected, column + operand + checkData);
-        }
-
-        /**
-         * Gets all the values from the table that satisfies a condition.
-         *
-         * @param selected The selected column.
-         * @param where The conditions to check for.
-         * @return All the values from the table that satisfies a condition.
-         */
-        List<?> getList(String selected, String... where);
+        List<?> getList(String selected, String condition, Object... params);
 
         /**
          * Gets all the values from a row in the table.
