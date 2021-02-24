@@ -19,7 +19,11 @@ def on_enable():
 
         def join(event):
             player = event.getPlayer()
-            joinedUsers.add("playerUuid, username", "?,?", [player.getUniqueId(), player.getName()])
+            if not joinedUsers.exists("playerUuid=?", player.getUniqueId()):
+                print("Set!")
+                joinedUsers.add("playerUuid, username", "?,?", [player.getUniqueId(), player.getName()])
+            else:
+                print("Already Set!")
 
         register_event(PlayerJoinEvent, EventPriority.MONITOR, join)
     else:
@@ -29,7 +33,11 @@ def on_enable():
         def join(event):
             player = event.getPlayer()
 
-            joinedUsers.add("playerUuid, username", "?,?", [player.getUniqueId(), player.getName()])
+            if not joinedUsers.exists("playerUuid=?", player.getUniqueId()):
+                print("Set!")
+                joinedUsers.add("playerUuid, username", "?,?", [player.getUniqueId(), player.getName()])
+            else:
+                print("Already Set!")
 
         register_event(PostLoginEvent, EventPriority.NORMAL, join)
 
