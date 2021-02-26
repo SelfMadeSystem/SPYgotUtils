@@ -40,7 +40,7 @@ dependencies {
 
     compileOnly 'me.clip:placeholderapi:2.10.9'
 
-    implementation 'com.github.retrooper:packetevents:v1.8-pre-4'
+    implementation 'com.github.retrooper:packetevents:1.8-pre-5'
 
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
     runtime "mysql:mysql-connector-java:8.0.15"
