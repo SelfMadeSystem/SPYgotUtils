@@ -45,18 +45,7 @@ public class SpigotLoader extends JavaPlugin implements Loader {
          * to maintain compatibility, otherwise you will create the instance.
          * Set the settings.
          */
-        //When a player injection fails, what should happen?
-        PacketEvents.create(this).getSettings().checkForUpdates(true) //We won't check for updates
-          .injectionFailureReaction(player -> {
-              /*
-               * NOTE: We are OFF the main thread. Kicking is not thread safe. We will switch over to the main thread to kick.
-               * By default if you don't specify a reaction, PacketEvents will kick them! If you need to modify the kick message or the whole action,
-               * use this feature!
-               * You NOT kicking the player will result in them staying on the server, and PacketEvents won't notice if they are sending any packets.
-               * We also won't notice if the server is sending any packets to that player.
-               */
-              Bukkit.getScheduler().runTask(this, () -> player.kickPlayer("Failed to inject. Please rejoin!"));
-          });
+        PacketEvents.create(this).getSettings().checkForUpdates(true); //We won't check for updates
         /*
          * Access the stored instance of the PacketEvents class and load PacketEvents.
          * A few settings need to be specified before loading PacketEvents
