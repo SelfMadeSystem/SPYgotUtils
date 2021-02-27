@@ -32,7 +32,7 @@ public class SConfigManager extends ConfigManager {
 
     @Override
     public Set<String> getConfigs() {
-        return configs.keySet();
+        return new HashSet<>(configs.keySet());
     }
 
     public YamlConfiguration getConfig(String name) {

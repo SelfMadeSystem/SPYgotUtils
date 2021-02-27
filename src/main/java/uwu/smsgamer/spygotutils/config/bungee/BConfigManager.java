@@ -40,7 +40,7 @@ public class BConfigManager extends ConfigManager {
 
     @Override
     public Set<String> getConfigs() {
-        return configs.keySet();
+        return new HashSet<>(configs.keySet());
     }
 
     @Override
