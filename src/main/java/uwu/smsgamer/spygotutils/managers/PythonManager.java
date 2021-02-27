@@ -4,10 +4,13 @@ import org.python.core.*;
 import org.python.util.PythonInterpreter;
 import uwu.smsgamer.spygotutils.SPYgotUtils;
 import uwu.smsgamer.spygotutils.config.*;
+import uwu.smsgamer.spygotutils.utils.FileUtils;
 import uwu.smsgamer.spygotutils.utils.python.*;
 import uwu.smsgamer.spygotutils.utils.python.spigot.PycketListener;
 
-import java.io.File;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 
 public class PythonManager {
@@ -47,13 +50,25 @@ public class PythonManager {
           "    return SPYgotUtils.getInstance().getDataFolder()\n"+
           "def on_spigot():\n" +
           "    from uwu.smsgamer.spygotutils import SPYgotUtils\n" +
-          "    return SPYgotUtils.getInstance().onSpigot\n");
+          "    return SPYgotUtils.getInstance().onSpigot\n" +
+          "def exec_file(file_name):\n" +
+          "    from java.io import File\n" +
+          "    from org.python.util import PythonInterpreter\n" +
+          "    interpreter = PythonInterpreter()\n" +
+          "    from uwu.smsgamer.spygotutils.managers import PythonManager\n" +
+          "    PythonManager.execute(interpreter, File(get_data_folder(), file_name), file_name)\n" +
+          "    return interpreter");
         defaultFuns = new PyFunction[]{(PyFunction) interpreter.get("register_event"),
           (PyFunction) interpreter.get("Command"),
           (PyFunction) interpreter.get("get_data_folder"),
-          (PyFunction) interpreter.get("on_spigot")};
+          (PyFunction) interpreter.get("on_spigot"),
+          (PyFunction) interpreter.get("exec_file")};
         interpreter.exec("from sys import path\n" +
           "path.append(\"" + SPYgotUtils.getLoader().getDataFolder() + File.separator + "scripts\")");
+    }
+
+    public static void execute(PythonInterpreter interpreter, File file, String fileName) {
+        interpreter.exec(interpreter.compile(FileUtils.readLineByLine(file), fileName));
     }
 
     public static void loadScripts() {

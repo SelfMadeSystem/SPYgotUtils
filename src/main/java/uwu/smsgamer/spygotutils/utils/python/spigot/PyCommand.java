@@ -32,7 +32,7 @@ public class PyCommand extends Command {
     @Override
     public List<String> tabComplete(CommandSender sender, String alias, String[] args) throws IllegalArgumentException {
         if (tabCompleter == null) {
-            throw new IllegalStateException("TabCompleter for PyCommand is null!");
+            return super.tabComplete(sender, alias, args);
         }
         // let bukkit handle exceptions
         PyObject obj = tabCompleter.__call__(new PyObject[]{Py.java2py(sender), Py.java2py(alias), Py.java2py(args)});
