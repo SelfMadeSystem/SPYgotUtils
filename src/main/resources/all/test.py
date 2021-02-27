@@ -9,6 +9,7 @@ def on_enable():  # or  onEnable  or enable
 # Happens when you do /spygotutils reload
 def on_reload():  # or  onReload  or  reload
     print("onReload")
+    reload_conf()
 
 
 # Happens on server stop (or server reload or plugman reload)
@@ -21,3 +22,12 @@ print("onLoad")
 import itest
 
 itest.owo()
+
+
+def reload_conf():
+    from org.python.util import PythonInterpreter
+    interpreter = exec_file("scripts/test-conf.py")  # type: PythonInterpreter
+    print interpreter.get("any_key")
+
+
+reload_conf()
