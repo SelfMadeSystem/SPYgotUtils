@@ -154,7 +154,10 @@ public abstract class AbstractDB implements SenDB {
         @Override
         public void set(String selected, Object object, String condition, Object... params) {
             try {
-                db.update("UPDATE " + getName() + " SET " + selected + "=" + object + " WHERE " + condition + ";", params);
+                Object[] updateParams = new Object[params.length + 1];
+                System.arraycopy(params, 0, updateParams, 1, params.length);
+                updateParams[0] = object;
+                db.update("UPDATE " + getName() + " SET " + selected + "=? WHERE " + condition + ";", updateParams);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
