@@ -1,3 +1,59 @@
+init: |-
+  from uwu.smsgamer.spygotutils import SPYgotUtils
+  on_spigot = SPYgotUtils.getInstance().onSpigot
+  def get_data_folder():
+      from uwu.smsgamer.spygotutils import SPYgotUtils
+      return SPYgotUtils.getInstance().getDataFolder()
+  def exec_file(file_name):
+      from java.io import File
+      from org.python.util import PythonInterpreter
+      interpreter = PythonInterpreter()
+      from uwu.smsgamer.spygotutils.managers import PythonManager
+      PythonManager.execute(interpreter, File(get_data_folder(), file_name), file_name)
+      return interpreter
+  def exec_str(str_to_exec):
+      from org.python.util import PythonInterpreter
+      interpreter = PythonInterpreter()
+      from uwu.smsgamer.spygotutils.managers import PythonManager
+      PythonManager.execute(interpreter, str_to_exec, '<string>')
+      return interpreter
+  if on_spigot():
+      from uwu.smsgamer.spygotutils.utils.python.spigot import PycketListener
+      packet_listener = PycketListener.getInstance()
+      def register_event(event_type, priority, function):
+          from uwu.smsgamer.spygotutils.utils.python.spigot import PyListener
+          PyListener.registerEvent(event_type, priority, function)
+      # Pretend I'm an object
+      def Command(name, description="", usage_msg=None, aliases=None):
+          if usage_msg is None:
+              usage_msg = "/" + name
+          if aliases is None:
+              aliases = []
+          from uwu.smsgamer.spygotutils.utils.python.spigot import PyCommand
+          return PyCommand(name, description, usage_msg, aliases)
+  else:
+      def register_event(event_type, priority, function):
+          from uwu.smsgamer.spygotutils.utils.python.bungee import BPyListener
+          BPyListener.registerEvent(event_type, priority, function)
+      # Pretend I'm an object
+      def Command(name, aliases=None):
+          if aliases is None:
+              aliases = []
+          from uwu.smsgamer.spygotutils.utils.python.bungee import BPyCommand
+          return BPyCommand(name, aliases)
+
+start-defs:
+  - get_data_folder
+  - exec_file
+  - exec_str
+  - register_event
+  - Command
+
+start-vars:
+  - 'on_spigot'
+  - 'spigot:packet_listener'
+#  - 'bungee:something'
+
 start-evaluators: |-
   def color(inp):
     i = 0
