@@ -2,74 +2,69 @@ package uwu.smsgamer.spygotutils.managers;
 
 import org.python.core.*;
 import org.python.util.PythonInterpreter;
+import uwu.smsgamer.senapi.utils.Pair;
 import uwu.smsgamer.spygotutils.SPYgotUtils;
-import uwu.smsgamer.spygotutils.config.*;
+import uwu.smsgamer.spygotutils.config.ConfVal;
 import uwu.smsgamer.spygotutils.utils.FileUtils;
-import uwu.smsgamer.spygotutils.utils.python.*;
-import uwu.smsgamer.spygotutils.utils.python.spigot.PycketListener;
+import uwu.smsgamer.spygotutils.utils.python.PyScript;
 
-import java.io.*;
+import java.io.File;
 import java.util.*;
 
 public class PythonManager {
     public static PyFunction[] defaultFuns;
-    public static PyObject packetListener;
+    public static Pair<String, PyObject>[] defaultVars;
     private static File[] files;
     private static final List<PyScript> scripts = new ArrayList<>();
 
-    public static void init() {
-        PythonInterpreter interpreter = new PythonInterpreter(); // Todo: Move all this to py-settings.yml
-        if (SPYgotUtils.getInstance().onSpigot) {
-            interpreter.exec("def register_event(event_type, priority, function):\n" +
-              "    from uwu.smsgamer.spygotutils.utils.python.spigot import PyListener\n" +
-              "    PyListener.registerEvent(event_type, priority, function)\n" +
-              "def Command(name, description=\"\", usage_msg=None, aliases=None):\n" +
-              "    if usage_msg is None:\n" +
-              "        usage_msg = \"/\" + name\n" +
-              "    if aliases is None:\n" +
-              "        aliases = []\n" +
-              "    from uwu.smsgamer.spygotutils.utils.python.spigot import PyCommand\n" +
-              "    return PyCommand(name, description, usage_msg, aliases)\n");
+    public static ConfVal<List<String>> loadScripts = new ConfVal<>("load-scripts", "py-settings", Collections.emptyList());
+    public static ConfVal<String> pythonInit = new ConfVal<>("init", "py-settings", "");
+    public static ConfVal<List<String>> startDefs = new ConfVal<>("start-defs", "py-settings", Collections.emptyList());
+    public static ConfVal<List<String>> startVars = new ConfVal<>("start-vars", "py-settings", Collections.emptyList());
 
-            packetListener = Py.java2py(PycketListener.getInstance());
-        } else {
-            interpreter.exec("def register_event(event_type, priority, function):\n" +
-              "    from uwu.smsgamer.spygotutils.utils.python.bungee import BPyListener\n" +
-              "    BPyListener.registerEvent(event_type, priority, function)\n" +
-              "#Pretend I'm an object\n" +
-              "def Command(name, aliases=None):\n" +
-              "    if aliases is None:\n" +
-              "        aliases = []\n" +
-              "    from uwu.smsgamer.spygotutils.utils.python.bungee import BPyCommand\n" +
-              "    return BPyCommand(name, aliases)\n");
+    public static void init() {
+        PythonInterpreter interpreter = new PythonInterpreter();
+        interpreter.exec(pythonInit.getValue());
+        List<String> defs = startDefs.getValue();
+        defaultFuns = new PyFunction[defs.size()];
+        for (int i = 0; i < defs.size(); i++) {
+            String def = defs.get(i);
+            if (def.startsWith("spigot:")) {
+                if (SPYgotUtils.getInstance().onSpigot) {
+                    PyObject pyObject = interpreter.get(def);
+                    defaultFuns[i] = (PyFunction) pyObject;
+                }
+            } else if (def.startsWith("bungee:")) {
+                if (!SPYgotUtils.getInstance().onSpigot) {
+                    PyObject pyObject = interpreter.get(def);
+                    defaultFuns[i] = (PyFunction) pyObject;
+                }
+            } else {
+                PyObject pyObject = interpreter.get(def);
+                defaultFuns[i] = (PyFunction) pyObject;
+            }
         }
-        interpreter.exec("def get_data_folder():\n" +
-          "    from uwu.smsgamer.spygotutils import SPYgotUtils\n" +
-          "    return SPYgotUtils.getInstance().getDataFolder()\n"+
-          "def on_spigot():\n" +
-          "    from uwu.smsgamer.spygotutils import SPYgotUtils\n" +
-          "    return SPYgotUtils.getInstance().onSpigot\n" +
-          "def exec_file(file_name):\n" +
-          "    from java.io import File\n" +
-          "    from org.python.util import PythonInterpreter\n" +
-          "    interpreter = PythonInterpreter()\n" +
-          "    from uwu.smsgamer.spygotutils.managers import PythonManager\n" +
-          "    PythonManager.execute(interpreter, File(get_data_folder(), file_name), file_name)\n" +
-          "    return interpreter\n" +
-          "def exec_str(str_to_exec):\n" +
-          "    from org.python.util import PythonInterpreter\n" +
-          "    interpreter = PythonInterpreter()\n" +
-          "    from uwu.smsgamer.spygotutils.managers import PythonManager\n" +
-          "    PythonManager.execute(interpreter, str_to_exec, '<string>')\n" +
-          "    return interpreter");
-        defaultFuns = new PyFunction[]{(PyFunction) interpreter.get("register_event"),
-          (PyFunction) interpreter.get("Command"),
-          (PyFunction) interpreter.get("get_data_folder"),
-          (PyFunction) interpreter.get("on_spigot"),
-          (PyFunction) interpreter.get("exec_file"),
-          (PyFunction) interpreter.get("exec_str")};
+        List<String> vars = startVars.getValue();
+        defaultVars = new Pair[vars.size()];
+        for (int i = 0; i < vars.size(); i++) {
+            String def = vars.get(i);
+            if (def.startsWith("spigot:")) {
+                if (SPYgotUtils.getInstance().onSpigot) {
+                    PyObject pyObject = interpreter.get(def);
+                    defaultVars[i] = new Pair<>(def, pyObject);
+                }
+            } else if (def.startsWith("bungee:")) {
+                if (!SPYgotUtils.getInstance().onSpigot) {
+                    PyObject pyObject = interpreter.get(def);
+                    defaultVars[i] = new Pair<>(def, pyObject);
+                }
+            } else {
+                PyObject pyObject = interpreter.get(def);
+                defaultVars[i] = new Pair<>(def, pyObject);
+            }
+        }
         interpreter.exec("from sys import path\n" +
-          "path.append(\"" + SPYgotUtils.getLoader().getDataFolder() + File.separator + "scripts\")");
+          "path.append('" + SPYgotUtils.getLoader().getDataFolder() + File.separator + "scripts')");
     }
 
     public static void execute(PythonInterpreter interpreter, File file, String fileName) {
@@ -77,7 +72,8 @@ public class PythonManager {
     }
 
     public static void execute(PythonInterpreter interpreter, String str, String fileName) {
-        for (PyFunction obj : defaultFuns) interpreter.set(obj.__name__, obj);
+        if (defaultFuns != null) for (PyFunction obj : defaultFuns) interpreter.set(obj.__name__, obj);
+        if (defaultVars != null) for (Pair<String, PyObject> pair : defaultVars) interpreter.set(pair.a, pair.b);
         interpreter.exec(interpreter.compile(str, fileName));
     }
 
@@ -96,8 +92,7 @@ public class PythonManager {
 
     public static void newScript(File file) {
         if (!file.exists()) return;
-        PyScript script = new PyScript(file).setFuns(defaultFuns);
-        if (packetListener != null) script.set("packet_listener", packetListener);
+        PyScript script = new PyScript(file).setFuns(defaultFuns).setVars(defaultVars);
         try {
             script.execFile();
             scripts.add(script);
@@ -106,8 +101,6 @@ public class PythonManager {
             e.printStackTrace();
         }
     }
-
-    public static ConfVal<List<String>> loadScripts = new ConfVal<>("load-scripts", "py-settings", Collections.emptyList());
 
     public static File getFile(String scriptName) {
         return new File(SPYgotUtils.getLoader().getDataFolder(), "scripts" + File.separator + scriptName);

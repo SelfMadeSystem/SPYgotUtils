@@ -13,7 +13,7 @@ joinedUsers = database.createTable("joinedUsers", "playerUuid UUID, username VAR
 
 
 def on_enable():
-    if on_spigot():
+    if on_spigot:
         from org.bukkit.event import EventPriority
         from org.bukkit.event.player import PlayerJoinEvent
 

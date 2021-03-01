@@ -17,7 +17,7 @@ init: |-
       from uwu.smsgamer.spygotutils.managers import PythonManager
       PythonManager.execute(interpreter, str_to_exec, '<string>')
       return interpreter
-  if on_spigot():
+  if on_spigot:
       from uwu.smsgamer.spygotutils.utils.python.spigot import PycketListener
       packet_listener = PycketListener.getInstance()
       def register_event(event_type, priority, function):

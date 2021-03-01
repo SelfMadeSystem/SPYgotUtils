@@ -2,6 +2,7 @@ package uwu.smsgamer.spygotutils.utils.python;
 
 import org.python.core.*;
 import org.python.util.PythonInterpreter;
+import uwu.smsgamer.senapi.utils.Pair;
 
 import java.io.*;
 import java.util.*;
@@ -30,6 +31,11 @@ public class PyScript {
 
     public PyScript setFuns(PyFunction[] objs) {
         if (objs != null) for (PyFunction obj : objs) set(obj.__name__, obj);
+        return this;
+    }
+
+    public PyScript setVars(Pair<String, PyObject>[] objs) {
+        if (objs != null) for (Pair<String, PyObject> pair : objs) set(pair.a, pair.b);
         return this;
     }
 
