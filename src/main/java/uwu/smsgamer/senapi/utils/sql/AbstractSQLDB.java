@@ -5,7 +5,10 @@ import uwu.smsgamer.senapi.utils.Pair;
 import java.sql.*;
 import java.util.*;
 
-public abstract class AbstractDB implements SenDB {
+/**
+ * An abstract implementation of {@link SenDB} for SQL.
+ */
+public abstract class AbstractSQLDB implements SenDB {
     public Connection con;
 
     @Override
@@ -62,10 +65,10 @@ public abstract class AbstractDB implements SenDB {
     public abstract SenDB.Table newTable(String name);
 
     protected abstract static class AbstractTable implements SenDB.Table {
-        protected final AbstractDB db;
+        protected final AbstractSQLDB db;
         protected final String name;
 
-        protected AbstractTable(AbstractDB database, String name) {
+        protected AbstractTable(AbstractSQLDB database, String name) {
             this.db = database;
             this.name = name;
         }

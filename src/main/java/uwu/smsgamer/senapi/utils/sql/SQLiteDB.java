@@ -1,14 +1,11 @@
 package uwu.smsgamer.senapi.utils.sql;
 
-import uwu.smsgamer.senapi.utils.Pair;
-
 import java.sql.*;
-import java.util.*;
 
 /**
  * An Implementation of {@link SenDB} for SQLite.
  */
-public class SQLiteDB extends AbstractDB {
+public class SQLiteDB extends AbstractSQLDB {
     public String path;
 
     public SQLiteDB(String path) {
@@ -40,6 +37,7 @@ public class SQLiteDB extends AbstractDB {
         private SQLiteTable(SQLiteDB db, String name) {
             super(db, name);
         }
+
         @Override
         public void truncate() {
             try {

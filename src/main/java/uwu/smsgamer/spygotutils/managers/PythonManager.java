@@ -9,8 +9,6 @@ import uwu.smsgamer.spygotutils.utils.python.*;
 import uwu.smsgamer.spygotutils.utils.python.spigot.PycketListener;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.*;
 
 public class PythonManager {
@@ -20,7 +18,7 @@ public class PythonManager {
     private static final List<PyScript> scripts = new ArrayList<>();
 
     public static void init() {
-        PythonInterpreter interpreter = new PythonInterpreter();
+        PythonInterpreter interpreter = new PythonInterpreter(); // Todo: Move all this to py-settings.yml
         if (SPYgotUtils.getInstance().onSpigot) {
             interpreter.exec("def register_event(event_type, priority, function):\n" +
               "    from uwu.smsgamer.spygotutils.utils.python.spigot import PyListener\n" +
@@ -57,18 +55,30 @@ public class PythonManager {
           "    interpreter = PythonInterpreter()\n" +
           "    from uwu.smsgamer.spygotutils.managers import PythonManager\n" +
           "    PythonManager.execute(interpreter, File(get_data_folder(), file_name), file_name)\n" +
+          "    return interpreter\n" +
+          "def exec_str(str_to_exec):\n" +
+          "    from org.python.util import PythonInterpreter\n" +
+          "    interpreter = PythonInterpreter()\n" +
+          "    from uwu.smsgamer.spygotutils.managers import PythonManager\n" +
+          "    PythonManager.execute(interpreter, str_to_exec, '<string>')\n" +
           "    return interpreter");
         defaultFuns = new PyFunction[]{(PyFunction) interpreter.get("register_event"),
           (PyFunction) interpreter.get("Command"),
           (PyFunction) interpreter.get("get_data_folder"),
           (PyFunction) interpreter.get("on_spigot"),
-          (PyFunction) interpreter.get("exec_file")};
+          (PyFunction) interpreter.get("exec_file"),
+          (PyFunction) interpreter.get("exec_str")};
         interpreter.exec("from sys import path\n" +
           "path.append(\"" + SPYgotUtils.getLoader().getDataFolder() + File.separator + "scripts\")");
     }
 
     public static void execute(PythonInterpreter interpreter, File file, String fileName) {
-        interpreter.exec(interpreter.compile(FileUtils.readLineByLine(file), fileName));
+        execute(interpreter, FileUtils.readLineByLine(file), fileName);
+    }
+
+    public static void execute(PythonInterpreter interpreter, String str, String fileName) {
+        for (PyFunction obj : defaultFuns) interpreter.set(obj.__name__, obj);
+        interpreter.exec(interpreter.compile(str, fileName));
     }
 
     public static void loadScripts() {

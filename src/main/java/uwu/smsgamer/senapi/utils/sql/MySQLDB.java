@@ -1,14 +1,11 @@
 package uwu.smsgamer.senapi.utils.sql;
 
-import uwu.smsgamer.senapi.utils.Pair;
-
 import java.sql.*;
-import java.util.*;
 
 /**
  * An Implementation of {@link SenDB} for MySQL.
  */
-public class MySQLDB extends AbstractDB {
+public class MySQLDB extends AbstractSQLDB {
     public String host;
     public int port;
     public String database;
@@ -24,14 +21,6 @@ public class MySQLDB extends AbstractDB {
         this.username = username;
         this.password = password;
         this.tablePrefix = tablePrefix;
-    }
-
-    @Override
-    public void initialize(Pair<String, String>... rows) {
-        connect();
-        for (Pair<String, String> row : rows) {
-            createTable(row.a, row.b);
-        }
     }
 
     @Override
