@@ -69,6 +69,7 @@ public final class SPYgotUtils {
 
     private void aScriptFiles() {
         FileUtils.saveResource(getLoader(), "all/test.py", new File(getLoader().getDataFolder(), "scripts/test.py"), false);
+        FileUtils.saveResource(getLoader(), "all/test-conf.py", new File(getLoader().getDataFolder(), "scripts/itest.py"), false);
         FileUtils.saveResource(getLoader(), "all/itest.py", new File(getLoader().getDataFolder(), "scripts/itest.py"), false);
         FileUtils.saveResource(getLoader(), "all/sql.py", new File(getLoader().getDataFolder(), "scripts/sql.py"), false);
     }
