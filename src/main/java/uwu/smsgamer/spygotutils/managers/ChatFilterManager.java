@@ -47,9 +47,7 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
         for (String key : conf.getConfigurationSection("outgoing-chat").getKeys(false)) {
             ConfigurationSection section = conf.getConfigurationSection("outgoing-chat." + key);
             try {
-                String preExec = section.getString("pre-exec");
-                if (preExec != null && !preExec.isEmpty())
-                    evaluator.exec(preExec);
+                preExec(evaluator, section);
                 PyObject result = evaluator.eval(section.getString("check"));
                 boolean checkResult = false;
                 if (result.getClass().equals(PyBoolean.class)) {
@@ -69,11 +67,7 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
                 } else {
                     System.out.println(key + ":" + result.getClass());
                 }
-                String postExec = section.getString("post-exec");
-                if (postExec != null && !postExec.isEmpty()) {
-                    evaluator.set("check", checkResult);
-                    evaluator.exec(postExec);
-                }
+                postExec(evaluator, section, checkResult);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -94,9 +88,7 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
         for (String key : conf.getConfigurationSection("incoming-command").getKeys(false)) {
             ConfigurationSection section = conf.getConfigurationSection("incoming-command." + key);
             try {
-                String preExec = section.getString("pre-exec");
-                if (preExec != null && !preExec.isEmpty())
-                    evaluator.exec(preExec);
+                preExec(evaluator, section);
                 String check = section.getString("check");
                 check = StringUtils.replaceArgsPlaceholders(check, args);
                 PyObject result = evaluator.eval(check);
@@ -114,11 +106,7 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
                 } else {
                     System.out.println(key + ":" + result.getClass());
                 }
-                String postExec = section.getString("post-exec");
-                if (postExec != null && !postExec.isEmpty()) {
-                    evaluator.set("check", checkResult);
-                    evaluator.exec(postExec);
-                }
+                postExec(evaluator, section, checkResult);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -139,9 +127,7 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
         for (String key : conf.getConfigurationSection("incoming-chat").getKeys(false)) {
             ConfigurationSection section = conf.getConfigurationSection("incoming-chat." + key);
             try {
-                String preExec = section.getString("pre-exec");
-                if (preExec != null && !preExec.isEmpty())
-                    evaluator.exec(preExec);
+                preExec(evaluator, section);
                 String check = section.getString("check");
                 check = StringUtils.replaceArgsPlaceholders(check, args);
                 PyObject result = evaluator.eval(check);
@@ -159,11 +145,7 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
                 } else {
                     System.out.println(key + ":" + result.getClass());
                 }
-                String postExec = section.getString("post-exec");
-                if (postExec != null && !postExec.isEmpty()) {
-                    evaluator.set("check", checkResult);
-                    evaluator.exec(postExec);
-                }
+                postExec(evaluator, section, checkResult);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -186,9 +168,7 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
         for (String key : conf.getConfigurationSection("incoming-tab").getKeys(false)) {
             ConfigurationSection section = conf.getConfigurationSection("incoming-tab." + key);
             try {
-                String exec = section.getString("pre-exec");
-                if (exec != null && !exec.isEmpty())
-                    evaluator.exec(exec);
+                preExec(evaluator, section);
                 String check = section.getString("check");
                 check = StringUtils.replaceArgsPlaceholders(check, args);
                 PyObject result = evaluator.eval(check);
@@ -216,14 +196,24 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
                 } else {
                     System.out.println(key + ":" + result.getClass());
                 }
-                String postExec = section.getString("post-exec");
-                if (postExec != null && !postExec.isEmpty()) {
-                    evaluator.set("check", checkResult);
-                    evaluator.exec(postExec);
-                }
+                postExec(evaluator, section, checkResult);
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+        }
+    }
+
+    private void preExec(Evaluator evaluator, ConfigurationSection section) {
+        String preExec = section.getString("pre-exec");
+        if (preExec != null && !preExec.isEmpty())
+            evaluator.exec(preExec);
+    }
+
+    private void postExec(Evaluator evaluator, ConfigurationSection section, boolean checkResult) {
+        String postExec = section.getString("post-exec");
+        if (postExec != null && !postExec.isEmpty()) {
+            evaluator.set("check", checkResult);
+            evaluator.exec(postExec);
         }
     }
 
