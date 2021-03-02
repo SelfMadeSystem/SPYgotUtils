@@ -18,17 +18,19 @@ import uwu.smsgamer.spygotutils.utils.*;
 import java.util.*;
 import java.util.stream.*;
 
-public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much stuff can be reused as funcs)
+public class ChatFilterManager {
     private static ChatFilterManager instance;
     private YamlConfiguration conf;
+    private final AbstractChatFilter chatFilter;
 
     public static ChatFilterManager getInstance() {
-        if (instance == null) instance = new ChatFilterManager();
+        if (instance == null) throw new IllegalStateException("Instance is null!");
         return instance;
     }
 
-    public ChatFilterManager() {
+    public ChatFilterManager(AbstractChatFilter chatFilter) {
         instance = this;
+        this.chatFilter = chatFilter;
         reload();
     }
 
@@ -190,12 +192,11 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
         }
     }
 
-    private Evaluator getOutgoingEvaluator(String message, Player p, String[] args) {
+    private Evaluator getOutgoingEvaluator(String message, Object p, String[] args) {
         Evaluator evaluator = EvalUtils.newEvaluator(p);
         evaluator.set("msg", message);
         int indOf = message.indexOf(" ");
         evaluator.set("label", message.substring(0, indOf < 0 ? message.length() : indOf));
-        evaluator.set("name", p.getName());
         evaluator.set("args", args);
         return evaluator;
     }
