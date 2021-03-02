@@ -1,6 +1,6 @@
-package uwu.smsgamer.senapi.utils;
+package uwu.smsgamer.senapi.utils.spigot;
 
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.permissions.Permissible;
 import uwu.smsgamer.senapi.*;
@@ -8,7 +8,7 @@ import uwu.smsgamer.senapi.*;
 /**
  * Utilities regarding players.
  */
-public class PlayerUtils {
+public class SPlayerUtils {
     /**
      * Returns an array of characters representing every colour the player has access to.
      *
@@ -30,15 +30,15 @@ public class PlayerUtils {
 
     /**
      * Returns the sender cast to an offline player if it's an offline players.
-     * If it isn't, then it returns a {@link ConsolePlayer} instance.
+     * If it isn't, then it returns a {@link SConsolePlayer} instance.
      *
      * @param sender The sender to check for.
      * @return the sender cast to an offline player if it's an offline players.
-     * If it isn't, then it returns a {@link ConsolePlayer} instance.
+     * If it isn't, then it returns a {@link SConsolePlayer} instance.
      */
     public static OfflinePlayer getPlayer(CommandSender sender) {
         if (sender instanceof OfflinePlayer) {
             return (OfflinePlayer) sender;
-        } else return ConsolePlayer.getInstance();
+        } else return SConsolePlayer.getInstance();
     }
 }

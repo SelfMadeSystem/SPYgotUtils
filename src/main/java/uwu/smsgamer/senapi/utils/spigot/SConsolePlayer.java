@@ -1,4 +1,4 @@
-package uwu.smsgamer.senapi;
+package uwu.smsgamer.senapi.utils.spigot;
 
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -8,14 +8,14 @@ import java.util.*;
 /**
  * An {@link OfflinePlayer} implementation that represents the console.
  */
-public class ConsolePlayer implements OfflinePlayer {
+public class SConsolePlayer implements OfflinePlayer {
     private static final String NAME = "CONSOLE";
     private static final UUID UUID = new UUID(0L, 0L);
 
-    private static ConsolePlayer INSTANCE;
+    private static SConsolePlayer INSTANCE;
 
-    public static ConsolePlayer getInstance() {
-        if (INSTANCE == null) INSTANCE = new ConsolePlayer();
+    public static SConsolePlayer getInstance() {
+        if (INSTANCE == null) INSTANCE = new SConsolePlayer();
         return INSTANCE;
     }
 

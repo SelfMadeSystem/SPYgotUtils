@@ -4,6 +4,7 @@ import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.Nullable;
 import uwu.smsgamer.senapi.utils.StringUtils;
+import uwu.smsgamer.senapi.utils.spigot.*;
 import uwu.smsgamer.spygotutils.config.ConfVal;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class ChatUtils {
     public static String toChatString(String message, @Nullable CommandSender player) {
         message = message.replace("%prefix%", prefix.getValue());
         if (player instanceof OfflinePlayer)
-            return StringUtils.colorize(StringUtils.replacePlaceholders((OfflinePlayer) player, message));
+            return StringUtils.colorize(SStringUtils.replacePlaceholders((OfflinePlayer) player, message));
         else return StringUtils.colorize(message);
     }
 

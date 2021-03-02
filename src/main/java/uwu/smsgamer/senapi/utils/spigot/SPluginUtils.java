@@ -1,11 +1,11 @@
-package uwu.smsgamer.senapi.utils;
+package uwu.smsgamer.senapi.utils.spigot;
 
 import org.bukkit.Bukkit;
 
 /**
  * Utils for plugins.
  */
-public class PluginUtils {
+public class SPluginUtils {
     /**
      * Gets if a plugin is enabled.
      * @param name Plugin name.
