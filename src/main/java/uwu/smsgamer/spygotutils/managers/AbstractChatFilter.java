@@ -1,7 +1,7 @@
 package uwu.smsgamer.spygotutils.managers;
 
 import uwu.smsgamer.senapi.utils.*;
-import uwu.smsgamer.spygotutils.utils.EvalUtils;
+import uwu.smsgamer.spygotutils.utils.*;
 
 import java.util.List;
 
@@ -20,7 +20,9 @@ public abstract class AbstractChatFilter {
     }
 
     public abstract Result chatFilter(Object player, String msg, String[] args);
+
     public abstract Result commandFilter(Object player, String msg, String label, String[] args);
+
     public abstract Result tabFilter(Object player, String msg, String label, String[] args, List<String> completions);
 
     public static Evaluator newEvaluator(Object player, String msg, String label, String[] args) {
@@ -29,6 +31,15 @@ public abstract class AbstractChatFilter {
         if (label != null) evaluator.set("label", label);
         if (args != null) evaluator.set("args", args);
         return evaluator;
+    }
+
+    public static void preExec(Evaluator evaluator, String exec) {
+        if (exec != null && !exec.isEmpty()) evaluator.exec(exec);
+    }
+
+    public static void postExec(Evaluator evaluator, Result result, String exec) {
+        evaluator.set("result", result);
+        if (exec != null && !exec.isEmpty()) evaluator.exec(exec);
     }
 
     public static class Result {
