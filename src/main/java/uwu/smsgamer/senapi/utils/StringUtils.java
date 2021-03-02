@@ -301,4 +301,22 @@ public class StringUtils {
         }
         return sb.toString();
     }
+
+    public static String[] split(String s, char c) {
+        int amnt = 0;
+        char[] ca = s.toCharArray();
+        for (char c1 : ca) if (c1 == c) amnt++;
+        if (amnt == 0) return new String[]{s};
+        String[] result = new String[amnt + 1];
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        for (char c1 : ca) {
+            if (c1 == c) {
+                result[i++] = sb.toString();
+                sb.setLength(0);
+            } else sb.append(c1);
+        }
+        result[i] = sb.toString();
+        return result;
+    }
 }
