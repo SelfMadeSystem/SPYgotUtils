@@ -6,6 +6,8 @@ import uwu.smsgamer.spygotutils.utils.EvalUtils;
 import java.util.List;
 
 public abstract class AbstractChatFilter {
+    public abstract void reload();
+
     public abstract Result sendFilter(Object player, String msg, String json);
 
     public Result chatReceive(Object player, String msg) {
