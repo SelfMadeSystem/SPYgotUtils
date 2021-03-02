@@ -78,13 +78,9 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
         if (!conf.contains("incoming-command")) return;
 
         String message = e.getMessage();
+        Player p = e.getPlayer();
         String[] args = message.substring(message.indexOf(" ") + 1).split(" ");
-        Evaluator evaluator = EvalUtils.newEvaluator(e.getPlayer());
-        evaluator.set("msg", message);
-        int indOf = message.indexOf(" ");
-        evaluator.set("label", message.substring(0, indOf < 0 ? message.length() : indOf));
-        evaluator.set("name", e.getPlayer().getName());
-        evaluator.set("args", args);
+        Evaluator evaluator = getOutgoingEvaluator(message, p, args);
         for (String key : conf.getConfigurationSection("incoming-command").getKeys(false)) {
             ConfigurationSection section = conf.getConfigurationSection("incoming-command." + key);
             try {
@@ -101,7 +97,7 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
                             String s = evaluator.eval(section.getString("replacement")).toString();
                             e.setMessage(s);
                         }
-                        execCmd(section.getStringList("execute-commands"), args, e.getPlayer());
+                        execCmd(section.getStringList("execute-commands"), args, p);
                     }
                 } else {
                     System.out.println(key + ":" + result.getClass());
@@ -117,13 +113,9 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
         if (!conf.contains("incoming-chat")) return;
 
         String message = e.getMessage();
+        Player p = e.getPlayer();
         String[] args = message.substring(message.indexOf(" ") + 1).split(" ");
-        Evaluator evaluator = EvalUtils.newEvaluator(e.getPlayer());
-        evaluator.set("msg", message);
-        int indOf = message.indexOf(" ");
-        evaluator.set("label", message.substring(0, indOf < 0 ? message.length() : indOf));
-        evaluator.set("name", e.getPlayer().getName());
-        evaluator.set("args", args);
+        Evaluator evaluator = getOutgoingEvaluator(message, p, args);
         for (String key : conf.getConfigurationSection("incoming-chat").getKeys(false)) {
             ConfigurationSection section = conf.getConfigurationSection("incoming-chat." + key);
             try {
@@ -140,8 +132,8 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
                             String s = evaluator.eval(section.getString("replacement")).toString();
                             e.setMessage(s);
                         }
+                        execCmd(section.getStringList("execute-commands"), args, p);
                     }
-                    execCmd(section.getStringList("execute-commands"), args, e.getPlayer());
                 } else {
                     System.out.println(key + ":" + result.getClass());
                 }
@@ -158,12 +150,7 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
         Player p = (Player) e.getSender();
         String message = e.getBuffer();
         String[] args = message.substring(message.indexOf(" ") + 1).split(" ");
-        Evaluator evaluator = EvalUtils.newEvaluator(p);
-        evaluator.set("msg", message);
-        int indOf = message.indexOf(" ");
-        evaluator.set("label", message.substring(0, indOf < 0 ? message.length() : indOf));
-        evaluator.set("name", p.getName());
-        evaluator.set("args", args);
+        Evaluator evaluator = getOutgoingEvaluator(message, p, args);
         evaluator.set("completions", e.getCompletions());
         for (String key : conf.getConfigurationSection("incoming-tab").getKeys(false)) {
             ConfigurationSection section = conf.getConfigurationSection("incoming-tab." + key);
@@ -191,8 +178,8 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
                             }
                             e.setCompletions(replacements);
                         }
+                        execCmd(section.getStringList("execute-commands"), args, p);
                     }
-                    execCmd(section.getStringList("execute-commands"), args, p);
                 } else {
                     System.out.println(key + ":" + result.getClass());
                 }
@@ -201,6 +188,16 @@ public class ChatFilterManager { // TODO: 2021-02-21 CLEAN THIS SHIT UP (so much
                 ex.printStackTrace();
             }
         }
+    }
+
+    private Evaluator getOutgoingEvaluator(String message, Player p, String[] args) {
+        Evaluator evaluator = EvalUtils.newEvaluator(p);
+        evaluator.set("msg", message);
+        int indOf = message.indexOf(" ");
+        evaluator.set("label", message.substring(0, indOf < 0 ? message.length() : indOf));
+        evaluator.set("name", p.getName());
+        evaluator.set("args", args);
+        return evaluator;
     }
 
     private void preExec(Evaluator evaluator, ConfigurationSection section) {
