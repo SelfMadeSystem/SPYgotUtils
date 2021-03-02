@@ -6,22 +6,22 @@ import java.util.List;
 
 public class SChatFilter extends AbstractChatFilter {
     @Override
-    public boolean sendFilter(Object player, String msg, String json) {
-        return false;
+    public Result sendFilter(Object player, String msg, String json) {
+        return new Result(false);
     }
 
     @Override
-    public boolean chatFilter(Object player, String msg, String[] args) {
-        return false;
+    public Result chatFilter(Object player, String msg, String[] args) {
+        return new Result(false);
     }
 
     @Override
-    public boolean commandFilter(Object player, String msg, String label, String[] args) {
-        return false;
+    public Result commandFilter(Object player, String msg, String label, String[] args) {
+        return new Result(false);
     }
 
     @Override
-    public List<String> tabFilter(Object player, String msg, String[] args) {
-        return null;
+    public Result tabFilter(Object player, String msg, String label, String[] args, List<String> completions) {
+        return new Result(completions);
     }
 }
