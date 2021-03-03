@@ -102,7 +102,7 @@ public abstract class AbstractChatFilter {
     public Result incomingChat(Object player, String msg, String[] args) {
         String type = "incoming-chat";
         Result result = new Result(msg);
-        Evaluator evaluator = newEvaluator(player, msg, null, args);
+        Evaluator evaluator = newEvaluator(player, msg, args[0], args);
 
         for (String key : keys(type)) {
             preExec(evaluator, preExec(type, key));
