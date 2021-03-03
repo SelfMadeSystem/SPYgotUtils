@@ -248,5 +248,17 @@ public abstract class AbstractChatFilter {
         public Result(List<String> completions) {
             this.completions = completions;
         }
+
+        @Override
+        public String toString() {
+            return "Result{" +
+              "didSomething=" + didSomething +
+              ", weight=" + weight +
+              ", cancel=" + cancel +
+              ", message='" + message + '\'' +
+              ", isJson=" + isJson +
+              ", completions=" + completions +
+              '}';
+        }
     }
 }
