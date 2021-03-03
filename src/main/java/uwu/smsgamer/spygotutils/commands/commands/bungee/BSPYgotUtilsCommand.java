@@ -66,6 +66,8 @@ public class BSPYgotUtilsCommand extends BSmsCommand {
                               .replace("%proxy-ver%", plugin.getProxy().getVersion()), sender);
                         }
                         break;
+                    default:
+                        BChatUtils.sendMessage(usage.getValue().replace("%label%", "bspygotutils"), sender);
                 }
             }
         }

@@ -2,7 +2,7 @@ package uwu.smsgamer.spygotutils.commands.commands.spigot;
 
 import org.bukkit.command.*;
 import org.bukkit.plugin.java.JavaPlugin;
-import uwu.smsgamer.spygotutils.*;
+import uwu.smsgamer.spygotutils.SpigotLoader;
 import uwu.smsgamer.spygotutils.commands.SmsCommand;
 import uwu.smsgamer.spygotutils.config.*;
 import uwu.smsgamer.spygotutils.managers.*;
@@ -57,7 +57,7 @@ public class SPYgotUtilsCommand extends SmsCommand {
                             PythonManager.loadScripts();
                             long end = System.currentTimeMillis();
                             ChatUtils.sendMessage((success ? reloadSuccess : reloadFail).getValue()
-                              .replace("%ms%", String.valueOf(end-begin)), sender);
+                              .replace("%ms%", String.valueOf(end - begin)), sender);
                         }
                         break;
                     case "version":
@@ -69,6 +69,8 @@ public class SPYgotUtilsCommand extends SmsCommand {
                               .replace("%bukkit-ver%", plugin.getServer().getBukkitVersion()), sender);
                         }
                         break;
+                    default:
+                        ChatUtils.sendMessage(usage.getValue().replace("%label%", label), sender);
                 }
             }
         }
