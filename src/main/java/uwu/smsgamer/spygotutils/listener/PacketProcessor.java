@@ -1,15 +1,21 @@
 package uwu.smsgamer.spygotutils.listener;
 
-import io.github.retrooper.packetevents.event.*;
-import io.github.retrooper.packetevents.event.impl.*;
+import io.github.retrooper.packetevents.event.PacketListenerDynamic;
+import io.github.retrooper.packetevents.event.impl.PacketPlaySendEvent;
 import io.github.retrooper.packetevents.packettype.PacketType;
-import uwu.smsgamer.spygotutils.managers.ChatFilterManager;
+import io.github.retrooper.packetevents.packetwrappers.NMSPacket;
+import io.github.retrooper.packetevents.packetwrappers.play.out.chat.WrappedPacketOutChat;
+import uwu.smsgamer.spygotutils.managers.*;
 
 public class PacketProcessor extends PacketListenerDynamic {
     @Override
     public void onPacketPlaySend(PacketPlaySendEvent event) {
         if (event.getPacketId() == PacketType.Play.Server.CHAT) {
-            ChatFilterManager.getInstance().packetSendEvent(event);
+            WrappedPacketOutChat packet = new WrappedPacketOutChat(event.getNMSPacket());
+            AbstractChatFilter.Result result = ChatFilterManager.getInstance().chatFilter.outgoingChat(event.getPlayer(), packet.getMessage(), null);
+            if (!result.didSomething) return;
+            event.setNMSPacket(new NMSPacket(
+              new WrappedPacketOutChat(result.message, event.getPlayer().getUniqueId(), result.isJson).asNMSPacket()));
         }
     }
 }

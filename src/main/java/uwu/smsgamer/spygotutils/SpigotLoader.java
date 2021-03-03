@@ -10,6 +10,7 @@ import uwu.smsgamer.spygotutils.config.ConfigManager;
 import uwu.smsgamer.spygotutils.config.spigot.SConfigManager;
 import uwu.smsgamer.spygotutils.listener.*;
 import uwu.smsgamer.spygotutils.managers.ChatFilterManager;
+import uwu.smsgamer.spygotutils.managers.chatfilter.*;
 import uwu.smsgamer.spygotutils.utils.ChatUtils;
 import uwu.smsgamer.spygotutils.utils.python.spigot.*;
 
@@ -61,7 +62,7 @@ public class SpigotLoader extends JavaPlugin implements Loader {
 
         ConfigManager.getInstance().setup("messages", "chat-filter", "py-settings");
 
-        ChatFilterManager.getInstance();
+        new ChatFilterManager(new SChatFilter());
 
         ChatUtils.init();
         PyListener.init();
@@ -70,6 +71,7 @@ public class SpigotLoader extends JavaPlugin implements Loader {
 
     @Override
     public void onEnable() {
+
         //Initiate PacketEvents
         PacketEvents.get().init(this);
 

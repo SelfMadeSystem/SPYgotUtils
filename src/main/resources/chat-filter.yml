@@ -10,6 +10,7 @@ outgoing-chat:
     #We want that  not  to invert it because we want to cancel it if it is not their flag
     cancel: true # Cancel it; not their flag.
     # execute-commands: []
+    # weight: 1 # If multiple checks try to replace or cancel it, the one with the highest weight wins.
 
   example2: # Average Hawk notif message is:   HAWK: Username failed check. VL: 0
     pre-exec: ''

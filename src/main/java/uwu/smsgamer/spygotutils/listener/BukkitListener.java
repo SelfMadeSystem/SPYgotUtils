@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.server.TabCompleteEvent;
-import uwu.smsgamer.spygotutils.managers.ChatFilterManager;
+import uwu.smsgamer.spygotutils.managers.*;
 
 public class BukkitListener implements Listener {
     private static BukkitListener instance;
@@ -16,16 +16,27 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent e) {
-        ChatFilterManager.getInstance().commandReceiveEvent(e);
+        AbstractChatFilter.Result result = ChatFilterManager.getInstance().chatFilter.chatReceive(e.getPlayer(), e.getMessage());
+        if (!result.didSomething) return;
+        e.setCancelled(result.cancel);
+        e.setMessage(result.message);
     }
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent e) {
-        ChatFilterManager.getInstance().chatReceiveEvent(e);
+        AbstractChatFilter.Result result = ChatFilterManager.getInstance().chatFilter.chatReceive(e.getPlayer(), e.getMessage());
+        if (!result.didSomething) return;
+        e.setCancelled(result.cancel);
+        e.setMessage(result.message);
     }
 
     @EventHandler
     public void onTab(TabCompleteEvent e) {
-        if (e.getSender() instanceof Player) ChatFilterManager.getInstance().tabReceiveEvent(e);
+        if (!(e.getSender() instanceof Player)) return;
+        AbstractChatFilter.Result result = ChatFilterManager.getInstance().chatFilter
+          .incomingTab(e.getSender(), e.getBuffer(), e.getCompletions());
+        if (!result.didSomething) return;
+        e.setCancelled(result.cancel);
+        e.setCompletions(result.completions);
     }
 }

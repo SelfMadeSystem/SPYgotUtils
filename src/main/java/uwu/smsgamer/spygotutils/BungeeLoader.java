@@ -7,6 +7,8 @@ import net.md_5.bungee.event.EventBus;
 import uwu.smsgamer.spygotutils.commands.CommandManager;
 import uwu.smsgamer.spygotutils.config.ConfigManager;
 import uwu.smsgamer.spygotutils.config.bungee.BConfigManager;
+import uwu.smsgamer.spygotutils.managers.ChatFilterManager;
+import uwu.smsgamer.spygotutils.managers.chatfilter.BChatFilter;
 import uwu.smsgamer.spygotutils.utils.BChatUtils;
 import uwu.smsgamer.spygotutils.utils.python.bungee.BPyListener;
 
@@ -46,6 +48,8 @@ public class BungeeLoader extends Plugin implements Loader {
 
         ConfigManager.getInstance().setup("messages", "py-settings");
 
+        new ChatFilterManager(new BChatFilter());
+
         ins.onLoad();
 
         BChatUtils.init();
@@ -55,6 +59,7 @@ public class BungeeLoader extends Plugin implements Loader {
 
     @Override
     public void onEnable() {
+
         SPYgotUtils.getInstance().onEnable();
         CommandManager.bungeeCommands();
         if (SPYgotUtils.getInstance().firstLoad) SPYgotUtils.getInstance().configFiles();
