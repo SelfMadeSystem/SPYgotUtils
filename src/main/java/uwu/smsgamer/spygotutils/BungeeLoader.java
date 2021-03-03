@@ -46,7 +46,7 @@ public class BungeeLoader extends Plugin implements Loader {
 
         ConfigManager.setInstance(new BConfigManager());
 
-        ConfigManager.getInstance().setup("messages", "py-settings");
+        ConfigManager.getInstance().setup("messages", "chat-filter", "py-settings");
 
         new ChatFilterManager(new BChatFilter());
 

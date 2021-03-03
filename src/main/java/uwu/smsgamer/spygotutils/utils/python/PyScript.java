@@ -35,7 +35,7 @@ public class PyScript {
     }
 
     public PyScript setVars(Pair<String, PyObject>[] objs) {
-        if (objs != null) for (Pair<String, PyObject> pair : objs) set(pair.a, pair.b);
+        if (objs != null) for (Pair<String, PyObject> pair : objs) if (pair != null) set(pair.a, pair.b);
         return this;
     }
 
