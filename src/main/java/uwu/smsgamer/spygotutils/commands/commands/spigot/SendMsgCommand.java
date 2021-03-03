@@ -10,9 +10,9 @@ import uwu.smsgamer.spygotutils.utils.*;
 import java.util.*;
 
 public class SendMsgCommand extends SmsCommand {
-    public ConfVal<String> noPlayer = new ConfVal<>("commands.send-msg.noPlayer", "messages",
+    public ConfVal<String> noPlayer = new ConfVal<>("commands.send-message.no-player", "messages",
       "%prefix% &cPlayer &a%arg%&c doesn't exist!");
-    public ConfVal<String> success = new ConfVal<>("commands.send-msg.success", "messages",
+    public ConfVal<String> success = new ConfVal<>("commands.send-message.success", "messages",
       "%prefix% &rSent message to &a%arg%&r.");
 
     public SendMsgCommand() {
@@ -36,6 +36,7 @@ public class SendMsgCommand extends SmsCommand {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        return null;
+        if (sender.hasPermission(this.permissionBase) && args.length == 0) return null;
+        return Collections.emptyList();
     }
 }
