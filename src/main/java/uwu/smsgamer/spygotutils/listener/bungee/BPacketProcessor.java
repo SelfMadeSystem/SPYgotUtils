@@ -3,6 +3,8 @@ package uwu.smsgamer.spygotutils.listener.bungee;
 import de.exceptionflug.protocolize.api.event.*;
 import de.exceptionflug.protocolize.api.handler.PacketAdapter;
 import de.exceptionflug.protocolize.api.protocol.*;
+import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.chat.*;
 import net.md_5.bungee.protocol.packet.Chat;
 import uwu.smsgamer.spygotutils.managers.*;
 
@@ -16,25 +18,31 @@ public class BPacketProcessor extends PacketAdapter<Chat> {
 
     @Override
     public void send(PacketSendEvent<Chat> event) {
-        Chat packet = event.getPacket();
-        System.out.println(b + ":send:" + packet.getPosition() + ":" + packet.getMessage());
         if (!b) return;
-        if (packet.getPosition() == 1) { // todo: not json
-            AbstractChatFilter.Result result = ChatFilterManager.getInstance().chatFilter.outgoingChat(event.getPlayer(), null, packet.getMessage());
+        Chat packet = event.getPacket();
+        if (packet.getPosition() == 1) {
+            AbstractChatFilter.Result result = ChatFilterManager.getInstance().chatFilter.outgoingChat(event.getPlayer(), getMessageFromJson(packet.getMessage()), packet.getMessage());
             if (!result.didSomething) return;
-            packet.setMessage(result.message);
+            if (result.isJson) packet.setMessage(result.message);
+            else packet.setMessage("\"" + result.message + "\"");
         }
     }
 
     @Override
     public void receive(PacketReceiveEvent<Chat> event) {
-        Chat packet = event.getPacket();
-        System.out.println(b + ":receive:" + packet.getPosition() + ":" + packet.getMessage());
         if (b) return;
-        if (packet.getPosition() == 1) { // todo: not json
-            AbstractChatFilter.Result result = ChatFilterManager.getInstance().chatFilter.outgoingChat(event.getPlayer(), null, packet.getMessage());
+        Chat packet = event.getPacket();
+        if (packet.getPosition() == 1) {
+            AbstractChatFilter.Result result = ChatFilterManager.getInstance().chatFilter.outgoingChat(event.getPlayer(), getMessageFromJson(packet.getMessage()), packet.getMessage());
             if (!result.didSomething) return;
-            packet.setMessage(result.message);
+            if (result.isJson) packet.setMessage(result.message);
+            else packet.setMessage("\"" + result.message + "\""); // this should work
         }
+    }
+
+    public static String getMessageFromJson(String json) {
+        BaseComponent[] textComponent = ComponentSerializer.parse(json);
+
+        return BaseComponent.toPlainText(textComponent);
     }
 }
