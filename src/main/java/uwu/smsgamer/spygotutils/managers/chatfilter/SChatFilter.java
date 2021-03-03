@@ -87,7 +87,7 @@ public class SChatFilter extends AbstractChatFilter {
         ConsoleCommandSender sender = Bukkit.getConsoleSender();
         for (String command : commands)
             Bukkit.dispatchCommand(sender,
-              SStringUtils.replacePlaceholders((OfflinePlayer) player,
-                StringUtils.replaceArgsPlaceholders(StringUtils.colorize(command), args)));
+              StringUtils.replaceArgsPlaceholders(SStringUtils.replacePlaceholders((OfflinePlayer) player,
+                StringUtils.colorize(command)), args));
     }
 }

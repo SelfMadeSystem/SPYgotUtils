@@ -44,8 +44,6 @@ incoming-command:
     check: '((label.lower() == "/pl") or (msg.lower().startswith("/ver ")) or (msg.lower().startswith("/version "))) and
     not player.hasPermission("spygotutils.filter.plugins")'
     cancel: true
-    # No evaluator, but still going through PAPI and the preprocessor. (papi first tho)
-    send-msg: '%prefix% &cDon''t get our plugins; thx. Command: %msg% Label: %label%'
     execute-commands:
       - 'sendmsg %player_name% %prefix% &cPlease don''t get our plugins.'
 
