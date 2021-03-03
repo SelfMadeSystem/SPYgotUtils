@@ -1,4 +1,4 @@
-package uwu.smsgamer.spygotutils.listener;
+package uwu.smsgamer.spygotutils.listener.bungee;
 
 import net.md_5.bungee.api.event.*;
 import net.md_5.bungee.api.plugin.Listener;

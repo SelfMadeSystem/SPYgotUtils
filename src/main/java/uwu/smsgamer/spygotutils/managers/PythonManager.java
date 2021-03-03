@@ -72,8 +72,8 @@ public class PythonManager {
     }
 
     public static void execute(PythonInterpreter interpreter, String str, String fileName) {
-        if (defaultFuns != null) for (PyFunction obj : defaultFuns) interpreter.set(obj.__name__, obj);
-        if (defaultVars != null) for (Pair<String, PyObject> pair : defaultVars) interpreter.set(pair.a, pair.b);
+        if (defaultFuns != null) for (PyFunction obj : defaultFuns) if (obj != null) interpreter.set(obj.__name__, obj);
+        if (defaultVars != null) for (Pair<String, PyObject> pair : defaultVars) if (pair != null) interpreter.set(pair.a, pair.b);
         interpreter.exec(interpreter.compile(str, fileName));
     }
 

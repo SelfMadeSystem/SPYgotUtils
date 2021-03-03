@@ -1,19 +1,18 @@
 package uwu.smsgamer.spygotutils;
 
+import de.exceptionflug.protocolize.api.protocol.ProtocolAPI;
 import me.godead.lilliputian.*;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.*;
-import net.md_5.bungee.event.EventBus;
+import uwu.smsgamer.senapi.utils.bungee.BPluginUtils;
 import uwu.smsgamer.spygotutils.commands.CommandManager;
 import uwu.smsgamer.spygotutils.config.ConfigManager;
 import uwu.smsgamer.spygotutils.config.bungee.BConfigManager;
-import uwu.smsgamer.spygotutils.listener.BungeeListener;
+import uwu.smsgamer.spygotutils.listener.bungee.*;
 import uwu.smsgamer.spygotutils.managers.ChatFilterManager;
 import uwu.smsgamer.spygotutils.managers.chatfilter.BChatFilter;
 import uwu.smsgamer.spygotutils.utils.BChatUtils;
 import uwu.smsgamer.spygotutils.utils.python.bungee.BPyListener;
-
-import java.lang.reflect.Field;
 
 public class BungeeLoader extends Plugin implements Loader {
     private static BungeeLoader instance;
@@ -67,6 +66,11 @@ public class BungeeLoader extends Plugin implements Loader {
         ProxyServer.getInstance().getPluginManager().registerListener(this, BungeeListener.getInstance());
 
         if (SPYgotUtils.getInstance().firstLoad) SPYgotUtils.getInstance().configFiles();
+
+        if (BPluginUtils.isPluginEnabled("protocolize-plugin")) {
+            new BPacketProcessor(true);
+            new BPacketProcessor(false);
+        }
     }
 
     @Override

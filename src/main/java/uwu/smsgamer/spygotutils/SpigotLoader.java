@@ -8,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import uwu.smsgamer.spygotutils.commands.CommandManager;
 import uwu.smsgamer.spygotutils.config.ConfigManager;
 import uwu.smsgamer.spygotutils.config.spigot.SConfigManager;
-import uwu.smsgamer.spygotutils.listener.*;
+import uwu.smsgamer.spygotutils.listener.spigot.*;
 import uwu.smsgamer.spygotutils.managers.ChatFilterManager;
 import uwu.smsgamer.spygotutils.managers.chatfilter.*;
 import uwu.smsgamer.spygotutils.utils.ChatUtils;
@@ -77,7 +77,7 @@ public class SpigotLoader extends JavaPlugin implements Loader {
 
         //Register our listener (class extending PacketListenerDynamic)
         //By default it is configured to listen to all packets with no filter at all.
-        PacketProcessor packetProcessor = new PacketProcessor();
+        SPacketProcessor packetProcessor = new SPacketProcessor();
         //We will FILTER all packets. We don't want to listen to anything.
         packetProcessor.filterAll();
         //Now since the filter has been applied, we are no longer listening to all packets. We can now "whitelist" our wanted packets.

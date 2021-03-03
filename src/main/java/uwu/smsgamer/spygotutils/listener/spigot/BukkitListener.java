@@ -1,4 +1,4 @@
-package uwu.smsgamer.spygotutils.listener;
+package uwu.smsgamer.spygotutils.listener.spigot;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.*;

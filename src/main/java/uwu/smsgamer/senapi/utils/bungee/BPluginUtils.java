@@ -12,6 +12,7 @@ public class BPluginUtils {
      * @return If the plugin is enabled.
      */
     public static boolean isPluginEnabled(String name) {
+        System.out.println(name + ":" + ProxyServer.getInstance().getPluginManager().getPlugin(name));
         return ProxyServer.getInstance().getPluginManager().getPlugin(name) != null;
     }
 }
