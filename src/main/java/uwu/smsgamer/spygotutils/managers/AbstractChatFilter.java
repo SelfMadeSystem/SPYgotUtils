@@ -62,7 +62,7 @@ public abstract class AbstractChatFilter {
                     if (r != null) result.message = r;
                 }
 
-                execCommands(commands(type, key), new String[0]);
+                execCommands(commands(type, key), new String[0], player);
             }
 
             postExec(evaluator, result, postExec(type, key));
@@ -90,7 +90,7 @@ public abstract class AbstractChatFilter {
                     if (r != null) result.message = r;
                 }
 
-                execCommands(commands(type, key), args);
+                execCommands(commands(type, key), args, player);
             }
 
             postExec(evaluator, result, postExec(type, key));
@@ -118,7 +118,7 @@ public abstract class AbstractChatFilter {
                     if (r != null) result.message = r;
                 }
 
-                execCommands(commands(type, key), args);
+                execCommands(commands(type, key), args, player);
             }
 
             postExec(evaluator, result, postExec(type, key));
@@ -158,7 +158,7 @@ public abstract class AbstractChatFilter {
                         result.completions = ((List<?>) replacement).stream().map(Object::toString).collect(Collectors.toList());
                 }
 
-                execCommands(commands(type, key), args);
+                execCommands(commands(type, key), args, player);
             }
 
             postExec(evaluator, result, postExec(type, key));
@@ -226,7 +226,7 @@ public abstract class AbstractChatFilter {
         return null;
     }
 
-    public abstract void execCommands(List<String> commands, String[] args);
+    public abstract void execCommands(List<String> commands, String[] args, Object player);
 
     public static class Result {
         public boolean didSomething;

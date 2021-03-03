@@ -79,11 +79,13 @@ public class BChatFilter extends AbstractChatFilter {
     }
 
     @Override
-    public void execCommands(List<String> commands, String[] args) { // todo player name & papi
+    public void execCommands(List<String> commands, String[] args, Object player) {
         if (commands == null) return;
         PluginManager manager = ProxyServer.getInstance().getPluginManager();
         CommandSender console = ProxyServer.getInstance().getConsole();
-        for (String command : commands) manager.dispatchCommand(console,
-          StringUtils.replaceArgsPlaceholders(StringUtils.colorize(command), args));
+        for (String command : commands)
+            manager.dispatchCommand(console,
+              StringUtils.replaceArgsPlaceholders(StringUtils.colorize(
+                command.replace("%player_name%", ((CommandSender) player).getName())), args));
     }
 }

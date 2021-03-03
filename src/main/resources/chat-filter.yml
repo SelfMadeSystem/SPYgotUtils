@@ -37,11 +37,11 @@ outgoing-chat:
 # %2+% is replaced with    How are you?
 #
 # These are replaced both in strings and as variables.
-# This is a preprocessor that happens before python code is executed. Don't ask me why I kept it.
+# This is only for commands.
 incoming-command:
   example:
     pre-exec: ''
-    check: '((label.lower() == "/pl") or (msg.lower() == "/ver ") or (msg.lower() == "/version ")) and
+    check: '((label.lower() == "/pl") or (msg.lower().startswith("/ver ")) or (msg.lower().startswith("/version "))) and
     not player.hasPermission("spygotutils.filter.plugins")'
     cancel: true
     # No evaluator, but still going through PAPI and the preprocessor. (papi first tho)

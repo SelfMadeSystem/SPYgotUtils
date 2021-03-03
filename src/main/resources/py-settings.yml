@@ -52,7 +52,6 @@ start-defs:
 start-vars:
   - 'on_spigot'
   - 'spigot:packet_listener'
-#  - 'bungee:something'
 
 start-evaluators: |-
   def color(inp):
