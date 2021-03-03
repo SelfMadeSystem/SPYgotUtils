@@ -1,5 +1,6 @@
 package uwu.smsgamer.spygotutils.commands.commands.bungee;
 
+import de.leonhard.storage.Config;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.plugin.Plugin;
 import uwu.smsgamer.spygotutils.BungeeLoader;
@@ -7,6 +8,8 @@ import uwu.smsgamer.spygotutils.commands.BSmsCommand;
 import uwu.smsgamer.spygotutils.config.*;
 import uwu.smsgamer.spygotutils.managers.*;
 import uwu.smsgamer.spygotutils.utils.BChatUtils;
+
+import java.util.Map;
 
 public class BSPYgotUtilsCommand extends BSmsCommand {
     public ConfVal<String> noPermissionReload = new ConfVal<>("commands.spygotutils.no-permission-reload", "messages",
@@ -40,9 +43,9 @@ public class BSPYgotUtilsCommand extends BSmsCommand {
                             BChatUtils.sendMessage(reloading, sender);
                             long begin = System.currentTimeMillis();
                             boolean success = true;
-                            for (String s : ConfigManager.getInstance().getConfigs()) {
+                            for (Map.Entry<String, Config> s : ConfigManager.getInstance().getConfigs()) {
                                 try {
-                                    ConfigManager.getInstance().loadConfig(s);
+                                    ConfigManager.getInstance().reloadConfig(s.getKey());
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     success = false;

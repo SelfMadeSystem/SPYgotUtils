@@ -1,5 +1,6 @@
 package uwu.smsgamer.spygotutils.commands.commands.spigot;
 
+import de.leonhard.storage.Config;
 import org.bukkit.command.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import uwu.smsgamer.spygotutils.SpigotLoader;
@@ -8,7 +9,7 @@ import uwu.smsgamer.spygotutils.config.*;
 import uwu.smsgamer.spygotutils.managers.*;
 import uwu.smsgamer.spygotutils.utils.ChatUtils;
 
-import java.util.List;
+import java.util.*;
 
 public class SPYgotUtilsCommand extends SmsCommand {
     public ConfVal<String> noPermissionReload = new ConfVal<>("commands.spygotutils.no-permission-reload", "messages",
@@ -42,9 +43,9 @@ public class SPYgotUtilsCommand extends SmsCommand {
                             ChatUtils.sendMessage(reloading, sender);
                             long begin = System.currentTimeMillis();
                             boolean success = true;
-                            for (String s : ConfigManager.getInstance().getConfigs()) {
+                            for (Map.Entry<String, Config> s : ConfigManager.getInstance().getConfigs()) {
                                 try {
-                                    ConfigManager.getInstance().loadConfig(s);
+                                    ConfigManager.getInstance().reloadConfig(s.getKey());
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     success = false;

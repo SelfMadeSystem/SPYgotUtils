@@ -1,34 +1,67 @@
 package uwu.smsgamer.spygotutils.managers;
 
+import de.leonhard.storage.*;
+import de.leonhard.storage.sections.FlatFileSection;
 import org.python.core.*;
 import uwu.smsgamer.senapi.utils.*;
+import uwu.smsgamer.spygotutils.config.ConfigManager;
 import uwu.smsgamer.spygotutils.utils.EvalUtils;
 
 import java.util.List;
 import java.util.stream.*;
 
 public abstract class AbstractChatFilter {
-    public abstract void reload();
+    public Yaml config;
 
-    protected abstract Iterable<String> keys(String type);
+    public AbstractChatFilter() {
+        reload();
+        System.out.println(config.singleLayerKeySet());
+    }
 
-    protected abstract String preExec(String type, String key);
+    public void reload() {
+        this.config = ConfigManager.getInstance().getConfig("chat-filter");
+    }
 
-    protected abstract String check(String type, String key);
+    public Iterable<String> keys(String type) {
+        FlatFileSection section = config.getSection(type);
+        return section.singleLayerKeySet();
+    }
 
-    protected abstract String postExec(String type, String key);
+    public String preExec(String type, String key) {
+        return config.getString(type + "." + key + ".pre-exec");
+    }
 
-    protected abstract boolean cancel(String type, String key);
+    public String check(String type, String key) {
+        return config.getString(type + "." + key + ".check");
+    }
 
-    protected abstract boolean isJson(String type, String key);
+    public String postExec(String type, String key) {
+        return config.getString(type + "." + key + ".post-exec");
+    }
 
-    protected abstract int weight(String type, String key);
+    public boolean cancel(String type, String key) {
+        return config.getBoolean(type + "." + key + ".cancel");
+    }
 
-    protected abstract String replacement(String type, String key);
+    public boolean isJson(String type, String key) {
+        return config.getBoolean(type + "." + key + ".is-json");
+    }
 
-    protected abstract Object tabReplacement(String type, String key);
+    public int weight(String type, String key) {
+        return config.getInt(type + "." + key + "." +"weight");
+    }
 
-    protected abstract List<String> commands(String type, String key);
+    public String replacement(String type, String key) {
+        return config.get(type + "." + key + ".replacement", null);
+    }
+
+    public Object tabReplacement(String type, String key) {
+        return config.get(type + "." + key + ".replacement");
+    }
+
+    public List<String> commands(String type, String key) {
+        return config.getStringList(type + "." + key + ".execute-commands");
+    }
 
     public Result chatReceive(Object player, String msg) {
         if (msg.startsWith("/")) {
@@ -249,7 +282,7 @@ public abstract class AbstractChatFilter {
             this.completions = completions;
         }
 
-        @Override
+
         public String toString() {
             return "Result{" +
               "didSomething=" + didSomething +

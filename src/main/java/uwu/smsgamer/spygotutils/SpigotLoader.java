@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import uwu.smsgamer.spygotutils.commands.CommandManager;
 import uwu.smsgamer.spygotutils.config.ConfigManager;
-import uwu.smsgamer.spygotutils.config.spigot.SConfigManager;
 import uwu.smsgamer.spygotutils.listener.spigot.*;
 import uwu.smsgamer.spygotutils.managers.ChatFilterManager;
 import uwu.smsgamer.spygotutils.managers.chatfilter.*;
@@ -38,6 +37,8 @@ public class SpigotLoader extends JavaPlugin implements Loader {
             "org.python", "jython-standalone", "2.7.2"))
           .addDependency(new Dependency(Repository.MAVENCENTRAL,
             "org.xerial", "sqlite-jdbc", "3.8.11.2"))
+          .addDependency(new Dependency(Repository.JITPACK,
+            "com.github.simplix-softworks", "SimplixStorage", "3.2.2"))
           .loadDependencies();
 
         /*
@@ -54,7 +55,6 @@ public class SpigotLoader extends JavaPlugin implements Loader {
          * To be safe, just set them all before loading.
          */
         PacketEvents.get().load();
-        ConfigManager.setInstance(new SConfigManager());
 
         SPYgotUtils ins = new SPYgotUtils(true);
 

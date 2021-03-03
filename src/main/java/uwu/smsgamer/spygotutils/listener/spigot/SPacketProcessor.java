@@ -12,7 +12,12 @@ public class SPacketProcessor extends PacketListenerDynamic {
     public void onPacketPlaySend(PacketPlaySendEvent event) {
         if (event.getPacketId() == PacketType.Play.Server.CHAT) {
             WrappedPacketOutChat packet = new WrappedPacketOutChat(event.getNMSPacket());
-            if (packet.getChatPosition().equals(WrappedPacketOutChat.ChatPosition.CHAT)) {
+            boolean check = true;
+            try {
+                check = packet.getChatPosition().equals(WrappedPacketOutChat.ChatPosition.CHAT);
+            } catch (IllegalArgumentException ignored) {
+            }
+            if (check) {
                 AbstractChatFilter.Result result = ChatFilterManager.getInstance().chatFilter.outgoingChat(event.getPlayer(), packet.getMessage(), null);
                 if (!result.didSomething) return;
                 event.setNMSPacket(new NMSPacket(

@@ -46,7 +46,9 @@ dependencies {
 
     compileOnly 'de.exceptionflug:protocolize-api:1.6.7-SNAPSHOT'
 
-    implementation 'com.github.retrooper:packetevents:1.8-pre-5'
+    compileOnly 'com.github.simplix-softworks:SimplixStorage:3.2.2'
+
+    implementation 'com.github.retrooper:packetevents:1.8-pre-6'
 
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.15'
     runtime "mysql:mysql-connector-java:8.0.15"
