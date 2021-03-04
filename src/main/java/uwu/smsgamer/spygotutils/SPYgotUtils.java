@@ -36,7 +36,7 @@ public final class SPYgotUtils {
             aScriptFiles();
         }
 
-        PythonManager.loadScripts();
+        PythonManager.loadScripts(false);
     }
 
     public void onEnable() {

@@ -77,26 +77,27 @@ public class PythonManager {
         interpreter.exec(interpreter.compile(str, fileName));
     }
 
-    public static void loadScripts() {
+    public static void loadScripts(boolean reload) {
         File dir = new File(SPYgotUtils.getLoader().getDataFolder(), "scripts");
         if (!dir.exists()) return;
         List<File> exclude = new ArrayList<>(files == null ? Collections.emptyList() : Arrays.asList(files));
         for (String fileName : loadScripts.getValue()) {
             File file = getFile(fileName);
             if (!file.exists() || exclude.contains(file)) continue;
-            newScript(file);
+            newScript(file, reload);
             exclude.add(file);
         }
         files = exclude.toArray(new File[0]);
     }
 
-    public static void newScript(File file) {
+    public static void newScript(File file, boolean reload) {
         if (!file.exists()) return;
         PyScript script = new PyScript(file).setFuns(defaultFuns).setVars(defaultVars);
         try {
             script.execFile();
             scripts.add(script);
             script.getGoodFuns();
+            if (reload) script.execAll(script.enableFuns);
         } catch (Exception e) {
             e.printStackTrace();
         }

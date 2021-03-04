@@ -55,7 +55,7 @@ public class SPYgotUtilsCommand extends SmsCommand {
                                 ConfigManager.getInstance().reloadConfVal(val);
                             ChatFilterManager.getInstance().reload();
                             PythonManager.onReload();
-                            PythonManager.loadScripts();
+                            PythonManager.loadScripts(false);
                             long end = System.currentTimeMillis();
                             ChatUtils.sendMessage((success ? reloadSuccess : reloadFail).getValue()
                               .replace("%ms%", String.valueOf(end - begin)), sender);
