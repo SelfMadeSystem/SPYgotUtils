@@ -1,8 +1,6 @@
 package uwu.smsgamer.spygotutils.utils;
 
 import org.bukkit.plugin.PluginLogger;
-import org.bukkit.plugin.java.JavaPlugin;
-import uwu.smsgamer.spygotutils.Loader;
 import uwu.smsgamer.spygotutils.config.ConfigManager;
 
 import java.io.*;
@@ -25,7 +23,7 @@ public class FileUtils {
         return contentBuilder.toString();
     }
 
-    public static void saveResource(Loader plugin, String resourcePath, File outFile, boolean replace) {
+    public static void saveResource(String resourcePath, File outFile, boolean replace) {
         if (resourcePath == null || resourcePath.equals("")) {
             throw new IllegalArgumentException("ResourcePath cannot be null or empty");
         }

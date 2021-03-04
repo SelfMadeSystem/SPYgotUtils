@@ -150,7 +150,7 @@ public class ConfigManager {
         }
     }
 
-    private static InputStream getResource(String filename) {
+    public static InputStream getResource(String filename) {
         if (filename == null) {
             throw new IllegalArgumentException("Filename cannot be null");
         }

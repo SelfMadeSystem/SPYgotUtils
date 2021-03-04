@@ -56,22 +56,22 @@ public final class SPYgotUtils {
 
     private void sScriptFiles() {
         // Shitty ik but I'm lazy.
-        FileUtils.saveResource(getLoader(), "spigot/event.py", new File(getLoader().getDataFolder(), "scripts/event.py"), false);
-        FileUtils.saveResource(getLoader(), "spigot/command.py", new File(getLoader().getDataFolder(), "scripts/command.py"), false);
-        FileUtils.saveResource(getLoader(), "spigot/packet.py", new File(getLoader().getDataFolder(), "scripts/packet.py"), false);
+        FileUtils.saveResource("spigot/event.py", new File(getLoader().getDataFolder(), "scripts/event.py"), false);
+        FileUtils.saveResource("spigot/command.py", new File(getLoader().getDataFolder(), "scripts/command.py"), false);
+        FileUtils.saveResource("spigot/packet.py", new File(getLoader().getDataFolder(), "scripts/packet.py"), false);
     }
 
     private void bScriptFiles() {
         // Shitty ik but I'm lazy.
-        FileUtils.saveResource(getLoader(), "bungee/event.py", new File(getLoader().getDataFolder(), "scripts/event.py"), false);
-        FileUtils.saveResource(getLoader(), "bungee/command.py", new File(getLoader().getDataFolder(), "scripts/command.py"), false);
+        FileUtils.saveResource("bungee/event.py", new File(getLoader().getDataFolder(), "scripts/event.py"), false);
+        FileUtils.saveResource("bungee/command.py", new File(getLoader().getDataFolder(), "scripts/command.py"), false);
     }
 
     private void aScriptFiles() {
-        FileUtils.saveResource(getLoader(), "all/test.py", new File(getLoader().getDataFolder(), "scripts/test.py"), false);
-        FileUtils.saveResource(getLoader(), "all/test-conf.py", new File(getLoader().getDataFolder(), "scripts/test-conf.py"), false);
-        FileUtils.saveResource(getLoader(), "all/itest.py", new File(getLoader().getDataFolder(), "scripts/itest.py"), false);
-        FileUtils.saveResource(getLoader(), "all/sql.py", new File(getLoader().getDataFolder(), "scripts/sql.py"), false);
+        FileUtils.saveResource("all/test.py", new File(getLoader().getDataFolder(), "scripts/test.py"), false);
+        FileUtils.saveResource("all/test-conf.py", new File(getLoader().getDataFolder(), "scripts/test-conf.py"), false);
+        FileUtils.saveResource("all/itest.py", new File(getLoader().getDataFolder(), "scripts/itest.py"), false);
+        FileUtils.saveResource("all/sql.py", new File(getLoader().getDataFolder(), "scripts/sql.py"), false);
     }
 
     void configFiles() {
