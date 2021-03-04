@@ -55,7 +55,7 @@ public class BSPYgotUtilsCommand extends BSmsCommand {
                                 ConfigManager.getInstance().reloadConfVal(val);
                             ChatFilterManager.getInstance().reload();
                             PythonManager.onReload();
-                            PythonManager.loadScripts(false);
+                            PythonManager.loadScripts(true);
                             long end = System.currentTimeMillis();
                             BChatUtils.sendMessage((success ? reloadSuccess : reloadFail).getValue()
                               .replace("%ms%", String.valueOf(end - begin)), sender);
