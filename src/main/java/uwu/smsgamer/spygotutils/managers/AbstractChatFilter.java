@@ -15,7 +15,6 @@ public abstract class AbstractChatFilter {
 
     public AbstractChatFilter() {
         reload();
-        System.out.println(config.singleLayerKeySet());
     }
 
     public void reload() {
@@ -80,7 +79,7 @@ public abstract class AbstractChatFilter {
         if (json != null) evaluator.set("json", json);
 
         for (String key : keys(type)) {
-            preExec(evaluator, preExec(type, key));
+            preExec(evaluator, preExec(type, key), type + "." + key);
 
             if (check(evaluator, check(type, key), type + "." + key)) {
                 int weight = weight(type, key);
@@ -91,14 +90,14 @@ public abstract class AbstractChatFilter {
 
                     result.isJson = isJson(type, key);
 
-                    String r = evalToString(evaluator, replacement(type, key));
+                    String r = evalToString(evaluator, replacement(type, key), type + "." + key);
                     if (r != null) result.message = r;
                 }
 
                 execCommands(commands(type, key), new String[0], player);
             }
 
-            postExec(evaluator, result, postExec(type, key));
+            postExec(evaluator, result, postExec(type, key), type + "." + key);
         }
 
         return result;
@@ -110,7 +109,7 @@ public abstract class AbstractChatFilter {
         Evaluator evaluator = newEvaluator(player, msg, label, args);
 
         for (String key : keys(type)) {
-            preExec(evaluator, preExec(type, key));
+            preExec(evaluator, preExec(type, key), type + "." + key);
 
             if (check(evaluator, check(type, key), type + "." + key)) {
                 int weight = weight(type, key);
@@ -119,14 +118,14 @@ public abstract class AbstractChatFilter {
                     result.cancel = cancel(type, key);
                     result.weight = weight;
 
-                    String r = evalToString(evaluator, replacement(type, key));
+                    String r = evalToString(evaluator, replacement(type, key), type + "." + key);
                     if (r != null) result.message = r;
                 }
 
                 execCommands(commands(type, key), args, player);
             }
 
-            postExec(evaluator, result, postExec(type, key));
+            postExec(evaluator, result, postExec(type, key), type + "." + key);
         }
 
         return result;
@@ -138,7 +137,7 @@ public abstract class AbstractChatFilter {
         Evaluator evaluator = newEvaluator(player, msg, args[0], args);
 
         for (String key : keys(type)) {
-            preExec(evaluator, preExec(type, key));
+            preExec(evaluator, preExec(type, key), type + "." + key);
 
             if (check(evaluator, check(type, key), type + "." + key)) {
                 int weight = weight(type, key);
@@ -147,14 +146,14 @@ public abstract class AbstractChatFilter {
                     result.cancel = cancel(type, key);
                     result.weight = weight;
 
-                    String r = evalToString(evaluator, replacement(type, key));
+                    String r = evalToString(evaluator, replacement(type, key), type + "." + key);
                     if (r != null) result.message = r;
                 }
 
                 execCommands(commands(type, key), args, player);
             }
 
-            postExec(evaluator, result, postExec(type, key));
+            postExec(evaluator, result, postExec(type, key), type + "." + key);
         }
 
         return result;
@@ -171,7 +170,7 @@ public abstract class AbstractChatFilter {
         evaluator.set("completions", completions);
 
         for (String key : keys(type)) {
-            preExec(evaluator, preExec(type, key));
+            preExec(evaluator, preExec(type, key), type + "." + key);
 
             if (check(evaluator, check(type, key), type + "." + key)) {
                 int weight = weight(type, key);
@@ -186,9 +185,7 @@ public abstract class AbstractChatFilter {
                     if (replacement == null) {
                         if (!result.cancel) result.completions = null;
                     } else if (replacement.getClass().equals(String.class)) {
-                        List<String> strings = evalToList(evaluator, replacement.toString());
-                        System.out.println(strings);
-                        result.completions = strings;
+                        result.completions = evalToList(evaluator, replacement.toString(), type + "." + key);
                     } else if (replacement instanceof List) {
                         result.completions = ((List<?>) replacement).stream().map(Object::toString).collect(Collectors.toList());
                     }
@@ -197,7 +194,7 @@ public abstract class AbstractChatFilter {
                 execCommands(commands(type, key), args, player);
             }
 
-            postExec(evaluator, result, postExec(type, key));
+            postExec(evaluator, result, postExec(type, key), type + "." + key);
         }
 
         return result;
@@ -211,10 +208,11 @@ public abstract class AbstractChatFilter {
         return evaluator;
     }
 
-    public void preExec(Evaluator evaluator, String exec) {
+    public void preExec(Evaluator evaluator, String exec, String place) {
         try {
             if (exec != null && !exec.isEmpty()) evaluator.exec(exec);
         } catch (Exception e) {
+            System.err.println(place + ".pre-exec causes error:");
             e.printStackTrace();
         }
     }
@@ -223,41 +221,45 @@ public abstract class AbstractChatFilter {
         try {
             PyObject result = evaluator.eval(eval);
             if (result instanceof PyBoolean) return ((PyBoolean) result).getBooleanValue();
-            System.err.println(place + " returns a " + result.getClass().getName());
+            System.err.println(place + ".check returns a " + result.getClass().getName());
         } catch (Exception e) {
+            System.err.println(place + ".check causes error:");
             e.printStackTrace();
         }
         return false;
     }
 
-    public void postExec(Evaluator evaluator, Result result, String exec) {
+    public void postExec(Evaluator evaluator, Result result, String exec, String place) {
         try {
             evaluator.set("result", result);
             if (exec != null && !exec.isEmpty()) evaluator.exec(exec);
         } catch (Exception e) {
+            System.err.println(place + ".post-exec causes error:");
             e.printStackTrace();
         }
     }
 
-    public String evalToString(Evaluator evaluator, String eval) {
+    public String evalToString(Evaluator evaluator, String eval, String place) {
         if (eval == null) return null;
         try {
             return evaluator.eval(eval).toString();
         } catch (Exception e) {
+            System.err.println(place + ".result (eval to string) causes error:");
             e.printStackTrace();
             return null;
         }
     }
 
-    public List<String> evalToList(Evaluator evaluator, String eval) {
+    public List<String> evalToList(Evaluator evaluator, String eval, String place) {
         if (eval == null) return null;
         try {
             PyObject result = evaluator.eval(eval);
             if (result.isSequenceType())
                 return StreamSupport.stream(result.asIterable().spliterator(), false)
                   .map(Object::toString).collect(Collectors.toList());
-            System.err.println("Result is of type: " + result.getClass().getName());
+            System.err.println(place + ".result (eval to list) returns a " + result.getClass().getName());
         } catch (Exception e) {
+            System.err.println(place + ".result (eval to list) causes error:");
             e.printStackTrace();
         }
         return null;
