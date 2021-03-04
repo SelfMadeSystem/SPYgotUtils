@@ -53,7 +53,10 @@ public class ConfigManager {
         getConfig(name).forceReload();
     }
 
-    public void loadConfig(String name) {
+    private void loadConfig(String name) {
+        if (new Throwable().getStackTrace()[0].getClassName().startsWith("org.python"))
+            throw new IllegalStateException("Don't u dare execute this from Python!");
+
         File configFile = configFile(name);
         if (!configFile.exists())
             saveResource(name + ".yml", pl.getDataFolder());
@@ -111,7 +114,9 @@ public class ConfigManager {
         }
     }
 
-    public static void saveResource(String resourcePath, File dataFolder) {
+    private static void saveResource(String resourcePath, File dataFolder) {
+        if (new Throwable().getStackTrace()[0].getClassName().startsWith("org.python"))
+            throw new IllegalStateException("Don't u dare execute this from Python!");
         if (resourcePath == null || resourcePath.equals("")) {
             throw new IllegalArgumentException("ResourcePath cannot be null or empty");
         }
@@ -145,7 +150,7 @@ public class ConfigManager {
         }
     }
 
-    public static InputStream getResource(String filename) {
+    private static InputStream getResource(String filename) {
         if (filename == null) {
             throw new IllegalArgumentException("Filename cannot be null");
         }
