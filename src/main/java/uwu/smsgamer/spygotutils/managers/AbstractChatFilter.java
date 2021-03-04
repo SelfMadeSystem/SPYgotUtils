@@ -1,6 +1,6 @@
 package uwu.smsgamer.spygotutils.managers;
 
-import de.leonhard.storage.*;
+import de.leonhard.storage.Yaml;
 import de.leonhard.storage.sections.FlatFileSection;
 import org.python.core.*;
 import uwu.smsgamer.senapi.utils.*;
@@ -48,7 +48,7 @@ public abstract class AbstractChatFilter {
     }
 
     public int weight(String type, String key) {
-        return config.getInt(type + "." + key + "." +"weight");
+        return config.getInt(type + "." + key + "." + "weight");
     }
 
     public String replacement(String type, String key) {
@@ -183,12 +183,15 @@ public abstract class AbstractChatFilter {
 
                     Object replacement = tabReplacement(type, key);
 
-                    if (replacement == null)
-                        result.completions = null;
-                    else if (replacement.getClass().equals(String.class))
-                        result.completions = evalToList(evaluator, replacement.toString());
-                    else if (replacement instanceof List)
+                    if (replacement == null) {
+                        if (!result.cancel) result.completions = null;
+                    } else if (replacement.getClass().equals(String.class)) {
+                        List<String> strings = evalToList(evaluator, replacement.toString());
+                        System.out.println(strings);
+                        result.completions = strings;
+                    } else if (replacement instanceof List) {
                         result.completions = ((List<?>) replacement).stream().map(Object::toString).collect(Collectors.toList());
+                    }
                 }
 
                 execCommands(commands(type, key), args, player);
@@ -253,6 +256,7 @@ public abstract class AbstractChatFilter {
             if (result.isSequenceType())
                 return StreamSupport.stream(result.asIterable().spliterator(), false)
                   .map(Object::toString).collect(Collectors.toList());
+            System.err.println("Result is of type: " + result.getClass().getName());
         } catch (Exception e) {
             e.printStackTrace();
         }
