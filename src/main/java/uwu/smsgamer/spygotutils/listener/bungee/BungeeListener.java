@@ -28,6 +28,7 @@ public class BungeeListener implements Listener {
         if (!result.didSomething) return;
         e.setCancelled(result.cancel);
         e.getSuggestions().clear();
+        if (result.completions.isEmpty()) e.setCancelled(true);
         e.getSuggestions().addAll(result.completions);
     }
 }
