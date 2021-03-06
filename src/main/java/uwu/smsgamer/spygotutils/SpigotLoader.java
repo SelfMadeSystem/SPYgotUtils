@@ -6,7 +6,7 @@ import me.godead.lilliputian.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import uwu.smsgamer.spygotutils.commands.CommandManager;
-import uwu.smsgamer.spygotutils.config.ConfigManager;
+import uwu.smsgamer.senapi.config.ConfigManager;
 import uwu.smsgamer.spygotutils.listener.spigot.*;
 import uwu.smsgamer.spygotutils.managers.ChatFilterManager;
 import uwu.smsgamer.spygotutils.managers.chatfilter.*;

@@ -5,7 +5,7 @@ import org.bukkit.command.*;
 import uwu.smsgamer.senapi.utils.spigot.SConsolePlayer;
 import uwu.smsgamer.senapi.utils.Evaluator;
 import uwu.smsgamer.spygotutils.commands.SmsCommand;
-import uwu.smsgamer.spygotutils.config.ConfVal;
+import uwu.smsgamer.senapi.config.ConfVal;
 import uwu.smsgamer.spygotutils.utils.*;
 
 import java.util.*;

@@ -3,7 +3,7 @@ package uwu.smsgamer.spygotutils.commands.commands.bungee;
 import net.md_5.bungee.api.CommandSender;
 import uwu.smsgamer.senapi.utils.Evaluator;
 import uwu.smsgamer.spygotutils.commands.BSmsCommand;
-import uwu.smsgamer.spygotutils.config.ConfVal;
+import uwu.smsgamer.senapi.config.ConfVal;
 import uwu.smsgamer.spygotutils.utils.*;
 
 import java.util.Objects;

@@ -3,7 +3,7 @@ package uwu.smsgamer.spygotutils.commands.commands.bungee;
 import net.md_5.bungee.api.*;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import uwu.smsgamer.spygotutils.commands.*;
-import uwu.smsgamer.spygotutils.config.ConfVal;
+import uwu.smsgamer.senapi.config.ConfVal;
 import uwu.smsgamer.spygotutils.utils.*;
 
 import java.util.*;

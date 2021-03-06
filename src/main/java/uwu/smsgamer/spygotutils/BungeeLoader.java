@@ -5,7 +5,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.*;
 import uwu.smsgamer.senapi.utils.bungee.BPluginUtils;
 import uwu.smsgamer.spygotutils.commands.CommandManager;
-import uwu.smsgamer.spygotutils.config.ConfigManager;
+import uwu.smsgamer.senapi.config.ConfigManager;
 import uwu.smsgamer.spygotutils.listener.bungee.*;
 import uwu.smsgamer.spygotutils.managers.ChatFilterManager;
 import uwu.smsgamer.spygotutils.managers.chatfilter.BChatFilter;

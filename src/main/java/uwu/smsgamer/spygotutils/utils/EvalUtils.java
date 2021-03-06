@@ -1,7 +1,7 @@
 package uwu.smsgamer.spygotutils.utils;
 
 import uwu.smsgamer.senapi.utils.Evaluator;
-import uwu.smsgamer.spygotutils.config.ConfVal;
+import uwu.smsgamer.senapi.config.ConfVal;
 
 public class EvalUtils {
     public static final ConfVal<String> startEvaluators = new ConfVal<>("start-evaluators", "py-settings",

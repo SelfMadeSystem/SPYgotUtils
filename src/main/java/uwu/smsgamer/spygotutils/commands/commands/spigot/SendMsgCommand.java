@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import uwu.smsgamer.spygotutils.commands.SmsCommand;
-import uwu.smsgamer.spygotutils.config.ConfVal;
+import uwu.smsgamer.senapi.config.ConfVal;
 import uwu.smsgamer.spygotutils.utils.*;
 
 import java.util.*;

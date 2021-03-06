@@ -4,7 +4,7 @@ import org.python.core.*;
 import org.python.util.PythonInterpreter;
 import uwu.smsgamer.senapi.utils.Pair;
 import uwu.smsgamer.spygotutils.SPYgotUtils;
-import uwu.smsgamer.spygotutils.config.ConfVal;
+import uwu.smsgamer.senapi.config.ConfVal;
 import uwu.smsgamer.spygotutils.utils.FileUtils;
 import uwu.smsgamer.spygotutils.utils.python.PyScript;
 

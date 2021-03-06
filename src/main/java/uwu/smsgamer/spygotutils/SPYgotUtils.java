@@ -1,6 +1,6 @@
 package uwu.smsgamer.spygotutils;
 
-import uwu.smsgamer.spygotutils.config.*;
+import uwu.smsgamer.senapi.config.*;
 import uwu.smsgamer.spygotutils.managers.PythonManager;
 import uwu.smsgamer.spygotutils.utils.*;
 

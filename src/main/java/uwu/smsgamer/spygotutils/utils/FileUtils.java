@@ -1,7 +1,7 @@
 package uwu.smsgamer.spygotutils.utils;
 
 import org.bukkit.plugin.PluginLogger;
-import uwu.smsgamer.spygotutils.config.ConfigManager;
+import uwu.smsgamer.senapi.config.ConfigManager;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

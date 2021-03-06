@@ -2,7 +2,7 @@ package uwu.smsgamer.spygotutils.utils;
 
 import net.md_5.bungee.api.*;
 import org.jetbrains.annotations.Nullable;
-import uwu.smsgamer.spygotutils.config.ConfVal;
+import uwu.smsgamer.senapi.config.ConfVal;
 
 import java.util.List;
 

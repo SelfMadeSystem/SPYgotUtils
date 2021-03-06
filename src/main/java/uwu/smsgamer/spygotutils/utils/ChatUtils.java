@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.Nullable;
 import uwu.smsgamer.senapi.utils.StringUtils;
 import uwu.smsgamer.senapi.utils.spigot.*;
-import uwu.smsgamer.spygotutils.config.ConfVal;
+import uwu.smsgamer.senapi.config.ConfVal;
 import java.util.List;
 
 public class ChatUtils {

@@ -4,7 +4,7 @@ import de.leonhard.storage.Yaml;
 import de.leonhard.storage.sections.FlatFileSection;
 import org.python.core.*;
 import uwu.smsgamer.senapi.utils.*;
-import uwu.smsgamer.spygotutils.config.ConfigManager;
+import uwu.smsgamer.senapi.config.ConfigManager;
 import uwu.smsgamer.spygotutils.utils.EvalUtils;
 
 import java.util.List;

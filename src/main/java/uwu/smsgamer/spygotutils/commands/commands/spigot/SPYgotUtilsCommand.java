@@ -5,7 +5,7 @@ import org.bukkit.command.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import uwu.smsgamer.spygotutils.SpigotLoader;
 import uwu.smsgamer.spygotutils.commands.SmsCommand;
-import uwu.smsgamer.spygotutils.config.*;
+import uwu.smsgamer.senapi.config.*;
 import uwu.smsgamer.spygotutils.managers.*;
 import uwu.smsgamer.spygotutils.utils.ChatUtils;
 

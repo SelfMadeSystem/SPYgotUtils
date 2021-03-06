@@ -4,7 +4,7 @@ import net.md_5.bungee.api.*;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import uwu.smsgamer.spygotutils.*;
-import uwu.smsgamer.spygotutils.config.ConfVal;
+import uwu.smsgamer.senapi.config.ConfVal;
 import uwu.smsgamer.spygotutils.utils.BChatUtils;
 
 public abstract class BSmsCommand extends Command {

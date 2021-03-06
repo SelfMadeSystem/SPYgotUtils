@@ -3,7 +3,7 @@ package uwu.smsgamer.spygotutils.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import uwu.smsgamer.spygotutils.*;
-import uwu.smsgamer.spygotutils.config.ConfVal;
+import uwu.smsgamer.senapi.config.ConfVal;
 import uwu.smsgamer.spygotutils.utils.ChatUtils;
 
 public abstract class SmsCommand implements TabExecutor {

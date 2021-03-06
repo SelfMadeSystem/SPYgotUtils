@@ -1,4 +1,4 @@
-package uwu.smsgamer.spygotutils.config;
+package uwu.smsgamer.senapi.config;
 
 import de.leonhard.storage.*;
 import de.leonhard.storage.internal.settings.ReloadSettings;

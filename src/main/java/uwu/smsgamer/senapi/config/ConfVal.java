@@ -1,4 +1,4 @@
-package uwu.smsgamer.spygotutils.config;
+package uwu.smsgamer.senapi.config;
 
 import lombok.Getter;
 
