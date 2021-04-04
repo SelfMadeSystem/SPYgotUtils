@@ -18,6 +18,8 @@ init: |-
       PythonManager.execute(interpreter, str_to_exec, '<string>')
       return interpreter
   if on_spigot:
+      from uwu.smsgamer.spygotutils import SpigotLoader
+      plugin = SpigotLoader.getInstance()
       from uwu.smsgamer.spygotutils.utils.python.spigot import PycketListener
       packet_listener = PycketListener.getInstance()
       def register_event(event_type, priority, function):
@@ -31,10 +33,30 @@ init: |-
               aliases = []
           from uwu.smsgamer.spygotutils.utils.python.spigot import PyCommand
           return PyCommand(name, description, usage_msg, aliases)
+      def run_task(method):
+          from org.bukkit import Bukkit
+          return Bukkit.getScheduler().runTask(plugin, lambda: method())
+      def run_async_task(method):
+          from org.bukkit import Bukkit
+          return Bukkit.getScheduler().runTaskAsynchronously(plugin, lambda: method())
+      def run_task_later(method, delay):
+          from org.bukkit import Bukkit
+          return Bukkit.getScheduler().runTaskLater(plugin, lambda: method(), delay)
+      def run_async_task_later(method, delay):
+          from org.bukkit import Bukkit
+          return Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, lambda: method(), delay)
+      def run_task_timer(method, delay, period):
+          from org.bukkit import Bukkit
+          return Bukkit.getScheduler().runTaskTimer(plugin, lambda: method(), delay, period)
+      def run_async_task_timer(method, delay, period):
+          from org.bukkit import Bukkit
+          return Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, lambda: method(), delay, period)
   else:
-      def register_event(event_type, priority, function):
+      from uwu.smsgamer.spygotutils import BungeeLoader
+      plugin = BungeeLoader.getInstance()
+      def register_event(event_type, priority, func):
           from uwu.smsgamer.spygotutils.utils.python.bungee import BPyListener
-          BPyListener.registerEvent(event_type, priority, function)
+          BPyListener.registerEvent(event_type, priority, func)
       # Pretend I'm an object
       def Command(name, aliases=None):
           if aliases is None:
@@ -48,9 +70,16 @@ start-defs:
   - exec_str
   - register_event
   - Command
+  - 'spigot:run_task'
+  - 'spigot:run_async_task'
+  - 'spigot:run_task_later'
+  - 'spigot:run_async_task_later'
+  - 'spigot:run_task_timer'
+  - 'spigot:run_async_task_timer'
 
 start-vars:
   - 'on_spigot'
+  - 'plugin'
   - 'spigot:packet_listener'
 
 start-evaluators: |-
