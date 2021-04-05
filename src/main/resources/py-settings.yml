@@ -18,6 +18,9 @@ init: |-
       PythonManager.execute(interpreter, str_to_exec, '<string>')
       return interpreter
   if on_spigot:
+      from org.bukkit import Bukkit
+      from uwu.smsgamer.spygotutils import SpigotLoader
+      plugin = SpigotLoader.getInstance()
       from uwu.smsgamer.spygotutils.utils.python.spigot import PycketListener
       packet_listener = PycketListener.getInstance()
       def register_event(event_type, priority, function):
@@ -31,16 +34,40 @@ init: |-
               aliases = []
           from uwu.smsgamer.spygotutils.utils.python.spigot import PyCommand
           return PyCommand(name, description, usage_msg, aliases)
+
+      def run_task(method):
+          return Bukkit.getScheduler().runTask(plugin, lambda: method())
+      def run_async_task(method):
+          return Bukkit.getScheduler().runTaskAsynchronously(plugin, lambda: method())
+      def run_task_later(method, delay):
+          return Bukkit.getScheduler().runTaskLater(plugin, lambda: method(), delay)
+      def run_async_task_later(method, delay):
+          return Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, lambda: method(), delay)
+      def run_task_timer(method, delay, period):
+          return Bukkit.getScheduler().runTaskTimer(plugin, lambda: method(), delay, period)
+      def run_async_task_timer(method, delay, period):
+          return Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, lambda: method(), delay, period)
   else:
-      def register_event(event_type, priority, function):
+      from net.md_5.bungee.api import ProxyServer
+      from uwu.smsgamer.spygotutils import BungeeLoader
+      plugin = BungeeLoader.getInstance()
+      def register_event(event_type, priority, func):
           from uwu.smsgamer.spygotutils.utils.python.bungee import BPyListener
-          BPyListener.registerEvent(event_type, priority, function)
+          BPyListener.registerEvent(event_type, priority, func)
       # Pretend I'm an object
       def Command(name, aliases=None):
           if aliases is None:
               aliases = []
           from uwu.smsgamer.spygotutils.utils.python.bungee import BPyCommand
           return BPyCommand(name, aliases)
+      def run_async(task):
+          return ProxyServer.getInstance().getScheduler().runAsync(plugin, task)
+      from java.util.concurrent import TimeUnit
+      def schedule(task, delay, period=0, unit=TimeUnit.MILLISECONDS):
+          if period == 0:
+              return ProxyServer.getInstance().getScheduler().schedule(plugin, task, delay, unit)
+          else:
+              return ProxyServer.getInstance().getScheduler().schedule(plugin, task, delay, period, unit)
 
 start-defs:
   - get_data_folder
@@ -48,9 +75,18 @@ start-defs:
   - exec_str
   - register_event
   - Command
+  - 'spigot:run_task'
+  - 'spigot:run_async_task'
+  - 'spigot:run_task_later'
+  - 'spigot:run_async_task_later'
+  - 'spigot:run_task_timer'
+  - 'spigot:run_async_task_timer'
+  - 'bungee:run_async'
+  - 'bungee:schedule'
 
 start-vars:
   - 'on_spigot'
+  - 'plugin'
   - 'spigot:packet_listener'
 
 start-evaluators: |-

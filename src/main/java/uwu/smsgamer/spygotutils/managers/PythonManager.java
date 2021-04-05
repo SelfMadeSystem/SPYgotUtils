@@ -31,16 +31,28 @@ public class PythonManager {
             String def = defs.get(i);
             if (def.startsWith("spigot:")) {
                 if (SPYgotUtils.getInstance().onSpigot) {
-                    PyObject pyObject = interpreter.get(def);
+                    PyObject pyObject = interpreter.get(def.substring(7));
+                    if (pyObject == null) {
+                        SPYgotUtils.getLoader().getLogger().warning("Def name: " + def + " is null.");
+                        continue;
+                    }
                     defaultFuns[i] = (PyFunction) pyObject;
                 }
             } else if (def.startsWith("bungee:")) {
                 if (!SPYgotUtils.getInstance().onSpigot) {
-                    PyObject pyObject = interpreter.get(def);
+                    PyObject pyObject = interpreter.get(def.substring(7));
+                    if (pyObject == null) {
+                        SPYgotUtils.getLoader().getLogger().warning("Def name: " + def + " is null.");
+                        continue;
+                    }
                     defaultFuns[i] = (PyFunction) pyObject;
                 }
             } else {
                 PyObject pyObject = interpreter.get(def);
+                if (pyObject == null) {
+                    SPYgotUtils.getLoader().getLogger().warning("Def name: " + def + " is null.");
+                    continue;
+                }
                 defaultFuns[i] = (PyFunction) pyObject;
             }
         }
@@ -50,16 +62,28 @@ public class PythonManager {
             String def = vars.get(i);
             if (def.startsWith("spigot:")) {
                 if (SPYgotUtils.getInstance().onSpigot) {
-                    PyObject pyObject = interpreter.get(def);
+                    PyObject pyObject = interpreter.get(def.substring(7));
+                    if (pyObject == null) {
+                        SPYgotUtils.getLoader().getLogger().warning("Obj name: " + def + " is null.");
+                        continue;
+                    }
                     defaultVars[i] = new Pair<>(def, pyObject);
                 }
             } else if (def.startsWith("bungee:")) {
                 if (!SPYgotUtils.getInstance().onSpigot) {
-                    PyObject pyObject = interpreter.get(def);
+                    PyObject pyObject = interpreter.get(def.substring(7));
+                    if (pyObject == null) {
+                        SPYgotUtils.getLoader().getLogger().warning("Obj name: " + def + " is null.");
+                        continue;
+                    }
                     defaultVars[i] = new Pair<>(def, pyObject);
                 }
             } else {
                 PyObject pyObject = interpreter.get(def);
+                if (pyObject == null) {
+                    SPYgotUtils.getLoader().getLogger().warning("Obj name: " + def + " is null.");
+                    continue;
+                }
                 defaultVars[i] = new Pair<>(def, pyObject);
             }
         }
