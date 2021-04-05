@@ -68,7 +68,6 @@ init: |-
               return ProxyServer.getInstance().getScheduler().schedule(plugin, task, delay, unit)
           else:
               return ProxyServer.getInstance().getScheduler().schedule(plugin, task, delay, period, unit)
-      #
 
 start-defs:
   - get_data_folder

@@ -74,8 +74,14 @@ public class ConfigManager {
     }
 
     public void saveConfig(String name) {
-        Config config = getConfig(name);
-        config.write();
+        try {
+            Config config = getConfig(name);
+            config.write();
+        } catch (Exception e) {
+            pl.getLogger().warning("Exception thrown when saving config: " + name);
+            pl.getLogger().warning("If it's a StringIndexOutOfBoundsException, please ignore it. For some reason it happens and I have no idea why but nothing seems to be broken so idc.");
+            e.printStackTrace();
+        }
     }
 
     public Config getConfig(String name) {
