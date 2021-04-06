@@ -19,7 +19,7 @@ public class ShellCommand extends SmsCommand {
 
 
     private ShellCommand() {
-        super("pyshell", true);
+        super("pyshell");
     }
 
     public static ShellCommand getInstance() {
@@ -29,7 +29,8 @@ public class ShellCommand extends SmsCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        UUID uuid = SPlayerUtils.getPlayer(sender).getUniqueId();
+        Player p = (Player) sender;
+        UUID uuid = p.getUniqueId();
         switch (args.length) {
             case 0: {// toggle
                 if (get(uuid)) {
@@ -62,7 +63,7 @@ public class ShellCommand extends SmsCommand {
                         return true;
                     }
                     case "reset": {
-                        PlayerShellManager.newInterpreter(uuid);
+                        PlayerShellManager.interpreters.put(uuid, PlayerShellManager.newInterpreter(p));
                     }
                     case "stop":
                     case "off":
@@ -97,11 +98,11 @@ public class ShellCommand extends SmsCommand {
     }
 
     public void interpret(Player player, String cmd) {
-        if (PlayerShellManager.interpret(player.getUniqueId(), cmd)) {
+        cmd = cmd.replace("\\ ", " ");
+        if (PlayerShellManager.interpret(player, cmd)) {
             player.sendMessage(cmd);
             player.sendMessage("...");
         }
-        player.sendMessage("UwUed");
     }
 
     @Override

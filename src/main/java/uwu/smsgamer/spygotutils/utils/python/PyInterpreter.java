@@ -29,4 +29,15 @@ public class PyInterpreter extends PyShell {
     public String getLines() {
         return lines.toString();
     }
+
+//    private static class MyInteractiveInterpreter extends InteractiveInterpreter {
+//        @Override
+//        public void showexception(PyException exc) {
+//            Py.printException(exc, null, getSystemState().stderr);
+//        }
+//
+//        public void write(String data) {
+//            ((StdoutWrapper) getSystemState().stderr.__tojava__(StdoutWrapper.class)).write(data);
+//        }
+//    }
 }
