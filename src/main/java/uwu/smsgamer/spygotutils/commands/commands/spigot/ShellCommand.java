@@ -3,7 +3,7 @@ package uwu.smsgamer.spygotutils.commands.commands.spigot;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
-import uwu.smsgamer.senapi.utils.spigot.SPlayerUtils;
+import org.python.util.InteractiveInterpreter;
 import uwu.smsgamer.spygotutils.commands.SmsCommand;
 import uwu.smsgamer.spygotutils.managers.PlayerShellManager;
 
@@ -29,6 +29,7 @@ public class ShellCommand extends SmsCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!testPermission(sender)) return true;
         Player p = (Player) sender;
         UUID uuid = p.getUniqueId();
         switch (args.length) {
@@ -99,9 +100,16 @@ public class ShellCommand extends SmsCommand {
 
     public void interpret(Player player, String cmd) {
         cmd = cmd.replace("\\ ", " ");
+        InteractiveInterpreter interpreter = PlayerShellManager.getInterpreter(player).interpreter;
+        if (cmd.equals("\\")) {
+            cmd = interpreter.buffer.toString();
+            interpreter.resetbuffer();
+        }
         if (PlayerShellManager.interpret(player, cmd)) {
-            player.sendMessage(cmd);
-            player.sendMessage("...");
+            player.sendMessage("> " + cmd);
+            interpreter.buffer.append(cmd).append('\n');
+        } else {
+            interpreter.resetbuffer();
         }
     }
 

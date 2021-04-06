@@ -1,10 +1,9 @@
 package uwu.smsgamer.spygotutils.managers;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import uwu.smsgamer.spygotutils.utils.python.PyInterpreter;
 
-import java.io.*;
+import java.io.Writer;
 import java.util.*;
 
 public class PlayerShellManager {
@@ -22,7 +21,9 @@ public class PlayerShellManager {
     }
 
     public static boolean interpret(Player player, String command) {
-        return getInterpreter(player).interpret(command);
+        PyInterpreter interpreter = getInterpreter(player);
+        if (interpreter.interpreter.buffer.length() > 0) return true;
+        return interpreter.interpret(interpreter.interpreter.buffer.toString() + command);
     }
 
     public static void save(Player player, String fileName) {
