@@ -4,12 +4,22 @@ import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 import org.python.util.InteractiveInterpreter;
+import uwu.smsgamer.senapi.config.ConfVal;
 import uwu.smsgamer.spygotutils.commands.SmsCommand;
 import uwu.smsgamer.spygotutils.managers.PlayerShellManager;
+import uwu.smsgamer.spygotutils.utils.ChatUtils;
 
 import java.util.*;
 
 public class ShellCommand extends SmsCommand {
+    public ConfVal<String> disable = new ConfVal<>("commands.pyshell.enable", "messages",
+            "%prefix% &cDisabled.");
+    public ConfVal<String> enable = new ConfVal<>("commands.pyshell.disable", "messages",
+            "%prefix% &aEnabled.");
+    public ConfVal<String> reset = new ConfVal<>("commands.pyshell.reset", "messages",
+            "%prefix% &rReset.");
+    public ConfVal<String> help = new ConfVal<>("commands.pyshell.help", "messages",
+            "%prefix% &r/pyshell [toggle|stop, off, disable|begin, start, on, enable|reset|help]");
     private static ShellCommand INSTANCE;
     public Map<UUID, Boolean> enabledPlayers = new HashMap<>();
 
@@ -36,10 +46,10 @@ public class ShellCommand extends SmsCommand {
             case 0: {// toggle
                 if (get(uuid)) {
                     disable(uuid);
-                    sender.sendMessage("Disabled.");
+                    ChatUtils.sendMessage(disable, sender);
                 } else {
                     enable(uuid);
-                    sender.sendMessage("Enabled.");
+                    ChatUtils.sendMessage(enable, sender);
                 }
                 return true;
             }
@@ -48,10 +58,10 @@ public class ShellCommand extends SmsCommand {
                     case "toggle": {
                         if (get(uuid)) {
                             disable(uuid);
-                            sender.sendMessage("Disabled.");
+                            ChatUtils.sendMessage(disable, sender);
                         } else {
                             enable(uuid);
-                            sender.sendMessage("Enabled.");
+                            ChatUtils.sendMessage(enable, sender);
                         }
                         return true;
                     }
@@ -60,22 +70,24 @@ public class ShellCommand extends SmsCommand {
                     case "on":
                     case "enable": {
                         enable(uuid);
-                        sender.sendMessage("Enabled.");
+                        ChatUtils.sendMessage(enable, sender);
                         return true;
-                    }
-                    case "reset": {
-                        PlayerShellManager.interpreters.put(uuid, PlayerShellManager.newInterpreter(p));
                     }
                     case "stop":
                     case "off":
                     case "disable": {
                         disable(uuid);
-                        sender.sendMessage("Disabled.");
+                        ChatUtils.sendMessage(disable, sender);
                         return true;
+                    }
+                    case "reset": {
+                        PlayerShellManager.interpreters.put(uuid, PlayerShellManager.newInterpreter(p));
+                        ChatUtils.sendMessage(reset, sender);
+                        break;
                     }
                     case "help":
                     default: {
-                        sender.sendMessage("toggle | enable | disable");
+                        ChatUtils.sendMessage(help, sender);
                         return true;
                     }
                 }
@@ -103,10 +115,11 @@ public class ShellCommand extends SmsCommand {
         InteractiveInterpreter interpreter = PlayerShellManager.getInterpreter(player).interpreter;
         if (cmd.equals("\\")) {
             cmd = interpreter.buffer.toString();
+            player.sendTitle("", "Finished command.", 10, 60, 10);
             interpreter.resetbuffer();
-        }
+        } else player.sendMessage("> " + cmd);
         if (PlayerShellManager.interpret(player, cmd)) {
-            player.sendMessage("> " + cmd);
+            player.sendTitle("", "Unfinished command.", 10, 60, 10);
             interpreter.buffer.append(cmd).append('\n');
         } else {
             interpreter.resetbuffer();
