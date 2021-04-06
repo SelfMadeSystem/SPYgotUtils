@@ -37,3 +37,5 @@ commands:
       - send-msg
       - sendmessage
       - sendmsg
+  pyshell:
+    description: Python Shell

@@ -9,15 +9,16 @@ public class PlayerShellManager {
     public static final Map<UUID, PyInterpreter> interpreters = new HashMap<>();
 
     public static void newInterpreter(UUID uuid) {
-        interpreters.put(uuid, (PyInterpreter) new PyInterpreter().setFuns(PythonManager.defaultFuns).setVars(PythonManager.defaultVars));
+        interpreters.put(uuid,
+                (PyInterpreter) new PyInterpreter().setFuns(PythonManager.defaultFuns).setVars(PythonManager.defaultVars));
     }
 
     public static void removeInterpreter(UUID uuid) {
         interpreters.remove(uuid);
     }
 
-    public static PyObject eval(UUID uuid, String command) {
-        return getInterpreter(uuid).eval(command);
+    public static boolean interpret(UUID uuid, String command) {
+        return getInterpreter(uuid).interpret(command);
     }
 
     public static void save(UUID uuid, String fileName) {
@@ -28,6 +29,7 @@ public class PlayerShellManager {
     }
 
     public static PyInterpreter getInterpreter(UUID uuid) {
-        return interpreters.get(uuid);
+        return interpreters.computeIfAbsent(uuid, e ->
+                (PyInterpreter) new PyInterpreter().setFuns(PythonManager.defaultFuns).setVars(PythonManager.defaultVars));
     }
 }

