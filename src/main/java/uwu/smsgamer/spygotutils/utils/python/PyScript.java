@@ -1,15 +1,13 @@
 package uwu.smsgamer.spygotutils.utils.python;
 
 import org.python.core.*;
-import org.python.util.PythonInterpreter;
 import uwu.smsgamer.senapi.utils.Pair;
 
 import java.io.*;
 import java.util.*;
 
-public class PyScript {
+public class PyScript extends PyThing {
     public File scriptFile;
-    public PythonInterpreter interpreter;
     // load is on script load or whatever so no need
     public List<PyFunction> enableFuns = new ArrayList<>();
     public List<PyFunction> reloadFuns = new ArrayList<>();
@@ -17,7 +15,6 @@ public class PyScript {
 
     public PyScript(File scriptFile) {
         this.scriptFile = scriptFile;
-        this.interpreter = new PythonInterpreter();
     }
 
     public void execFile() throws FileNotFoundException {
@@ -25,20 +22,15 @@ public class PyScript {
     }
 
     public PyScript set(String name, PyObject obj) {
-        this.interpreter.set(name, obj);
-        return this;
+        return (PyScript) super.set(name, obj);
     }
 
     public PyScript setFuns(PyFunction[] objs) {
-        if (objs != null) for (PyFunction obj : objs) {
-            if (obj != null) set(obj.__name__, obj);
-        }
-        return this;
+        return (PyScript) super.setFuns(objs);
     }
 
     public PyScript setVars(Pair<String, PyObject>[] objs) {
-        if (objs != null) for (Pair<String, PyObject> pair : objs) if (pair != null) set(pair.a, pair.b);
-        return this;
+        return (PyScript) super.setVars(objs);
     }
 
     // how would you name this???
