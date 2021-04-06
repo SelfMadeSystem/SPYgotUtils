@@ -6,7 +6,7 @@ import uwu.smsgamer.senapi.utils.Pair;
 import java.io.*;
 import java.util.*;
 
-public class PyScript extends PyThing {
+public class PyScript extends PyShell {
     public File scriptFile;
     // load is on script load or whatever so no need
     public List<PyFunction> enableFuns = new ArrayList<>();
