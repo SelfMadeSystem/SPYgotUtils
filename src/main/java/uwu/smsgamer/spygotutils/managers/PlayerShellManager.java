@@ -1,6 +1,7 @@
 package uwu.smsgamer.spygotutils.managers;
 
 import org.bukkit.entity.Player;
+import org.python.core.Py;
 import uwu.smsgamer.spygotutils.utils.python.PyInterpreter;
 
 import java.io.Writer;
@@ -11,6 +12,7 @@ public class PlayerShellManager {
 
     public static PyInterpreter newInterpreter(Player player) {
         PyInterpreter pyInterpreter = (PyInterpreter) new PyInterpreter().setFuns(PythonManager.defaultFuns).setVars(PythonManager.defaultVars);
+        pyInterpreter.set("player", Py.java2py(player));
         pyInterpreter.interpreter.setOut(new PlayerWriter(player, "\u00A7r"));
         pyInterpreter.interpreter.setErr(new PlayerWriter(player, "\u00A7c"));
         return pyInterpreter;
