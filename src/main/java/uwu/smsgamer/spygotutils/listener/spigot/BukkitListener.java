@@ -7,12 +7,21 @@ import org.bukkit.event.server.TabCompleteEvent;
 import uwu.smsgamer.spygotutils.commands.commands.spigot.ShellCommand;
 import uwu.smsgamer.spygotutils.managers.*;
 
+import java.util.UUID;
+
 public class BukkitListener implements Listener {
     private static BukkitListener instance;
 
     public static BukkitListener getInstance() {
         if (instance == null) instance = new BukkitListener();
         return instance;
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent e) {
+        UUID uuid = e.getPlayer().getUniqueId();
+        ShellCommand.getInstance().enabledPlayers.remove(uuid);
+        PlayerShellManager.interpreters.remove(uuid);
     }
 
     @EventHandler

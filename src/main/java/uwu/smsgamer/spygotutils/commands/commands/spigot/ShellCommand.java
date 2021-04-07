@@ -3,6 +3,7 @@ package uwu.smsgamer.spygotutils.commands.commands.spigot;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
+import org.python.core.*;
 import org.python.util.InteractiveInterpreter;
 import uwu.smsgamer.senapi.config.ConfVal;
 import uwu.smsgamer.spygotutils.commands.SmsCommand;
@@ -57,11 +58,9 @@ public class ShellCommand extends SmsCommand {
                 switch (args[0].toLowerCase()) {
                     case "toggle": {
                         if (get(uuid)) {
-                            disable(uuid);
-                            ChatUtils.sendMessage(disable, sender);
+                            disable(p);
                         } else {
-                            enable(uuid);
-                            ChatUtils.sendMessage(enable, sender);
+                            enable(p);
                         }
                         return true;
                     }
@@ -69,20 +68,17 @@ public class ShellCommand extends SmsCommand {
                     case "start":
                     case "on":
                     case "enable": {
-                        enable(uuid);
-                        ChatUtils.sendMessage(enable, sender);
+                        enable(p);
                         return true;
                     }
                     case "stop":
                     case "off":
                     case "disable": {
-                        disable(uuid);
-                        ChatUtils.sendMessage(disable, sender);
+                        disable(p);
                         return true;
                     }
                     case "reset": {
-                        PlayerShellManager.interpreters.put(uuid, PlayerShellManager.newInterpreter(p));
-                        ChatUtils.sendMessage(reset, sender);
+                        reset(p);
                         break;
                     }
                     case "help":
@@ -96,8 +92,23 @@ public class ShellCommand extends SmsCommand {
         return false;
     }
 
+    public void reset(Player player) {
+        PlayerShellManager.interpreters.put(player.getUniqueId(), PlayerShellManager.newInterpreter(player));
+        ChatUtils.sendMessage(reset, player);
+    }
+
+    public void enable(Player player) {
+        enable(player.getUniqueId());
+        ChatUtils.sendMessage(enable, player);
+    }
+
     public void enable(UUID uuid) {
         enabledPlayers.put(uuid, true);
+    }
+
+    public void disable(Player player) {
+        disable(player.getUniqueId());
+        ChatUtils.sendMessage(disable, player);
     }
 
     public void disable(UUID uuid) {
@@ -118,7 +129,18 @@ public class ShellCommand extends SmsCommand {
             player.sendTitle("", "Finished command.", 10, 60, 10);
             interpreter.resetbuffer();
         } else player.sendMessage("> " + cmd);
-        if (PlayerShellManager.interpret(player, cmd)) {
+        boolean b = false;
+        try {
+            b = PlayerShellManager.interpret(player, cmd);
+        }  catch (PyException e) {
+            if (e.match(Py.SystemExit)) {
+                reset(player);
+                disable(player);
+            } else {
+                interpreter.showexception(e);
+            }
+        }
+        if (b) {
             player.sendTitle("", "Unfinished command.", 10, 60, 10);
             interpreter.buffer.append(cmd).append('\n');
         } else {
