@@ -20,7 +20,7 @@ public class ShellCommand extends SmsCommand {
     public ConfVal<String> reset = new ConfVal<>("commands.pyshell.reset", "messages",
             "%prefix% &rReset.");
     public ConfVal<String> help = new ConfVal<>("commands.pyshell.help", "messages",
-            "%prefix% &r/pyshell [toggle|stop, off, disable|begin, start, on, enable|reset|help]");
+            "%prefix% &r/pyshell [toggle | stop, off, disable | begin, start, on, enable | reset | getlines | help]");
     private static ShellCommand INSTANCE;
     public Map<UUID, Boolean> enabledPlayers = new HashMap<>();
 
@@ -79,6 +79,11 @@ public class ShellCommand extends SmsCommand {
                     }
                     case "reset": {
                         reset(p);
+                        break;
+                    }
+                    case "getlines": {
+                        String lines = PlayerShellManager.getLines(p);
+                        p.sendMessage(lines);
                         break;
                     }
                     case "help":
