@@ -37,3 +37,11 @@ commands:
       - send-msg
       - sendmessage
       - sendmsg
+  pyshell:
+    description: Python Shell
+    usage: /pyshell [toggle | stop, off, disable | begin, start, on, enable | reset | getlines | help]
+    aliases:
+      - shell
+      - jyshell
+      - pysh
+      - jysh
