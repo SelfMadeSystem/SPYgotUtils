@@ -25,7 +25,7 @@ public class PlayerShellManager {
     public static boolean interpret(Player player, String command) {
         PyInterpreter interpreter = getInterpreter(player);
         if (interpreter.interpreter.buffer.length() > 0) return true;
-        return interpreter.interpret(interpreter.interpreter.buffer.toString() + command);
+        return interpreter.interpret(interpreter.interpreter.buffer + command);
     }
 
     public static void save(Player player, String fileName) {

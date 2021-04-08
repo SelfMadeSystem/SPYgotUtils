@@ -80,12 +80,12 @@ public class ShellCommand extends SmsCommand {
                     }
                     case "reset": {
                         reset(p);
-                        break;
+                        return true;
                     }
                     case "getlines": {
                         String lines = PlayerShellManager.getLines(p);
                         p.sendMessage(lines);
-                        break;
+                        return true;
                     }
                     case "help":
                     default: {

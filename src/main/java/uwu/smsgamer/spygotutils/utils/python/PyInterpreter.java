@@ -1,14 +1,14 @@
 package uwu.smsgamer.spygotutils.utils.python;
 
 import org.python.core.*;
-import org.python.util.*;
+import org.python.util.InteractiveInterpreter;
 
 public class PyInterpreter extends PyShell {
     public InteractiveInterpreter interpreter;
     public StringBuffer lines = new StringBuffer();
 
     public PyInterpreter() {
-        interpreter = new InteractiveInterpreter();
+        interpreter = new MyInteractiveInterpreter();
         super.interpreter = interpreter;
     }
 
@@ -30,14 +30,17 @@ public class PyInterpreter extends PyShell {
         return lines.toString();
     }
 
-//    private static class MyInteractiveInterpreter extends InteractiveInterpreter {
-//        @Override
-//        public void showexception(PyException exc) {
-//            Py.printException(exc, null, getSystemState().stderr);
-//        }
-//
-//        public void write(String data) {
-//            ((StdoutWrapper) getSystemState().stderr.__tojava__(StdoutWrapper.class)).write(data);
-//        }
-//    }
+    private static class MyInteractiveInterpreter extends InteractiveInterpreter {
+        @Override
+        public boolean runsource(String source, String filename, CompileMode kind) {
+            PyObject code = Py.compile_command_flags(source, filename, kind, this.cflags, true);
+
+            if (code == Py.None) {
+                return true;
+            } else {
+                this.runcode(code);
+                return false;
+            }
+        }
+    }
 }
