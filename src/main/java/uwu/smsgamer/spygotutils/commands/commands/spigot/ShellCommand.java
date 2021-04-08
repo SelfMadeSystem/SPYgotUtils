@@ -1,7 +1,10 @@
 package uwu.smsgamer.spygotutils.commands.commands.spigot;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.Nullable;
 import org.python.core.*;
 import org.python.util.InteractiveInterpreter;
@@ -93,8 +96,26 @@ public class ShellCommand extends SmsCommand {
                     }
                 }
             }
+            default: {
+                ChatUtils.sendMessage(help, sender);
+                return true;
+            }
         }
-        return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (sender.hasPermission(this.permissionBase)) {
+            List<String> completions = new ArrayList<>();
+            String toComplete = args[0].toLowerCase(java.util.Locale.ENGLISH);
+            for (String str : new String[]{"toggle", "stop", "off", "disable", "begin", "start", "on", "enable", "reset", "getlines", "help"}) {
+                if (StringUtil.startsWithIgnoreCase(str, toComplete)) {
+                    completions.add(str);
+                }
+            }
+            return completions;
+        }
+        return Collections.emptyList();
     }
 
     public void reset(Player player) {
@@ -151,10 +172,5 @@ public class ShellCommand extends SmsCommand {
         } else {
             interpreter.resetbuffer();
         }
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        return null;
     }
 }
