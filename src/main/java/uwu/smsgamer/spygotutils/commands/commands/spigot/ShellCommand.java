@@ -1,9 +1,7 @@
 package uwu.smsgamer.spygotutils.commands.commands.spigot;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.Nullable;
 import org.python.core.*;
@@ -16,6 +14,7 @@ import uwu.smsgamer.spygotutils.utils.ChatUtils;
 import java.util.*;
 
 public class ShellCommand extends SmsCommand {
+    private static ShellCommand INSTANCE;
     public ConfVal<String> disable = new ConfVal<>("commands.pyshell.enable", "messages",
             "%prefix% &cDisabled.");
     public ConfVal<String> enable = new ConfVal<>("commands.pyshell.disable", "messages",
@@ -24,7 +23,6 @@ public class ShellCommand extends SmsCommand {
             "%prefix% &rReset.");
     public ConfVal<String> help = new ConfVal<>("commands.pyshell.help", "messages",
             "%prefix% &r/pyshell [toggle | stop, off, disable | begin, start, on, enable | reset | getlines | help]");
-    private static ShellCommand INSTANCE;
     public Map<UUID, Boolean> enabledPlayers = new HashMap<>();
 
     {
@@ -158,7 +156,7 @@ public class ShellCommand extends SmsCommand {
         boolean b = false;
         try {
             b = PlayerShellManager.interpret(player, cmd);
-        }  catch (PyException e) {
+        } catch (PyException e) {
             if (e.match(Py.SystemExit)) {
                 reset(player);
                 disable(player);
