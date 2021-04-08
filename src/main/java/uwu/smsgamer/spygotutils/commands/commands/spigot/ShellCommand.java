@@ -21,8 +21,8 @@ public class ShellCommand extends SmsCommand {
             "%prefix% &aEnabled.");
     public ConfVal<String> reset = new ConfVal<>("commands.pyshell.reset", "messages",
             "%prefix% &rReset.");
-    public ConfVal<String> help = new ConfVal<>("commands.pyshell.help", "messages",
-            "%prefix% &r/pyshell [toggle | stop, off, disable | begin, start, on, enable | reset | getlines | help]");
+    public ConfVal<String> usage = new ConfVal<>("commands.pyshell.usage", "messages",
+            "%prefix% &r/%label% [toggle | stop, off, disable | begin, start, on, enable | reset | getlines | help]");
     public Map<UUID, Boolean> enabledPlayers = new HashMap<>();
 
     {
@@ -89,13 +89,13 @@ public class ShellCommand extends SmsCommand {
                     }
                     case "help":
                     default: {
-                        ChatUtils.sendMessage(help, sender);
+                        ChatUtils.sendMessage(usage.getValue().replace("%label%", label), sender);
                         return true;
                     }
                 }
             }
             default: {
-                ChatUtils.sendMessage(help, sender);
+                ChatUtils.sendMessage(usage.getValue().replace("%label%", label), sender);
                 return true;
             }
         }
