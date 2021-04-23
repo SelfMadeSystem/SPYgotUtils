@@ -1,7 +1,7 @@
 package uwu.smsgamer.spygotutils.managers;
 
 import org.bukkit.entity.Player;
-import org.python.core.Py;
+import org.python.core.*;
 import uwu.smsgamer.spygotutils.utils.python.PyInterpreter;
 
 import java.io.Writer;
@@ -9,6 +9,13 @@ import java.util.*;
 
 public class PlayerShellManager {
     public static final Map<UUID, PyInterpreter> interpreters = new HashMap<>();
+    private final static PyObject stdout;
+    private final static PyObject stderr;
+
+    static {
+        stdout = Py.getSystemState().stdout;
+        stderr = Py.getSystemState().stderr;
+    }
 
     public static PyInterpreter newInterpreter(Player player) {
         PyInterpreter pyInterpreter = (PyInterpreter) new PyInterpreter().setFuns(PythonManager.defaultFuns).setVars(PythonManager.defaultVars);
@@ -37,6 +44,11 @@ public class PlayerShellManager {
 
     public static PyInterpreter getInterpreter(Player player) {
         return interpreters.computeIfAbsent(player.getUniqueId(), e -> newInterpreter(player));
+    }
+
+    public static void disable() {
+        Py.getSystemState().stdout = Py.getSystemState().__stdout__ = stdout;
+        Py.getSystemState().stderr = Py.getSystemState().__stderr__ = stderr;
     }
 
     public static class PlayerWriter extends Writer {

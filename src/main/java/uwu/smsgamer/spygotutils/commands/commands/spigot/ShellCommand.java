@@ -124,6 +124,7 @@ public class ShellCommand extends SmsCommand {
     public void enable(Player player) {
         enable(player.getUniqueId());
         ChatUtils.sendMessage(enable, player);
+        ChatUtils.sendMessage("This feature is in development. Expect issues with stdin/out/err.", player);
     }
 
     public void enable(UUID uuid) {
@@ -137,6 +138,7 @@ public class ShellCommand extends SmsCommand {
 
     public void disable(UUID uuid) {
         enabledPlayers.put(uuid, false);
+        PlayerShellManager.disable();
     }
 
     public boolean get(UUID uuid) {
