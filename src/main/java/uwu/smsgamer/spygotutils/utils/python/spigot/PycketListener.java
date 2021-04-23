@@ -6,7 +6,8 @@ import org.python.core.*;
 
 import java.util.*;
 
-public class PycketListener extends PacketListenerDynamic {
+public class PycketListener extends PacketListenerAbstract {
+    private static PycketListener instance;
     public Set<PyFunction> packetStatusReceiveFuns = new HashSet<>();
     public Set<PyFunction> packetStatusSendFuns = new HashSet<>();
     public Set<PyFunction> packetLoginReceiveFuns = new HashSet<>();
@@ -19,11 +20,11 @@ public class PycketListener extends PacketListenerDynamic {
     public Set<PyFunction> playerInjectFuns = new HashSet<>();
     public Set<PyFunction> playerEjectFuns = new HashSet<>();
     public Set<PyFunction> packetEventExternalFuns = new HashSet<>();
+    public Set<PyFunction> packetHandshakeReceiveFuns = new HashSet<>();
 
-    private static PycketListener instance;
     public static PycketListener getInstance() {
-      if (instance == null) instance = new PycketListener();
-      return instance;
+        if (instance == null) instance = new PycketListener();
+        return instance;
     }
 
     @Override
@@ -84,6 +85,11 @@ public class PycketListener extends PacketListenerDynamic {
     @Override
     public void onPacketEventExternal(PacketEvent event) {
         callAll(packetEventExternalFuns, event);
+    }
+
+    @Override
+    public void onPacketHandshakeReceive(PacketHandshakeReceiveEvent event) {
+        callAll(packetHandshakeReceiveFuns, event);
     }
 
     public void callAll(Set<PyFunction> functions, PacketEvent event) {

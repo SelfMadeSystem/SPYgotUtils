@@ -54,7 +54,7 @@ public class SpigotLoader extends JavaPlugin implements Loader {
          * as PacketEvents already uses a few in the load method.
          * To be safe, just set them all before loading.
          */
-        PacketEvents.get().load();
+        PacketEvents.get().loadAsyncNewThread();
 
         SPYgotUtils ins = new SPYgotUtils(true);
 
@@ -71,9 +71,6 @@ public class SpigotLoader extends JavaPlugin implements Loader {
 
     @Override
     public void onEnable() {
-
-        //Initiate PacketEvents
-        PacketEvents.get().init(this);
 
         //Register our listener (class extending PacketListenerDynamic)
         //By default it is configured to listen to all packets with no filter at all.
